@@ -5,6 +5,6 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "closure-challenge>=0.2.1",
+    "closure-challenge>=0.3.0",
     "tabulate>=0.10.0",
 ]
