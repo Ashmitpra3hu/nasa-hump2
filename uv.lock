@@ -4,14 +4,14 @@ requires-python = ">=3.13"
 
 [[package]]
 name = "closure-challenge"
-version = "0.3.0"
+version = "0.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d9/ed/a2c08779478a09ab3799a19f760b1a6dfeaf7b4107a1124377584b77e075/closure_challenge-0.3.0.tar.gz", hash = "sha256:2ee9c4feedc72ceb529f09e56ade87d5e00b12fd4432e63e821cdb849fe565c4", size = 919407, upload-time = "2026-03-26T18:08:52.99Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2a/9c/0e5f193501d8837328e9d2cdf5586619fd7ba40b25638508c76d3c84357a/closure_challenge-0.3.1.tar.gz", hash = "sha256:6f2ceb88de63453a9807098ba5b9bb6afdeb4abcde5cd15373fe7af2ac7b046b", size = 919407, upload-time = "2026-03-26T18:19:36.435Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/92/95/20db3814a610ccaa10caf875a70ae8352bc7575cef418aa06da82604cd0a/closure_challenge-0.3.0-py3-none-any.whl", hash = "sha256:b039a5e729ea775a4c8b9d833abc9e66bd064745b2e04b9dbb4ca40bd90185a8", size = 241302, upload-time = "2026-03-26T18:08:51.86Z" },
+    { url = "https://files.pythonhosted.org/packages/88/7d/e6513e9a7fb6944afdeb84955f030b585382561ff78f805e41dd93eeb50c/closure_challenge-0.3.1-py3-none-any.whl", hash = "sha256:b33f5c9054da8c4b5301d6e59d59984824d0a3bd14cc4c9a97b1d3e25e7a6920", size = 241304, upload-time = "2026-03-26T18:19:34.919Z" },
 ]
 
 [[package]]
@@ -25,7 +25,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "closure-challenge", specifier = ">=0.3.0" },
+    { name = "closure-challenge", specifier = ">=0.3.1" },
     { name = "tabulate", specifier = ">=0.10.0" },
 ]
 
