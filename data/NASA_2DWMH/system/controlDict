@@ -1,9 +1,9 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  7
-     \\/     M anipulation  |
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Website:  https://openfoam.org                  |
+|   \\  /    A nd           | Version:  7                                     |
+|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -15,48 +15,47 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-libs ( "libfrozenIncompressibleTurbulenceModels.so" );
+application     simpleFoam;
 
-startFrom       latestTime;
+startFrom       startTime;
+
+startTime       0;
 
 stopAt          endTime;
 
-endTime         2000;
+endTime         80;
 
 deltaT          1;
 
 writeControl    timeStep;
 
-writeInterval   $endTime;
+writeInterval   20;
 
 purgeWrite      0;
 
 writeFormat     ascii;
 
-writePrecision  6;
+writePrecision  12;
 
-writeCompression off;
+writeCompression uncompressed;
 
 timeFormat      general;
 
 timePrecision   6;
 
-runTimeModifiable true;
+runTimeModifiable yes;
 
 functions
 {
     #includeFunc residuals
-    #includeFunc wallValues
-    #includeFunc convergenceProbes
-    #includeFunc singleGraph_x0.8c
-    #includeFunc singleGraph_x0.9c
-    #includeFunc singleGraph_x0.65c
-    #includeFunc singleGraph_x1.0c
-    #includeFunc singleGraph_x1.1c
-    #includeFunc singleGraph_x1.2c
-    #includeFunc singleGraph_x1.3c
-    
+    #includeFunc singleGraph_xm214
+    #includeFunc singleGraph_x065
+    #includeFunc singleGraph_x080
+    #includeFunc singleGraph_x090
+    #includeFunc singleGraph_x100
+    #includeFunc singleGraph_x110
+    #includeFunc singleGraph_x120
+    #includeFunc singleGraph_x130
 }
-
 
 // ************************************************************************* //

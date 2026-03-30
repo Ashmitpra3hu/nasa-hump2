@@ -1,14 +1,7 @@
 #!/bin/bash
 
-# Exit when a line throws an error
-set -e
+set -euo pipefail
 
-topoSet 
-
-foamToVTK -ascii -faceSet wallFaceSet -time 0 > log.foamToVTK
-
-modelPropagationFoam -postProcess -funcs '(wallShearStress wallValues)' -latestTime -noZero > log.postProcess
-
-python3 residualConvergence.py
-
-python3 probeConvergence.py
+simpleFoam -postProcess -latestTime -func wallShearStress > log.wallShearStress
+postProcess -latestTime -dict system/bottomValues > log.bottomValues
+foamToVTK -ascii > log.foamToVTK

@@ -1,9 +1,9 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  7
-     \\/     M anipulation  |
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Website:  https://openfoam.org                  |
+|   \\  /    A nd           | Version:  7                                     |
+|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -20,50 +20,55 @@ solvers
     p
     {
         solver          GAMG;
-        tolerance       1e-8;
-        relTol          0.1;
-        smoother        GaussSeidel;
+        tolerance       1e-9;
+        relTol          0.01;
+        smoother        DICGaussSeidel;
+        nPreSweeps      1;
+        nPostSweeps     2;
+        cacheAgglomeration true;
+        agglomerator    faceAreaPair;
+        nCellsInCoarsestLevel 20;
+        mergeLevels     1;
     }
 
-    "(U|k)"
+    "(U|k|omega)"
     {
-        solver          PBiCGStab;
-        preconditioner  DILU;
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
         tolerance       1e-8;
-        relTol          0.1;
+        relTol          0.05;
+        nSweeps         1;
     }
-    
-    omega
-    {
-        $U;
-        tolerance       1e-15; 
-    }
-
-
 }
 
 SIMPLE
 {
     nNonOrthogonalCorrectors 1;
+    consistent      yes;
+    pRefCell        0;
+    pRefValue       0;
 
     residualControl
     {
-        "(U|p|k)"       5e-7;
-        omega           1e-10;
+        p           1e-5;
+        U           1e-6;
+        k           1e-6;
+        omega       1e-6;
     }
-    consistent          yes;
 }
 
 relaxationFactors
 {
-
+    fields
+    {
+        p           0.3;
+    }
     equations
     {
-        U               0.9;
-        k               0.7;
-        omega           0.7;
+        U           0.7;
+        k           0.7;
+        omega       0.7;
     }
 }
-
 
 // ************************************************************************* //

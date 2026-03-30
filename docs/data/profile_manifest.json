@@ -1,0 +1,50 @@
+[
+  {
+    "station": "profile_xm214",
+    "x_target_m": -0.8988,
+    "x_over_c": -2.14,
+    "file": "docs/data/profile_xm214.csv"
+  },
+  {
+    "station": "profile_x065",
+    "x_target_m": 0.273,
+    "x_over_c": 0.65,
+    "file": "docs/data/profile_x065.csv"
+  },
+  {
+    "station": "profile_x080",
+    "x_target_m": 0.336,
+    "x_over_c": 0.8,
+    "file": "docs/data/profile_x080.csv"
+  },
+  {
+    "station": "profile_x090",
+    "x_target_m": 0.378,
+    "x_over_c": 0.9,
+    "file": "docs/data/profile_x090.csv"
+  },
+  {
+    "station": "profile_x100",
+    "x_target_m": 0.42,
+    "x_over_c": 1.0,
+    "file": "docs/data/profile_x100.csv"
+  },
+  {
+    "station": "profile_x110",
+    "x_target_m": 0.462,
+    "x_over_c": 1.1,
+    "file": "docs/data/profile_x110.csv"
+  },
+  {
+    "station": "profile_x120",
+    "x_target_m": 0.504,
+    "x_over_c": 1.2,
+    "file": "docs/data/profile_x120.csv"
+  },
+  {
+    "station": "profile_x130",
+    "x_target_m": 0.546,
+    "x_over_c": 1.3,
+    "file": "docs/data/profile_x130.csv"
+  }
+]

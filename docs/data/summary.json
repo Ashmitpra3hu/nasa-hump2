@@ -1,0 +1,13 @@
+{
+  "latest_iteration_directory": "80",
+  "final_residuals": {
+    "U": 0.00179079524334,
+    "p": 0.00958647673807,
+    "k": 0.00240318668824,
+    "omega": 0.000575310151813
+  },
+  "derived_indicators": {
+    "separation_x_m": null,
+    "reattachment_x_m": 0.4409844259186204
+  }
+}

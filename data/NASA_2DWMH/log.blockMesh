@@ -1,0 +1,81 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2512                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _87ed40d2-20251219 OPENFOAM=2512 version=2512
+Arch   : "LSB;label=32;scalar=64"
+Exec   : blockMesh -case data/NASA_2DWMH
+Date   : Mar 30 2026
+Time   : 21:35:28
+Host   : 1ab6c8f6d619
+PID    : 225
+I/O    : uncollated
+Case   : /home/openfoam/work/data/NASA_2DWMH
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+--> FOAM Warning : 
+    From static Foam::IOstreamOption::compressionType Foam::IOstreamOption::compressionEnum(const Foam::word&, compressionType)
+    in file db/options/IOstreamOption.C at line 185
+    Unknown compression specifier 'uncompressed' using compression off
+Creating block mesh from "system/blockMeshDict"
+Creating block edges
+No non-planar block faces defined
+Creating topology blocks
+
+Creating topology patches - from boundary section
+
+Creating block mesh topology
+
+Check topology
+
+	Basic statistics
+		Number of internal faces : 0
+		Number of boundary faces : 6
+		Number of defined boundary faces : 6
+		Number of undefined boundary faces : 0
+	Checking patch -> block consistency
+
+Creating block offsets
+Creating merge list (topological search)...
+
+Creating polyMesh from blockMesh
+Creating points with scale (1 1 1)
+    Block 0 cell size :
+        i : 0.0010990871013 .. 0.00442719888057
+        j : 0.000438104246355 .. 0.00525725095626
+        k : 0.02 .. 0.02
+
+Creating cells
+Creating patches
+No patch pairs to merge
+
+Writing polyMesh with 0 cellZones
+----------------
+Mesh Information
+----------------
+  boundingBox: (-0.9 -1.6503202383e-05 -0.01) (0.67 0.35 0.01)
+  nPoints: 188602
+  nCells: 93600
+  nFaces: 375100
+  nInternalFaces: 186500
+----------------
+Patches
+----------------
+  patch 0 (start: 186500 size: 180) name: inlet
+  patch 1 (start: 186680 size: 180) name: outlet
+  patch 2 (start: 186860 size: 520) name: bottomWall
+  patch 3 (start: 187380 size: 520) name: topWall
+  patch 4 (start: 187900 size: 187200) name: frontAndBack
+
+End
+

@@ -1,9 +1,9 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  7
-     \\/     M anipulation  |
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Website:  https://openfoam.org                  |
+|   \\  /    A nd           | Version:  7                                     |
+|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -16,41 +16,36 @@ FoamFile
 
 dimensions      [0 2 -2 0 0 0 0];
 
-#include "../caseDef"
-#include "inletOutletFields/k_inlet"
-
-internalField   uniform $kRef;
+internalField   uniform 0.179574;
 
 boundaryField
 {
-
     inlet
     {
         type            fixedValue;
-        value           $k_inlet;
+        value           uniform 0.179574;
     }
 
-    bottom
-    {
-        type            kqRWallFunction;
-        value           uniform 0.;
-    }
-    
     outlet
     {
         type            zeroGradient;
     }
-    
-    sides
+
+    bottomWall
+    {
+        type            kqRWallFunction;
+        value           uniform 0.179574;
+    }
+
+    topWall
+    {
+        type            zeroGradient;
+    }
+
+    frontAndBack
     {
         type            empty;
     }
-    
-    top
-    {
-        type            symmetry;
-    }
-
 }
 
 // ************************************************************************* //

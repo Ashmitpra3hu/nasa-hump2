@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Exit when a line throws an error
-set -e
+set -euo pipefail
 
-modelPropagationFoam > log.run
-
-./postProcess.sh
+simpleFoam > log.run
