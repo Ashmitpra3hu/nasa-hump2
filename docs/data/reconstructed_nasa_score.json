@@ -1,0 +1,7 @@
+{
+  "case": "NASA_2DWMH",
+  "time_directory": "80",
+  "prediction_file": "docs/data/reconstructed_nasa_predictions.csv",
+  "num_points": 1000,
+  "score": 0.23385045503582086
+}
