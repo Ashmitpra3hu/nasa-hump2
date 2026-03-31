@@ -1,9 +1,15 @@
 # NASA Hump Reconstruction
 
-This repository now includes a locally reconstructed NASA wall-mounted hump baseline case built under strict no-cheating constraints.
+The primary document for this repository is the PDF report:
+
+- `README.pdf`
+- `documentation/build/main.pdf`
+
+This repository includes a locally reconstructed NASA wall-mounted hump baseline case built under strict no-cheating constraints.
 
 ## Main Documentation
 
+- PDF report: `README.pdf`
 - LaTeX report source: `documentation/main.tex`
 - Bibliography: `documentation/references.bib`
 - Audit trail: `RECONSTRUCTION_AUDIT.md`

@@ -199,6 +199,48 @@ Post-processing consists of three layers:
 \caption{Near-wall pressure and skin-friction coefficients derived from the solved field and the wall-shear boundary output.}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../docs/figures/paraview_velocity.png}
+\caption{ParaView rendering of the internal field colored by velocity magnitude.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../docs/figures/paraview_velocity_surface.png}
+\caption{ParaView surface-style velocity rendering for a cleaner presentation of the hump-region acceleration pattern.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../docs/figures/paraview_pressure.png}
+\caption{ParaView rendering of the internal field colored by pressure.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../docs/figures/paraview_pressure_surface.png}
+\caption{ParaView surface-style pressure rendering emphasizing the pressure rise over the hump crest.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../docs/figures/paraview_streamlines.png}
+\caption{ParaView streamline rendering seeded upstream of the hump.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../docs/figures/paraview_mesh_wireframe.png}
+\caption{ParaView wireframe view showing the resolved hump geometry and structured mesh topology.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../docs/figures/paraview_wall_shear.png}
+\caption{ParaView rendering of the bottom-wall surface colored by wall-shear magnitude.}
+\end{figure}
+
 \section{Results Discussion}
 The reconstructed baseline solved stably through 80 SIMPLE iterations and produced coherent velocity and pressure fields plus wall-shear output. The final parsed initial residuals were approximately \(1.79\times 10^{-3}\) for \(U\), \(9.59\times 10^{-3}\) for \(p\), \(2.40\times 10^{-3}\) for \(k\), and \(5.75\times 10^{-4}\) for \(\omega\). This is not a fully converged validation-grade solution, but it is a credible first baseline generated entirely from allowed inputs.
 
