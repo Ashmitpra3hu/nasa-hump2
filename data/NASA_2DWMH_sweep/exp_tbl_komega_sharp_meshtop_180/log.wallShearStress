@@ -1,0 +1,73 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2512                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _87ed40d2-20251219 OPENFOAM=2512 version=2512
+Arch   : "LSB;label=32;scalar=64"
+Exec   : simpleFoam -case /home/openfoam/data/NASA_2DWMH_sweep/exp_tbl_komega_sharp_meshtop_180 -postProcess -latestTime -func wallShearStress
+Date   : Mar 31 2026
+Time   : 21:17:59
+Host   : 810a1b85f13f
+PID    : 5836
+I/O    : uncollated
+Case   : /home/openfoam/data/NASA_2DWMH_sweep/exp_tbl_komega_sharp_meshtop_180
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+--> FOAM Warning : 
+    From static Foam::IOstreamOption::compressionType Foam::IOstreamOption::compressionEnum(const Foam::word&, compressionType)
+    in file db/options/IOstreamOption.C at line 185
+    Unknown compression specifier 'uncompressed' using compression off
+Create mesh for time = 150
+
+
+SIMPLE: convergence criteria
+    field p	 tolerance 1e-05
+    field U	 tolerance 1e-06
+    field k	 tolerance 1e-06
+    field omega	 tolerance 1e-06
+
+wallShearStress wallShearStress:
+    processing all (2) wall patches
+
+Time = 150
+Reading field p
+
+Reading field U
+
+Reading/calculating face flux field phi
+
+Selecting incompressible transport model Newtonian
+Selecting turbulence model type RAS
+Selecting RAS turbulence model kOmega
+RAS
+{
+    RASModel        kOmega;
+    turbulence      on;
+    printCoeffs     on;
+    betaStar        0.09;
+    beta            0.072;
+    gamma           0.52;
+    alphaK          0.5;
+    alphaOmega      0.5;
+}
+
+No MRF models present
+
+No finite volume options present
+wallShearStress wallShearStress write:
+    writing field wallShearStress
+    min/max(bottomWall) = (-6.64964415294 -1.80786281145 -2.84740058687e-17), (-0.371501012329 0.900838743239 3.47156419686e-17)
+    min/max(topWall) = (-0.0108888373088 -0.168830548668 -1.93434515718e-19), (0.0171579632364 0.273493117771 1.73434367549e-19)
+
+End
+

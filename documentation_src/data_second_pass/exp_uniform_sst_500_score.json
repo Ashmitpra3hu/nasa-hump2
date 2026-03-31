@@ -1,0 +1,7 @@
+{
+  "case_dir": "data/NASA_2DWMH_sweep/exp_uniform_sst_500",
+  "time_directory": "500",
+  "num_points": 1000,
+  "score": 0.18013720549365075,
+  "prediction_file": "documentation_src/data_second_pass/exp_uniform_sst_500_predictions.csv"
+}

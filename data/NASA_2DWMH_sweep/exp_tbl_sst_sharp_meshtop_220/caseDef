@@ -1,0 +1,18 @@
+// Reconstructed NASA hump case definition
+xMin        -1.35;
+xMax         0.84;
+zTop         0.35;
+thickness    0.02;
+chord        0.42;
+uInf         34.6;
+rho          1.225;
+Re           936000;
+nu           1.5534188034188036e-05;
+humpHeight   0.053;
+profileZMax  0.35;
+topContourStart -0.45;
+topContourEnd   0.78;
+topContourDip   0.028;
+yCells      260;
+xCells      (340 400 280);
+yGrading    22.0;

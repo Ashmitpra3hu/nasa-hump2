@@ -1,0 +1,7 @@
+tag,case_dir,changes,end_time,runtime_minutes,score,note
+baseline_second_pass,data/NASA_2DWMH,Existing best second-pass reference,300,0.0,0.20381874087746296,Reference row carried forward from the current repo state.
+exp_tbl_sst_220,data/NASA_2DWMH_sweep/exp_tbl_sst_220,Analytic turbulent-boundary-layer inlet for U/k/omega; SST; stable transport; base pass-two mesh/top wall,200,8.335019052028656,0.2082901628271251,Primary inflow-fidelity test.
+exp_tbl_sst_sharp_220,data/NASA_2DWMH_sweep/exp_tbl_sst_sharp_220,Same analytic inlet; SST; sharper k and omega convection,200,7.389792883396149,0.20850834727373208,Tests whether reduced transport diffusion helps the separated shear layer.
+exp_tbl_sst_sharp_meshtop_220,data/NASA_2DWMH_sweep/exp_tbl_sst_sharp_meshtop_220,Same as sharper SST case plus targeted mesh refinement and a stronger blockage contour,200,21.613811616102854,0.2216862912095183,Combined fidelity test for mesh-targeting and upper-wall blockage.
+exp_tbl_komega_sharp_meshtop_180,data/NASA_2DWMH_sweep/exp_tbl_komega_sharp_meshtop_180,Analytic inlet; sharper convection; refined mesh and stronger blockage contour; standard kOmega model,150,8.014849781990051,0.2501395025585329,Short closure screen against SST on the refined geometry.
+exp_uniform_sst_500,data/NASA_2DWMH,Current best second-pass baseline rerun deeper with uniform inlet and SST to 500 iterations,500,20.719041164716085,0.18013720549365075,Direct convergence-extension test on the strongest known configuration.

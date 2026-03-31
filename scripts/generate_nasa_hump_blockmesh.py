@@ -4,30 +4,62 @@
 from __future__ import annotations
 
 import math
+import os
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CASE_DIR = ROOT / "data" / "NASA_2DWMH"
+CASE_DIR = ROOT / os.environ.get("NASA_HUMP_CASE_DIR", "data/NASA_2DWMH")
 OUTFILE = CASE_DIR / "system" / "blockMeshDict"
 
 
-X_MIN = -1.35
-X_MAX = 0.84
-TOP_Z = 0.35
-THICKNESS = 0.02
-CHORD = 0.42
+def env_float(name: str, default: float) -> float:
+    value = os.environ.get(name)
+    return default if value is None else float(value)
+
+
+def env_int(name: str, default: int) -> int:
+    value = os.environ.get(name)
+    return default if value is None else int(value)
+
+
+def env_float_list(name: str, default: list[float]) -> list[float]:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return [float(item.strip()) for item in value.split(",") if item.strip()]
+
+
+def env_int_list(name: str, default: list[int]) -> list[int]:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return [int(item.strip()) for item in value.split(",") if item.strip()]
+
+
+X_MIN = env_float("NASA_HUMP_X_MIN", -1.35)
+X_MAX = env_float("NASA_HUMP_X_MAX", 0.84)
+TOP_Z = env_float("NASA_HUMP_TOP_Z", 0.35)
+THICKNESS = env_float("NASA_HUMP_THICKNESS", 0.02)
+CHORD = env_float("NASA_HUMP_CHORD", 0.42)
 HUMP_START = 0.0
 HUMP_END = HUMP_START + CHORD
-HUMP_HEIGHT = 0.053
-N_SPLINE = 161
-TOP_CONTOUR_START = -0.25
-TOP_CONTOUR_END = 0.65
-TOP_CONTOUR_DIP = 0.02
+HUMP_HEIGHT = env_float("NASA_HUMP_HEIGHT", 0.053)
+N_SPLINE = env_int("NASA_HUMP_N_SPLINE", 161)
+TOP_CONTOUR_START = env_float("NASA_HUMP_TOP_CONTOUR_START", -0.25)
+TOP_CONTOUR_END = env_float("NASA_HUMP_TOP_CONTOUR_END", 0.65)
+TOP_CONTOUR_DIP = env_float("NASA_HUMP_TOP_CONTOUR_DIP", 0.02)
 
-X_SPLITS = [X_MIN, HUMP_START, HUMP_END, X_MAX]
-Y_CELLS = 220
-X_CELLS = [280, 320, 220]
+X_SPLITS = env_float_list("NASA_HUMP_X_SPLITS", [X_MIN, HUMP_START, HUMP_END, X_MAX])
+Y_CELLS = env_int("NASA_HUMP_Y_CELLS", 220)
+X_CELLS = env_int_list("NASA_HUMP_X_CELLS", [280, 320, 220])
+Y_GRADING = env_float("NASA_HUMP_Y_GRADING", 18.0)
+
+if len(X_SPLITS) != 4:
+    raise ValueError(f"Expected 4 NASA_HUMP_X_SPLITS entries, found {len(X_SPLITS)}")
+
+if len(X_CELLS) != 3:
+    raise ValueError(f"Expected 3 NASA_HUMP_X_CELLS entries, found {len(X_CELLS)}")
 
 
 def hump_height(x: float) -> float:
@@ -105,9 +137,9 @@ vertices
 
 blocks
 (
-    hex (0 1 5 4 8 9 13 12) ({X_CELLS[0]} {Y_CELLS} 1) simpleGrading (1 18 1)
-    hex (1 2 6 5 9 10 14 13) ({X_CELLS[1]} {Y_CELLS} 1) simpleGrading (1 18 1)
-    hex (2 3 7 6 10 11 15 14) ({X_CELLS[2]} {Y_CELLS} 1) simpleGrading (1 18 1)
+    hex (0 1 5 4 8 9 13 12) ({X_CELLS[0]} {Y_CELLS} 1) simpleGrading (1 {Y_GRADING:g} 1)
+    hex (1 2 6 5 9 10 14 13) ({X_CELLS[1]} {Y_CELLS} 1) simpleGrading (1 {Y_GRADING:g} 1)
+    hex (2 3 7 6 10 11 15 14) ({X_CELLS[2]} {Y_CELLS} 1) simpleGrading (1 {Y_GRADING:g} 1)
 );
 
 edges
@@ -207,3 +239,25 @@ mergePatchPairs
 """
 
 OUTFILE.write_text(content)
+
+case_def = f"""// Reconstructed NASA hump case definition
+xMin        {X_MIN};
+xMax         {X_MAX};
+zTop         {TOP_Z};
+thickness    {THICKNESS};
+chord        {CHORD};
+uInf         34.6;
+rho          1.225;
+Re           936000;
+nu           1.5534188034188036e-05;
+humpHeight   {HUMP_HEIGHT};
+profileZMax  {TOP_Z};
+topContourStart {TOP_CONTOUR_START};
+topContourEnd   {TOP_CONTOUR_END};
+topContourDip   {TOP_CONTOUR_DIP};
+yCells      {Y_CELLS};
+xCells      ({X_CELLS[0]} {X_CELLS[1]} {X_CELLS[2]});
+yGrading    {Y_GRADING};
+"""
+
+(CASE_DIR / "caseDef").write_text(case_def)
