@@ -7,9 +7,24 @@ from paraview.simple import *  # noqa: F401,F403
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VTK_DIR = ROOT / "data" / "NASA_2DWMH" / "VTK" / "NASA_2DWMH_80"
+VTK_ROOT = ROOT / "data" / "NASA_2DWMH" / "VTK"
 FIG_DIR = ROOT / "docs" / "figures"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def latest_vtk_dir() -> Path:
+    candidates = []
+    for path in VTK_ROOT.iterdir():
+        if path.is_dir() and path.name.startswith("NASA_2DWMH_"):
+            suffix = path.name.split("_")[-1]
+            if suffix.isdigit():
+                candidates.append((int(suffix), path))
+    if not candidates:
+        raise FileNotFoundError(f"No VTK time directories found under {VTK_ROOT}")
+    return max(candidates, key=lambda item: item[0])[1]
+
+
+VTK_DIR = latest_vtk_dir()
 
 
 def reset_view():
@@ -34,7 +49,7 @@ def common_camera(view):
 def render_velocity():
     view = reset_view()
     reader = XMLUnstructuredGridReader(FileName=[str(VTK_DIR / "internal.vtu")])
-    reader.CellArrayStatus = ["U", "p", "k", "omega", "nut"]
+    reader.CellArrayStatus = ["U", "p", "k", "omega", "nut", "wallShearStress"]
     c2p = CellDatatoPointData(Input=reader)
     display = Show(c2p, view)
     ColorBy(display, ("POINTS", "U", "Magnitude"))
@@ -49,10 +64,29 @@ def render_velocity():
     Delete(reader)
 
 
+def render_velocity_surface():
+    view = reset_view()
+    reader = XMLUnstructuredGridReader(FileName=[str(VTK_DIR / "internal.vtu")])
+    reader.CellArrayStatus = ["U", "p", "k", "omega", "nut", "wallShearStress"]
+    c2p = CellDatatoPointData(Input=reader)
+    display = Show(c2p, view)
+    display.Representation = "Surface"
+    ColorBy(display, ("POINTS", "U", "Magnitude"))
+    lut = GetColorTransferFunction("U")
+    lut.RescaleTransferFunction(0.0, 40.0)
+    display.SetScalarBarVisibility(view, True)
+    common_camera(view)
+    Render()
+    save("paraview_velocity_surface.png", view)
+    Hide(c2p, view)
+    Delete(c2p)
+    Delete(reader)
+
+
 def render_pressure():
     view = reset_view()
     reader = XMLUnstructuredGridReader(FileName=[str(VTK_DIR / "internal.vtu")])
-    reader.CellArrayStatus = ["U", "p", "k", "omega", "nut"]
+    reader.CellArrayStatus = ["U", "p", "k", "omega", "nut", "wallShearStress"]
     c2p = CellDatatoPointData(Input=reader)
     display = Show(c2p, view)
     ColorBy(display, ("POINTS", "p"))
@@ -67,10 +101,29 @@ def render_pressure():
     Delete(reader)
 
 
+def render_pressure_surface():
+    view = reset_view()
+    reader = XMLUnstructuredGridReader(FileName=[str(VTK_DIR / "internal.vtu")])
+    reader.CellArrayStatus = ["U", "p", "k", "omega", "nut", "wallShearStress"]
+    c2p = CellDatatoPointData(Input=reader)
+    display = Show(c2p, view)
+    display.Representation = "Surface"
+    ColorBy(display, ("POINTS", "p"))
+    lut = GetColorTransferFunction("p")
+    lut.RescaleTransferFunction(-50.0, 250.0)
+    display.SetScalarBarVisibility(view, True)
+    common_camera(view)
+    Render()
+    save("paraview_pressure_surface.png", view)
+    Hide(c2p, view)
+    Delete(c2p)
+    Delete(reader)
+
+
 def render_streamlines():
     view = reset_view()
     reader = XMLUnstructuredGridReader(FileName=[str(VTK_DIR / "internal.vtu")])
-    reader.CellArrayStatus = ["U", "p", "k", "omega", "nut"]
+    reader.CellArrayStatus = ["U", "p", "k", "omega", "nut", "wallShearStress"]
     c2p = CellDatatoPointData(Input=reader)
     tracer = StreamTracer(Input=c2p, SeedType="Line")
     tracer.Vectors = ["POINTS", "U"]
@@ -92,6 +145,21 @@ def render_streamlines():
     Delete(reader)
 
 
+def render_mesh_wireframe():
+    view = reset_view()
+    reader = XMLUnstructuredGridReader(FileName=[str(VTK_DIR / "internal.vtu")])
+    display = Show(reader, view)
+    display.Representation = "Wireframe"
+    display.AmbientColor = [0.1, 0.1, 0.1]
+    display.DiffuseColor = [0.1, 0.1, 0.1]
+    common_camera(view)
+    view.CameraParallelScale = 0.22
+    Render()
+    save("paraview_mesh_wireframe.png", view)
+    Hide(reader, view)
+    Delete(reader)
+
+
 def render_wall_shear():
     view = reset_view()
     reader = XMLPolyDataReader(FileName=[str(VTK_DIR / "boundary" / "bottomWall.vtp")])
@@ -110,8 +178,11 @@ def render_wall_shear():
 
 def main():
     render_velocity()
+    render_velocity_surface()
     render_pressure()
+    render_pressure_surface()
     render_streamlines()
+    render_mesh_wireframe()
     render_wall_shear()
 
 

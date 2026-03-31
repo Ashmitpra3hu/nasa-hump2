@@ -1,0 +1,25 @@
+{
+  "latest_time_directory": "300",
+  "reference_freestream_ms": 34.6,
+  "reference_chord_m": 0.42,
+  "first_pass_score_reference": 0.23385045503582086,
+  "residual_iterations_available": 300,
+  "final_residuals": {
+    "U": 0.000364970659392,
+    "p": 0.000553557165355,
+    "k": 0.000518312527317,
+    "omega": 0.000102752097798
+  },
+  "separation_x_m": 0.0003282422005622676,
+  "reattachment_x_m": 0.010995990576669556,
+  "paraview_images_copied": [
+    "documentation/figures_second_pass/paraview_velocity.png",
+    "documentation/figures_second_pass/paraview_velocity_surface.png",
+    "documentation/figures_second_pass/paraview_pressure.png",
+    "documentation/figures_second_pass/paraview_pressure_surface.png",
+    "documentation/figures_second_pass/paraview_streamlines.png",
+    "documentation/figures_second_pass/paraview_mesh_wireframe.png",
+    "documentation/figures_second_pass/paraview_wall_shear.png"
+  ],
+  "docker_second_pass_run_status": "pending_or_blocked_until_new_case_run"
+}

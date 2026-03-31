@@ -1,0 +1,10 @@
+{
+  "case": "NASA_2DWMH",
+  "time_directory": "300",
+  "prediction_file": "documentation/data_second_pass/reconstructed_nasa_predictions_second_pass.csv",
+  "num_points": 1000,
+  "score": 0.20381874087746296,
+  "first_pass_score_reference": 0.23385045503582086,
+  "score_delta_vs_first_pass": -0.030031714158357897,
+  "score_improvement_vs_first_pass": 0.030031714158357897
+}

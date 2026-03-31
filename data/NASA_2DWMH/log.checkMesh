@@ -8,12 +8,12 @@
 Build  : _87ed40d2-20251219 OPENFOAM=2512 version=2512
 Arch   : "LSB;label=32;scalar=64"
 Exec   : checkMesh -case data/NASA_2DWMH
-Date   : Mar 30 2026
-Time   : 21:35:31
-Host   : 1ab6c8f6d619
+Date   : Mar 31 2026
+Time   : 02:17:21
+Host   : 99bc6c3eb499
 PID    : 226
 I/O    : uncollated
-Case   : /home/openfoam/work/data/NASA_2DWMH
+Case   : /home/openfoam/data/NASA_2DWMH
 nProcs : 1
 trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
 memory pool : not available
@@ -34,11 +34,11 @@ Check mesh...
 Time = 0
 
 Mesh stats 
-    points:           188602
+    points:           362882
     internal points:  0
-    faces:            375100
-    internal faces:   186500
-    cells:            93600
+    faces:            722640
+    internal faces:   359760
+    cells:            180400
     faces per cell:   6
     boundary patches: 5
     point zones:      0
@@ -46,7 +46,7 @@ Mesh stats
     cell zones:       0
 
 Overall number of cells of each type:
-    hexahedra:     93600
+    hexahedra:     180400
     prisms:        0
     wedges:        0
     pyramids:      0
@@ -64,12 +64,12 @@ Checking topology...
 
 Checking patch topology for multiply connected surfaces...
     Patch               Faces    Points     Surface topology
-    inlet               180      362      ok (non-closed singly connected)  
-    outlet              180      362      ok (non-closed singly connected)  
-    bottomWall          520      1042     ok (non-closed singly connected)  
-    topWall             520      1042     ok (non-closed singly connected)  
-    frontAndBack        187200   188602   ok (non-closed singly connected)  
-    ".*"                188600   188602   ok (closed singly connected)      
+    inlet               220      442      ok (non-closed singly connected)  
+    outlet              220      442      ok (non-closed singly connected)  
+    bottomWall          820      1642     ok (non-closed singly connected)  
+    topWall             820      1642     ok (non-closed singly connected)  
+    frontAndBack        360800   362882   ok (non-closed singly connected)  
+    ".*"                362880   362882   ok (closed singly connected)      
 
 
 Checking faceZone topology for multiply connected surfaces...
@@ -82,19 +82,19 @@ Checking basic pointZone addressing...
     No pointZones found.
 
 Checking geometry...
-    Overall domain bounding box (-0.9 -1.6503202383e-05 -0.01) (0.67 0.35 0.01)
+    Overall domain bounding box (-1.35 0 -0.01) (0.84 0.350000485814 0.01)
     Mesh has 2 geometric (non-empty/wedge) directions (1 1 0)
     Mesh has 2 solution (non-empty) directions (1 1 0)
     All edges aligned with or perpendicular to non-empty directions.
-    Boundary openness (-9.82579669483e-19 -5.00822742645e-17 -4.45445947466e-15) OK.
-    Max cell openness = 2.73245148107e-16 OK.
-    Max aspect ratio = 12.8112897688 OK.
-    Minimum face area = 4.81668022024e-07. Maximum face area = 0.00011225360898.  Face area magnitudes OK.
-    Min volume = 9.63336044047e-09. Max volume = 5.22611792696e-07.  Total volume = 0.0107674005023.  Cell volumes OK.
-    Mesh non-orthogonality Max: 21.693228342 average: 5.13924672783
+    Boundary openness (-2.32058650626e-19 -1.52846850165e-16 -4.8963470746e-16) OK.
+    Max cell openness = 3.1520554552e-16 OK.
+    Max aspect ratio = 18.4786732997 OK.
+    Minimum face area = 2.87829550808e-07. Maximum face area = 0.000105360766885.  Face area magnitudes OK.
+    Min volume = 5.75659101616e-09. Max volume = 5.10971228191e-07.  Total volume = 0.0149273971848.  Cell volumes OK.
+    Mesh non-orthogonality Max: 21.608777719 average: 7.2815269239
     Non-orthogonality check OK.
     Face pyramids OK.
-    Max skewness = 0.0386112593855 OK.
+    Max skewness = 0.177324291853 OK.
     Coupled point location match (average 0) OK.
 
 Mesh OK.

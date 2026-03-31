@@ -23,13 +23,13 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         80;
+endTime         300;
 
 deltaT          1;
 
 writeControl    timeStep;
 
-writeInterval   20;
+writeInterval   50;
 
 purgeWrite      0;
 
@@ -47,7 +47,6 @@ runTimeModifiable yes;
 
 functions
 {
-    #includeFunc residuals
     #includeFunc singleGraph_xm214
     #includeFunc singleGraph_x065
     #includeFunc singleGraph_x080

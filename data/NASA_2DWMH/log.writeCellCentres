@@ -8,12 +8,12 @@
 Build  : _87ed40d2-20251219 OPENFOAM=2512 version=2512
 Arch   : "LSB;label=32;scalar=64"
 Exec   : postProcess -case data/NASA_2DWMH -func writeCellCentres -time 0
-Date   : Mar 30 2026
-Time   : 21:35:33
-Host   : 1ab6c8f6d619
+Date   : Mar 31 2026
+Time   : 02:17:29
+Host   : 99bc6c3eb499
 PID    : 227
 I/O    : uncollated
-Case   : /home/openfoam/work/data/NASA_2DWMH
+Case   : /home/openfoam/data/NASA_2DWMH
 nProcs : 1
 trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
 memory pool : not available

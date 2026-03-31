@@ -1,6 +1,6 @@
 // Reconstructed NASA hump case definition
-xMin        -0.90;
-xMax         0.67;
+xMin        -1.35;
+xMax         0.84;
 zTop         0.35;
 thickness    0.02;
 chord        0.42;
