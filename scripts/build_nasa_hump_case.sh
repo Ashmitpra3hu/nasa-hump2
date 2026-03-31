@@ -10,9 +10,9 @@ python3 "${ROOT_DIR}/scripts/generate_nasa_hump_blockmesh.py"
 mkdir -p \
   "${ROOT_DIR}/docs/data" \
   "${ROOT_DIR}/docs/figures" \
-  "${ROOT_DIR}/documentation/data_second_pass" \
-  "${ROOT_DIR}/documentation/figures_second_pass" \
-  "${ROOT_DIR}/documentation/build"
+  "${ROOT_DIR}/documentation_src/data_second_pass" \
+  "${ROOT_DIR}/documentation_src/figures_second_pass" \
+  "${ROOT_DIR}/documentation"
 
 docker run --rm \
   -v "${ROOT_DIR}:/home/openfoam" \

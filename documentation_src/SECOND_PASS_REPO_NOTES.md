@@ -26,8 +26,8 @@ This note records what was learned from the surviving local repository materials
 
 ## Reporting Patterns
 
-- The repository already treats the PDF report as the primary top-level deliverable through `README.pdf`.
-- The LaTeX report is self-contained in `documentation/`, with a compiled artifact under `documentation/build/`.
+- The repository now treats the two PDF reports in `documentation/` as the primary deliverables.
+- The LaTeX report sources and supporting assets are kept in `documentation_src/`, while the compiled PDFs live in `documentation/`.
 - Figures live under `docs/figures/`, which is therefore the most consistent place to store second-pass images too.
 
 ## Sampling And Post-Processing Patterns
@@ -40,7 +40,7 @@ This note records what was learned from the surviving local repository materials
 
 - `CASE_PATTERN_SUMMARY.md` for the reconstructed case layout target.
 - `NO_CHEAT_PLAN.md` and `RECONSTRUCTION_AUDIT.md` for compliance style.
-- `documentation/main.tex` as the first-pass report baseline.
+- `documentation_src/main.tex` as the first-pass report baseline.
 - `scripts/evaluate_reconstructed_nasa_case.py` as the baseline accuracy workflow.
 - `scripts/render_nasa_hump_paraview.py` and `scripts/render_nasa_hump_paraview.sh` as the ParaView workflow baseline.
 - `docs/data/reconstructed_nasa_score.json` and `docs/data/summary.json` as first-pass numerical reference points.
@@ -57,5 +57,5 @@ The second pass should preserve the existing repository style:
 
 - case outputs remain under `data/NASA_2DWMH`
 - plots and tables remain under `docs/`
-- the new refinement report remains under `documentation/`
+- the new refinement report source remains under `documentation_src/` while the final PDF lives under `documentation/`
 - accuracy, figure generation, and reproducibility continue to be driven by short scripts in `scripts/`

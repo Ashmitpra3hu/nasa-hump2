@@ -13,15 +13,15 @@ This changelog records files created or modified during the second pass. Tags ar
 
 ## Diagnosis / Compliance Files
 
-- `documentation/FIRST_PASS_DIAGNOSIS.md`
+- `documentation_src/FIRST_PASS_DIAGNOSIS.md`
   - tags: `first-pass diagnosis`, `report/documentation`, `compliance/audit`
-- `documentation/SECOND_PASS_PLAN.md`
+- `documentation_src/SECOND_PASS_PLAN.md`
   - tags: `report/documentation`, `workflow/reproducibility`, `compliance/audit`
-- `documentation/SECOND_PASS_WEBPAGE_SCAN.md`
+- `documentation_src/SECOND_PASS_WEBPAGE_SCAN.md`
   - tags: `report/documentation`, `compliance/audit`
-- `documentation/SECOND_PASS_REPO_NOTES.md`
+- `documentation_src/SECOND_PASS_REPO_NOTES.md`
   - tags: `report/documentation`, `workflow/reproducibility`
-- `documentation/NO_INTERPOLATION_DECLARATION.md`
+- `documentation_src/NO_INTERPOLATION_DECLARATION.md`
   - tags: `compliance/audit`, `report/documentation`
 
 ## Case / Workflow Refinements
@@ -54,16 +54,16 @@ This changelog records files created or modified during the second pass. Tags ar
 
 ## New Second-Pass Report Package
 
-- `documentation/SECOND_PASS_CHANGELOG.md`
+- `documentation_src/SECOND_PASS_CHANGELOG.md`
   - tags: `report/documentation`, `compliance/audit`
-- `documentation/nasa_hump_second_pass_report.tex`
+- `documentation_src/nasa_hump_second_pass_report.tex`
   - tags: `report/documentation`
 
 ## Generated Outputs To Be Refreshed By The Second-Pass Run
 
-- `documentation/data_second_pass/*`
+- `documentation_src/data_second_pass/*`
   - tags: `graph reimplementation`, `evaluation`, `report/documentation`
-- `documentation/figures_second_pass/*`
+- `documentation_src/figures_second_pass/*`
   - tags: `graph reimplementation`, `ParaView output`, `report/documentation`
-- `documentation/build/nasa_hump_second_pass_report.pdf`
+- `documentation/pass_two.pdf`
   - tags: `report/documentation`

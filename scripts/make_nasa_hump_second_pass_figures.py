@@ -19,8 +19,8 @@ from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, gridd
 
 ROOT = Path(__file__).resolve().parents[1]
 CASE_DIR = ROOT / "data" / "NASA_2DWMH"
-DOCS_DATA = ROOT / "documentation" / "data_second_pass"
-DOCS_FIG = ROOT / "documentation" / "figures_second_pass"
+DOCS_DATA = ROOT / "documentation_src" / "data_second_pass"
+DOCS_FIG = ROOT / "documentation_src" / "figures_second_pass"
 FIRST_PASS_DATA = ROOT / "docs" / "data" / "reconstructed_nasa_score.json"
 FIRST_PASS_FIG = ROOT / "docs" / "figures"
 CHORD = 0.42

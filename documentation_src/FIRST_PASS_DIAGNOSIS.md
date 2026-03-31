@@ -17,7 +17,7 @@ This file evaluates the existing first-pass NASA hump reconstruction already pre
 - A generated `blockMeshDict`, baseline SST setup, post-processing logs, `foam.foam`, and VTK export.
 - First-pass plots in `docs/figures/`.
 - First-pass sampled and summary data in `docs/data/`.
-- First-pass LaTeX report source at `documentation/main.tex` and compiled PDF at `documentation/build/main.pdf`.
+- First-pass LaTeX report source at `documentation_src/main.tex` and compiled PDF at `documentation/pass_one.pdf`.
 
 ## What Worked In Pass 1
 

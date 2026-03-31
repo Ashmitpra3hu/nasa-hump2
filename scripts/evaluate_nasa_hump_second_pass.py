@@ -14,7 +14,7 @@ from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator
 ROOT = Path(__file__).resolve().parents[1]
 CASE_DIR = ROOT / "data" / "NASA_2DWMH"
 EVAL_POINTS = ROOT / "data" / "evaluation_points" / "NASA_2DWMH_points.csv"
-OUT_DIR = ROOT / "documentation" / "data_second_pass"
+OUT_DIR = ROOT / "documentation_src" / "data_second_pass"
 PRED_CSV = OUT_DIR / "reconstructed_nasa_predictions_second_pass.csv"
 SUMMARY_JSON = OUT_DIR / "reconstructed_nasa_score_second_pass.json"
 FIRST_PASS_JSON = ROOT / "docs" / "data" / "reconstructed_nasa_score.json"

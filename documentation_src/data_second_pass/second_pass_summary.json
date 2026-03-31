@@ -13,13 +13,13 @@
   "separation_x_m": 0.0003282422005622676,
   "reattachment_x_m": 0.010995990576669556,
   "paraview_images_copied": [
-    "documentation/figures_second_pass/paraview_velocity.png",
-    "documentation/figures_second_pass/paraview_velocity_surface.png",
-    "documentation/figures_second_pass/paraview_pressure.png",
-    "documentation/figures_second_pass/paraview_pressure_surface.png",
-    "documentation/figures_second_pass/paraview_streamlines.png",
-    "documentation/figures_second_pass/paraview_mesh_wireframe.png",
-    "documentation/figures_second_pass/paraview_wall_shear.png"
+    "documentation_src/figures_second_pass/paraview_velocity.png",
+    "documentation_src/figures_second_pass/paraview_velocity_surface.png",
+    "documentation_src/figures_second_pass/paraview_pressure.png",
+    "documentation_src/figures_second_pass/paraview_pressure_surface.png",
+    "documentation_src/figures_second_pass/paraview_streamlines.png",
+    "documentation_src/figures_second_pass/paraview_mesh_wireframe.png",
+    "documentation_src/figures_second_pass/paraview_wall_shear.png"
   ],
   "docker_second_pass_run_status": "pending_or_blocked_until_new_case_run"
 }

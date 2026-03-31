@@ -1,6 +1,13 @@
 data/Duct-raw
-data/NASA_2DWMH/VTK/
 scripts/plots_data/*
+
+# Generated CFD visualization exports.
+# Keep authored case files, reports, and curated plots in git, but never
+# track raw VTK dumps from repeated OpenFOAM / ParaView passes.
+data/**/VTK/
+data/**/*.vtm
+data/**/*.vtu
+data/**/*.vtp
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

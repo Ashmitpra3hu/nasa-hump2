@@ -42,15 +42,15 @@ The first pass already created a clean Dockerized baseline under \texttt{data/NA
 \section{Strict No-Cheat Methodology}
 The second pass followed the same strict source limits as the first pass. The only allowed external reference remained the NASA hump validation webpage \cite{nasahump}. No other website, paper, repository, issue, PR, gist, or PDF was consulted. No git history, deleted-file recovery, or external benchmark-data recovery was used. No image digitization, manual tracing, or interpolation of target curves was used. The dedicated compliance files are:
 \begin{itemize}
-\item \texttt{documentation/FIRST\_PASS\_DIAGNOSIS.md}
-\item \texttt{documentation/SECOND\_PASS\_PLAN.md}
-\item \texttt{documentation/SECOND\_PASS\_WEBPAGE\_SCAN.md}
-\item \texttt{documentation/SECOND\_PASS\_REPO\_NOTES.md}
-\item \texttt{documentation/NO\_INTERPOLATION\_DECLARATION.md}
+\item \texttt{documentation\_src/FIRST\_PASS\_DIAGNOSIS.md}
+\item \texttt{documentation\_src/SECOND\_PASS\_PLAN.md}
+\item \texttt{documentation\_src/SECOND\_PASS\_WEBPAGE\_SCAN.md}
+\item \texttt{documentation\_src/SECOND\_PASS\_REPO\_NOTES.md}
+\item \texttt{documentation\_src/NO\_INTERPOLATION\_DECLARATION.md}
 \end{itemize}
 
 \section{First-Pass Diagnosis}
-The first-pass diagnosis is recorded in \texttt{documentation/FIRST\_PASS\_DIAGNOSIS.md}. The key findings were:
+The first-pass diagnosis is recorded in \texttt{documentation\_src/FIRST\_PASS\_DIAGNOSIS.md}. The key findings were:
 \begin{itemize}
 \item the inflow sample station at \(x/c=-2.14\) effectively sat on the inlet plane, leaving almost no upstream run-up for the boundary layer to develop;
 \item the upper boundary was a flat slip wall, even though the allowed page states that the CFD setup includes an upper contour to account approximately for blockage;
@@ -60,7 +60,7 @@ The first-pass diagnosis is recorded in \texttt{documentation/FIRST\_PASS\_DIAGN
 \end{itemize}
 
 \section{Deep Scan Of The Allowed Webpage}
-The second-pass webpage scan is recorded in \texttt{documentation/SECOND\_PASS\_WEBPAGE\_SCAN.md}. The most actionable clues from the allowed page were:
+The second-pass webpage scan is recorded in \texttt{documentation\_src/SECOND\_PASS\_WEBPAGE\_SCAN.md}. The most actionable clues from the allowed page were:
 \begin{itemize}
 \item use the no-flow-control baseline;
 \item prefer the no-plenum interpretation unless a strong local reason argues otherwise;
@@ -72,16 +72,16 @@ The second-pass webpage scan is recorded in \texttt{documentation/SECOND\_PASS\_
 \end{itemize}
 
 \section{What Was Learned From Local Repo Cases, Docs, And PDFs}
-The second-pass repo notes are recorded in \texttt{documentation/SECOND\_PASS\_REPO\_NOTES.md}. The surviving local repository patterns that mattered most were:
+The second-pass repo notes are recorded in \texttt{documentation\_src/SECOND\_PASS\_REPO\_NOTES.md}. The surviving local repository patterns that mattered most were:
 \begin{itemize}
 \item keep the case itself under \texttt{data/NASA\_2DWMH};
 \item keep scripts short and shell-driven;
 \item keep figures and machine-readable outputs in clearly named subdirectories;
-\item preserve report generation as a first-class reproducibility artifact under \texttt{documentation/}.
+\item preserve final PDFs under \texttt{documentation/} while keeping report sources and supporting materials under \texttt{documentation\_src/}.
 \end{itemize}
 
 \section{Second-Pass Refinement Strategy}
-The second-pass plan is recorded in \texttt{documentation/SECOND\_PASS\_PLAN.md}. The implemented refinement strategy was:
+The second-pass plan is recorded in \texttt{documentation\_src/SECOND\_PASS\_PLAN.md}. The implemented refinement strategy was:
 \begin{enumerate}
 \item extend the streamwise domain so the \(x/c=-2.14\) station is no longer the inlet itself;
 \item introduce a mild shaped upper slip boundary to reflect the blockage note on the allowed page;
@@ -103,7 +103,7 @@ Upstream run-up & The inlet moved from \(x=-0.90\) to \(x=-1.35\), so the \(x/c=
 Upper-boundary treatment & The flat top wall was replaced by a mildly contoured slip-wall ceiling generated in the mesh script. & The allowed page notes that the CFD upper boundary includes a contour to account approximately for blockage. A shaped ceiling should improve the pressure distribution and therefore the hump adverse-pressure-gradient response. & The effect cannot be isolated perfectly from the other changes, but it was included specifically to address a first-pass mismatch source identified in the diagnosis. \\
 Mesh topology & The case changed from one streamwise block to three streamwise blocks with more targeted cell placement. & Additional targeting around the hump and downstream recovery region should reduce discretization error in wall pressure, wall shear, and separated-shear-layer behavior, all of which affect the benchmark score. & The second-pass mesh passed \texttt{checkMesh} cleanly at \(180{,}400\) cells and supported a materially lower final score than pass 1. \\
 Convergence depth & The solve horizon increased from 80 to 300 iterations, with writes every 50 iterations. & The first-pass score came from a field that was still evolving. Extending the run should reduce iteration-level under-convergence error in the final benchmark prediction. & This was one of the clearest positive changes. The refined case was worse than pass 1 at the 50-iteration write, slightly better at 100, and best at the final 300-iteration field. \\
-Post-processing coverage & The second pass added dedicated scripts for second-pass profiles, \(C_p\), \(C_f\), turbulent shear-stress analogs, and evaluation outputs under \texttt{documentation/}. & Better coverage does not change the flow field directly, but it reduces analysis error by making it easier to compare the same quantities consistently between pass 1 and pass 2. & The second-pass package now contains a more complete and auditable validation set, including graph families analogous to those visible on the allowed webpage. \\
+Post-processing coverage & The second pass added dedicated scripts for second-pass profiles, \(C_p\), \(C_f\), turbulent shear-stress analogs, and evaluation outputs under \texttt{documentation\_src/}. & Better coverage does not change the flow field directly, but it reduces analysis error by making it easier to compare the same quantities consistently between pass 1 and pass 2. & The second-pass package now contains a more complete and auditable validation set, including graph families analogous to those visible on the allowed webpage. \\
 Evaluation discipline & The case was re-evaluated at intermediate writes and at the final write using a dedicated second-pass evaluation script. & Tracking the score during convergence helps avoid locking onto a misleading intermediate field. That reduces reporting error even when the physics model itself is unchanged. & This directly prevented a bad conclusion: the 50-iteration score was worse than pass 1, but the 300-iteration score improved to \texttt{0.2038187409}. \\
 \bottomrule
 \end{longtable}
@@ -126,7 +126,7 @@ File & Second-pass role \\
 \texttt{scripts/postprocess\_nasa\_hump\_case.sh} & Added extra post-processing needed for second-pass wall and gradient analysis. \\
 \texttt{scripts/make\_nasa\_hump\_second\_pass\_figures.py} & Generates second-pass profiles, wall-coefficient plots, shear-stress analog plots, contour plots, streamlines, and summary JSON files. \\
 \texttt{scripts/evaluate\_nasa\_hump\_second\_pass.py} & Runs the local evaluation workflow and compares the new result against the first-pass score. \\
-\texttt{documentation/*} & Stores the diagnosis, plan, webpage scan, repo notes, no-interpolation declaration, changelog, and this report. \\
+\texttt{documentation\_src/*} & Stores the diagnosis, plan, webpage scan, repo notes, no-interpolation declaration, changelog, this report source, and the second-pass data and figures. \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -198,8 +198,8 @@ All second-pass graphs are CFD-derived. No traced target curves are used. The se
 \item samples velocity, pressure, turbulence quantities, and wall data at the listed \(x/c\) stations;
 \item constructs \(C_p\) and \(C_f\) curves directly from the solved field and wall shear stress;
 \item constructs a turbulent shear-stress analog from the modeled eddy viscosity and resolved velocity gradients derived from the sampled CFD field;
-\item writes machine-readable CSV files under \texttt{documentation/data\_second\_pass};
-\item writes graph images under \texttt{documentation/figures\_second\_pass}.
+\item writes machine-readable CSV files under \texttt{documentation\_src/data\_second\_pass};
+\item writes graph images under \texttt{documentation\_src/figures\_second\_pass}.
 \end{itemize}
 
 \begin{figure}[H]
@@ -252,7 +252,7 @@ The case continues to expose \texttt{data/NASA\_2DWMH/foam.foam} and the OpenFOA
 \item \texttt{scripts/render\_nasa\_hump\_paraview.py}
 \item \texttt{scripts/render\_nasa\_hump\_paraview.sh}
 \end{itemize}
-The second-pass figure package also copies the available ParaView renders into \texttt{documentation/figures\_second\_pass} so the PDF can present both plot-based validation and visual field inspection.
+The second-pass figure package also copies the available ParaView renders into \texttt{documentation\_src/figures\_second\_pass} so the PDF can present both plot-based validation and visual field inspection.
 
 \begin{figure}[H]
 \centering
@@ -308,7 +308,7 @@ Evaluation points used & 1000 \\
 \caption{Before/after evaluation summary from the local benchmark workflow.}
 \end{table}
 
-The second-pass score and delta are reported from \texttt{documentation/data\_second\_pass/reconstructed\_nasa\_score\_second\_pass.json}. The refined setup was actually worse than the first pass at the 50-iteration write, slightly better at the 100-iteration write, and substantially better by the final 300-iteration field. That behavior is a useful reminder that this case should be judged from a genuinely converged field rather than the earliest available write.
+The second-pass score and delta are reported from \texttt{documentation\_src/data\_second\_pass/reconstructed\_nasa\_score\_second\_pass.json}. The refined setup was actually worse than the first pass at the 50-iteration write, slightly better at the 100-iteration write, and substantially better by the final 300-iteration field. That behavior is a useful reminder that this case should be judged from a genuinely converged field rather than the earliest available write.
 
 \section{Before / After Comparison To Pass 1}
 The before/after comparison in this report focuses on:
@@ -351,7 +351,7 @@ Each implemented second-pass change has a direct physical or numerical motivatio
 \section{Results Discussion}
 The second-pass results should be interpreted honestly. Even after refinement, this remains a difficult smooth-body separation benchmark, and the allowed information does not supply an exact numerical hump contour or exact inflow-profile table. The key question is therefore not whether the reconstruction can exactly match an inaccessible original case, but whether the refined setup improves on the first-pass baseline in a physically sensible way and produces a cleaner, more complete validation package.
 
-The final residuals from \texttt{documentation/data\_second\_pass/second\_pass\_summary.json} were:
+The final residuals from \texttt{documentation\_src/data\_second\_pass/second\_pass\_summary.json} were:
 \begin{itemize}
 \item \(U\): \texttt{3.64970659392e-4}
 \item \(p\): \texttt{5.53557165355e-4}
