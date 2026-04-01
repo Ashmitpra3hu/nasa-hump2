@@ -4,6 +4,7 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
+\usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{listings}
@@ -29,6 +30,7 @@
 \date{March 31, 2026}
 
 \begin{document}
+\setlength{\emergencystretch}{3em}
 \maketitle
 
 \section{Executive Summary}
@@ -90,7 +92,8 @@ The second-pass plan is recorded in \texttt{documentation\_src/SECOND\_PASS\_PLA
 \item expand post-processing and plotting so the second-pass package contains CFD-derived analogs of the visible webpage graph families.
 \end{enumerate}
 
-\begin{longtable}{p{0.18\linewidth} p{0.18\linewidth} p{0.26\linewidth} p{0.26\linewidth}}
+\small
+\begin{longtable}{p{0.16\linewidth} p{0.18\linewidth} p{0.27\linewidth} p{0.27\linewidth}}
 \toprule
 Refinement & What Changed From Pass 1 & How This Was Intended To Reduce MAE & Observed Effect In Pass 2 \\
 \midrule
@@ -107,13 +110,15 @@ Post-processing coverage & The second pass added dedicated scripts for second-pa
 Evaluation discipline & The case was re-evaluated at intermediate writes and at the final write using a dedicated second-pass evaluation script. & Tracking the score during convergence helps avoid locking onto a misleading intermediate field. That reduces reporting error even when the physics model itself is unchanged. & This directly prevented a bad conclusion: the 50-iteration score was worse than pass 1, but the 300-iteration score improved to \texttt{0.2038187409}. \\
 \bottomrule
 \end{longtable}
+\normalsize
 
 The table above is the key second-pass MAE-reduction audit. It distinguishes between changes that were intended to affect the flow physics directly, such as the longer inlet run-up and refined top boundary, and changes that were intended to reduce analysis or convergence error, such as deeper convergence tracking and more explicit post-processing.
 
 \section{Every Important File Changed And Why}
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.31\linewidth} p{0.61\linewidth}}
+\small
+\begin{tabularx}{0.96\linewidth}{>{\raggedright\arraybackslash}p{0.33\linewidth} X}
 \toprule
 File & Second-pass role \\
 \midrule
@@ -128,7 +133,8 @@ File & Second-pass role \\
 \texttt{scripts/evaluate\_nasa\_hump\_second\_pass.py} & Runs the local evaluation workflow and compares the new result against the first-pass score. \\
 \texttt{documentation\_src/*} & Stores the diagnosis, plan, webpage scan, repo notes, no-interpolation declaration, changelog, this report source, and the second-pass data and figures. \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
+\normalsize
 \end{table}
 
 \section{Docker/OpenFOAM Workflow}
@@ -294,7 +300,7 @@ That script:
 
 \begin{table}[H]
 \centering
-\begin{tabular}{l r}
+\begin{tabularx}{0.72\linewidth}{>{\raggedright\arraybackslash}X r}
 \toprule
 Metric & Value \\
 \midrule
@@ -304,7 +310,7 @@ Absolute score change & -0.0300317142 \\
 Improvement magnitude & 0.0300317142 \\
 Evaluation points used & 1000 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{Before/after evaluation summary from the local benchmark workflow.}
 \end{table}
 
@@ -323,7 +329,7 @@ The before/after comparison in this report focuses on:
 
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.33\linewidth} p{0.24\linewidth} p{0.24\linewidth}}
+\begin{tabularx}{0.92\linewidth}{>{\raggedright\arraybackslash}p{0.34\linewidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
 \toprule
 Item & First pass & Second pass \\
 \midrule
@@ -334,7 +340,7 @@ Mesh topology & single block & three streamwise blocks \\
 Solve horizon & 80 iterations & 300 iterations \\
 Benchmark score & 0.2338504550 & 0.2038187409 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{High-level before/after comparison between the first-pass and second-pass setups.}
 \end{table}
 

@@ -4,6 +4,7 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
+\usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{listings}
@@ -29,6 +30,7 @@
 \date{March 31, 2026}
 
 \begin{document}
+\setlength{\emergencystretch}{3em}
 \maketitle
 
 \section{Executive Summary}
@@ -68,7 +70,8 @@ At the same time, the third pass screened three additional physically motivated 
 \section{Files Added Or Updated In Pass Three}
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.31\linewidth} p{0.61\linewidth}}
+\small
+\begin{tabularx}{0.96\linewidth}{>{\raggedright\arraybackslash}p{0.34\linewidth} X}
 \toprule
 File & Third-pass role \\
 \midrule
@@ -82,7 +85,8 @@ File & Third-pass role \\
 \texttt{documentation\_src/figures\_third\_pass/*} & Third-pass copied figure package built from the updated \texttt{500}-iteration case and refreshed ParaView renders. \\
 \texttt{documentation\_src/nasa\_hump\_third\_pass\_report.tex} & This report source. \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
+\normalsize
 \caption{Main third-pass files and why they were added.}
 \end{table}
 
@@ -91,7 +95,8 @@ The experiment sweep was intentionally small and hypothesis-driven. The goal was
 
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.23\linewidth} p{0.35\linewidth} r r}
+\small
+\begin{tabularx}{0.98\linewidth}{>{\raggedright\arraybackslash}p{0.21\linewidth} >{\raggedright\arraybackslash}X r r}
 \toprule
 Tag & Change set & Runtime (min) & Score \\
 \midrule
@@ -102,12 +107,14 @@ Tag & Change set & Runtime (min) & Score \\
 \texttt{exp\_tbl\_komega\_sharp\_meshtop\_180} & Same refined geometry path but with \texttt{kOmega} & 8.01 & 0.2501395026 \\
 \texttt{exp\_uniform\_sst\_500} & Original best SST baseline continued to \texttt{500} iterations & 20.72 & 0.1801372055 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
+\normalsize
 \caption{Third-pass MAE sweep summary. Lower score is better.}
 \end{table}
 
 \section{What Changed The MAE And What Did Not}
-\begin{longtable}{p{0.18\linewidth} p{0.20\linewidth} p{0.24\linewidth} p{0.24\linewidth}}
+\small
+\begin{longtable}{p{0.16\linewidth} p{0.20\linewidth} p{0.25\linewidth} p{0.25\linewidth}}
 \toprule
 Refinement & What Changed & Why It Might Help & Observed MAE Effect \\
 \midrule
@@ -123,6 +130,7 @@ Mesh + stronger blockage & The mesh was refined and the upper-wall dip was broad
 Deeper convergence & The best existing pass-two SST baseline was rerun to \texttt{500} iterations without changing its geometry or model. & If the pass-two case still had under-convergence error, a longer run would reduce benchmark error without introducing new modeling assumptions. & This was the only winning third-pass change. The score improved to \texttt{0.1801372055}. \\
 \bottomrule
 \end{longtable}
+\normalsize
 
 \section{Interpretation Of The Third-Pass Sweep}
 The sweep outcome is important because it is not the naive result one might expect from the validation-page clues alone. The page clearly says that the incoming turbulent boundary layer matters, but a physically plausible inlet profile is not automatically an improvement if it is still inconsistent with the rest of the reconstructed setup. Likewise, a stronger blockage contour and a denser mesh are not guaranteed to help if they shift the pressure field in the wrong direction relative to the local benchmark metric.
@@ -132,7 +140,7 @@ In contrast, deeper convergence of the already-best second-pass SST baseline pro
 \section{Updated Evaluation Summary}
 \begin{table}[H]
 \centering
-\begin{tabular}{l r}
+\begin{tabularx}{0.72\linewidth}{>{\raggedright\arraybackslash}X r}
 \toprule
 Metric & Value \\
 \midrule
@@ -143,11 +151,15 @@ Improvement vs pass one & 0.0537132495 \\
 Improvement vs pass two & 0.0236815354 \\
 Evaluation points used & 1000 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{Updated benchmark summary after the third pass.}
 \end{table}
 
-The machine-readable third-pass benchmark result is stored in \texttt{documentation\_src/data\_third\_pass/reconstructed\_nasa\_score\_second\_pass.json}. The experiment ledger is stored in \texttt{documentation\_src/THIRD\_PASS\_EXPERIMENT\_NOTES.md} and \texttt{documentation\_src/data\_third\_pass/experiment\_sweep\_summary.json}.
+The machine-readable third-pass benchmark result is stored in
+\texttt{documentation\_src/data\_third\_pass/reconstructed\_nasa\_score\_second\_pass.json}.
+The experiment ledger is stored in
+\texttt{documentation\_src/THIRD\_PASS\_EXPERIMENT\_NOTES.md} and
+\texttt{documentation\_src/data\_third\_pass/experiment\_sweep\_summary.json}.
 
 \section{Updated Figures}
 The third-pass figure package was regenerated from the updated \texttt{500}-iteration case and copied into \texttt{documentation\_src/figures\_third\_pass}. The plot family remains the same as in pass two, but the fields now reflect the deeper-converged solution.
