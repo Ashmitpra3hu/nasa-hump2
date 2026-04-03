@@ -1,0 +1,62 @@
+{
+  "baseline_score": 0.20381874087746296,
+  "best_tag": "exp_uniform_sst_500",
+  "best_score": 0.18013720549365075,
+  "score_improvement_vs_baseline": 0.023681535383812208,
+  "rows": [
+    {
+      "tag": "baseline_second_pass",
+      "changes": "Existing best second-pass reference",
+      "note": "Reference row carried forward from the current repo state.",
+      "end_time": 300,
+      "runtime_minutes": 0.0,
+      "score": 0.20381874087746296,
+      "case_dir": "data/NASA_2DWMH"
+    },
+    {
+      "tag": "exp_tbl_sst_220",
+      "changes": "Analytic turbulent-boundary-layer inlet for U/k/omega; SST; stable transport; base pass-two mesh/top wall",
+      "note": "Primary inflow-fidelity test.",
+      "end_time": 200,
+      "runtime_minutes": 8.335019052028656,
+      "score": 0.2082901628271251,
+      "case_dir": "data/NASA_2DWMH_sweep/exp_tbl_sst_220"
+    },
+    {
+      "tag": "exp_tbl_sst_sharp_220",
+      "changes": "Same analytic inlet; SST; sharper k and omega convection",
+      "note": "Tests whether reduced transport diffusion helps the separated shear layer.",
+      "end_time": 200,
+      "runtime_minutes": 7.389792883396149,
+      "score": 0.20850834727373208,
+      "case_dir": "data/NASA_2DWMH_sweep/exp_tbl_sst_sharp_220"
+    },
+    {
+      "tag": "exp_tbl_sst_sharp_meshtop_220",
+      "changes": "Same as sharper SST case plus targeted mesh refinement and a stronger blockage contour",
+      "note": "Combined fidelity test for mesh-targeting and upper-wall blockage.",
+      "end_time": 200,
+      "runtime_minutes": 21.613811616102854,
+      "score": 0.2216862912095183,
+      "case_dir": "data/NASA_2DWMH_sweep/exp_tbl_sst_sharp_meshtop_220"
+    },
+    {
+      "tag": "exp_tbl_komega_sharp_meshtop_180",
+      "changes": "Analytic inlet; sharper convection; refined mesh and stronger blockage contour; standard kOmega model",
+      "note": "Short closure screen against SST on the refined geometry.",
+      "end_time": 150,
+      "runtime_minutes": 8.014849781990051,
+      "score": 0.2501395025585329,
+      "case_dir": "data/NASA_2DWMH_sweep/exp_tbl_komega_sharp_meshtop_180"
+    },
+    {
+      "tag": "exp_uniform_sst_500",
+      "changes": "Current best second-pass baseline rerun deeper with uniform inlet and SST to 500 iterations",
+      "note": "Direct convergence-extension test on the strongest known configuration.",
+      "end_time": 500,
+      "runtime_minutes": 20.719041164716085,
+      "score": 0.18013720549365075,
+      "case_dir": "data/NASA_2DWMH"
+    }
+  ]
+}

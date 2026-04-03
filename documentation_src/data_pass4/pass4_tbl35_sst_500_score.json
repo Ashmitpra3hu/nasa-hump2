@@ -1,0 +1,7 @@
+{
+  "case_dir": "data/NASA_2DWMH_sweep/pass4_tbl35_sst_500",
+  "time_directory": "500",
+  "num_points": 1000,
+  "score": 0.16744876580596776,
+  "prediction_file": "documentation_src/data_pass4/pass4_tbl35_sst_500_predictions.csv"
+}

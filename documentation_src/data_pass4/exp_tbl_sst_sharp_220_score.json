@@ -1,0 +1,7 @@
+{
+  "case_dir": "data/NASA_2DWMH_sweep/exp_tbl_sst_sharp_220",
+  "time_directory": "200",
+  "num_points": 1000,
+  "score": 0.20850834727373208,
+  "prediction_file": "documentation_src/data_second_pass/exp_tbl_sst_sharp_220_predictions.csv"
+}

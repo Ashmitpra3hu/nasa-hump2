@@ -1,0 +1,8 @@
+type            residuals;
+libs            ("libutilityFunctionObjects.so");
+writeControl    timeStep;
+writeInterval   1;
+
+#include "../fieldDef"
+
+fields          $residualFields;

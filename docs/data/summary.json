@@ -1,13 +1,13 @@
 {
-  "latest_iteration_directory": "500",
+  "latest_iteration_directory": "650",
   "final_residuals": {
-    "U": 0.000233786762718,
-    "p": 0.000167614777601,
-    "k": 0.000331899245356,
-    "omega": 5.69584716812e-05
+    "U": 0.000205177127049,
+    "p": 0.00013124814233,
+    "k": 0.000292700389408,
+    "omega": 4.64300447172e-05
   },
   "derived_indicators": {
     "separation_x_m": null,
-    "reattachment_x_m": 0.058840632092143595
+    "reattachment_x_m": 0.051588708313143536
   }
 }

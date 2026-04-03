@@ -1,0 +1,4 @@
+tag,changes,mae,cp_mae,cf_mae,notes
+baseline_pass3,"Third-pass SST winner at 500 iterations",0.18013720549365075,0.18060308955009807,0.0009550564503281433,"Reference case before pass four."
+pass4_uniform_sst_650,"Continue the current best SST baseline from 500 to 650 iterations",0.1659136746930731,0.17124643116795285,0.0008483389370731978,"Best overall result; improved MAE, Cp, and Cf together."
+pass4_tbl35_sst_500,"Use a 35 mm analytic turbulent-boundary-layer inlet with SST",0.16744876580596776,0.18121273392495904,0.0009521054854593606,"Improved over pass three but did not beat the deeper-converged uniform-inlet continuation."

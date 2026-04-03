@@ -152,6 +152,27 @@ def save_csv(path: Path, header: list[str], rows: np.ndarray) -> None:
         writer.writerows(rows.tolist())
 
 
+def parse_case_def(path: Path) -> dict[str, object]:
+    text = path.read_text().splitlines()
+    data: dict[str, object] = {}
+    for line in text:
+        stripped = line.strip().rstrip(";")
+        if not stripped or stripped.startswith("//"):
+            continue
+        if stripped.startswith("xMin"):
+            data["xMin"] = float(stripped.split()[-1])
+        elif stripped.startswith("xMax"):
+            data["xMax"] = float(stripped.split()[-1])
+        elif stripped.startswith("chord"):
+            data["chord"] = float(stripped.split()[-1])
+        elif stripped.startswith("zTop"):
+            data["zTop"] = float(stripped.split()[-1])
+        elif stripped.startswith("xCells"):
+            tokens = stripped[stripped.index("(") + 1:stripped.index(")")].split()
+            data["xCells"] = [int(token) for token in tokens]
+    return data
+
+
 def get_solution_fields() -> dict[str, np.ndarray | str]:
     latest = latest_numeric_dir(CASE_DIR)
     return {
@@ -224,14 +245,32 @@ def build_wall_series(fields: dict[str, np.ndarray | str]) -> dict[str, np.ndarr
     coords = fields["coords"]
     p = fields["p"]
     tau = fields["tau_wall"][:, 0]
-    x_min = float(np.min(coords[:, 0]))
-    x_max = float(np.max(coords[:, 0]))
-    x_edges = np.linspace(x_min, x_max, len(tau) + 1)
-    x = 0.5 * (x_edges[:-1] + x_edges[1:])
+    case_def = parse_case_def(CASE_DIR / "caseDef")
+    x_splits = np.array(
+        [
+            float(case_def["xMin"]),
+            0.0,
+            float(case_def["chord"]),
+            float(case_def["xMax"]),
+        ],
+        dtype=float,
+    )
+    x_cells = list(case_def["xCells"])
+    x_segments = []
+    for i, n_cells in enumerate(x_cells):
+        edges = np.linspace(x_splits[i], x_splits[i + 1], n_cells + 1)
+        x_segments.append(0.5 * (edges[:-1] + edges[1:]))
+    x = np.concatenate(x_segments)
+    if len(x) != len(tau):
+        x_min = float(np.min(coords[:, 0]))
+        x_max = float(np.max(coords[:, 0]))
+        x_edges = np.linspace(x_min, x_max, len(tau) + 1)
+        x = 0.5 * (x_edges[:-1] + x_edges[1:])
 
     p_wall = np.zeros(len(tau))
     for i in range(len(tau)):
-        mask = (coords[:, 0] >= x_edges[i]) & (coords[:, 0] < x_edges[i + 1])
+        window = max((x[1] - x[0]) * 1.5 if len(x) > 1 else 0.002, 0.002)
+        mask = np.abs(coords[:, 0] - x[i]) <= window
         if not np.any(mask):
             p_wall[i] = p_wall[i - 1] if i > 0 else p[0]
             continue
@@ -239,10 +278,16 @@ def build_wall_series(fields: dict[str, np.ndarray | str]) -> dict[str, np.ndarr
         local_p = p[mask]
         min_y = float(local_coords[:, 1].min())
         near_wall = np.abs(local_coords[:, 1] - min_y) < 0.003
-        p_wall[i] = float(local_p[near_wall].mean())
+        p_wall[i] = float(local_p[near_wall].mean()) if np.any(near_wall) else float(local_p.mean())
 
-    cp = (p_wall - p_wall[0]) / Q_REF
-    cf = tau / Q_REF
+    x_ref = -2.14 * CHORD
+    ref_mask = (np.abs(coords[:, 0] - x_ref) < 0.01) & (coords[:, 1] > 0.04)
+    if not np.any(ref_mask):
+        ref_mask = np.abs(coords[:, 0] - x_ref) < 0.01
+    p_ref = float(np.mean(p[ref_mask])) if np.any(ref_mask) else float(p[0])
+
+    cp = (p_wall - p_ref) / Q_REF
+    cf = -tau / Q_REF
 
     separation = None
     reattachment = None

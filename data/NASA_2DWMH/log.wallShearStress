@@ -7,13 +7,13 @@
 \*---------------------------------------------------------------------------*/
 Build  : _87ed40d2-20251219 OPENFOAM=2512 version=2512
 Arch   : "LSB;label=32;scalar=64"
-Exec   : simpleFoam -case /home/openfoam/data/NASA_2DWMH_sweep/exp_uniform_sst_500 -postProcess -latestTime -func wallShearStress
-Date   : Mar 31 2026
-Time   : 23:07:13
+Exec   : simpleFoam -case /home/openfoam/data/NASA_2DWMH -postProcess -latestTime -func wallShearStress
+Date   : Apr 03 2026
+Time   : 20:14:09
 Host   : 810a1b85f13f
-PID    : 6948
+PID    : 9372
 I/O    : uncollated
-Case   : /home/openfoam/data/NASA_2DWMH_sweep/exp_uniform_sst_500
+Case   : /home/openfoam/data/NASA_2DWMH
 nProcs : 1
 trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
 memory pool : not available
@@ -27,7 +27,7 @@ Create time
     From static Foam::IOstreamOption::compressionType Foam::IOstreamOption::compressionEnum(const Foam::word&, compressionType)
     in file db/options/IOstreamOption.C at line 185
     Unknown compression specifier 'uncompressed' using compression off
-Create mesh for time = 500
+Create mesh for time = 650
 
 
 SIMPLE: convergence criteria
@@ -39,7 +39,7 @@ SIMPLE: convergence criteria
 wallShearStress wallShearStress:
     processing all (2) wall patches
 
-Time = 500
+Time = 650
 Reading field p
 
 Reading field U
@@ -78,8 +78,8 @@ No MRF models present
 No finite volume options present
 wallShearStress wallShearStress write:
     writing field wallShearStress
-    min/max(bottomWall) = (-5.76034594802 -1.34128685419 -4.61719082745e-17), (0.811361396974 0.670578511753 4.38030312602e-17)
-    min/max(topWall) = (-0.00604916765045 -0.0311037513848 -5.71651944575e-20), (0.00846728785503 0.0334526794508 5.82426399563e-20)
+    min/max(bottomWall) = (-5.67247929258 -1.3236184829 -5.4032484018e-17), (0.842766587116 0.639334038105 3.79073687836e-17)
+    min/max(topWall) = (-0.00610836536988 -0.0311020717346 -5.76441465425e-20), (0.00865944019278 0.0334929655228 5.87317189251e-20)
 
 End
 

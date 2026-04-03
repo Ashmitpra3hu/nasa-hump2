@@ -1,0 +1,19 @@
+{
+  "source_files": {
+    "cp": "data/experimental/NASA_hump/noflow_cp.dat",
+    "cf": "data/experimental/NASA_hump/noflow_cf.dat"
+  },
+  "normalized_files": {
+    "cp": "data/experimental/NASA_hump/noflow_cp.csv",
+    "cf": "data/experimental/NASA_hump/noflow_cf.csv"
+  },
+  "row_counts": {
+    "cp": 126,
+    "cf": 135
+  },
+  "notes": [
+    "Data copied only from the allowed NASA hump experimental-data resource.",
+    "No tracing, digitization, or image-based extraction was used.",
+    "Cp and Cf are preserved in machine-readable form for pass-four comparison plots."
+  ]
+}

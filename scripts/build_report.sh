@@ -35,3 +35,6 @@ fi
 if [[ -f "${SOURCE_DIR}/nasa_hump_third_pass_report.tex" ]]; then
   compile_tex "${SOURCE_DIR}/nasa_hump_third_pass_report.tex" "pass_three.pdf"
 fi
+if [[ -f "${SOURCE_DIR}/nasa_hump_pass4_report.tex" ]]; then
+  compile_tex "${SOURCE_DIR}/nasa_hump_pass4_report.tex" "pass4.pdf"
+fi

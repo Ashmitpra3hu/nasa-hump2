@@ -1,0 +1,28 @@
+{
+  "rows": [
+    {
+      "tag": "baseline_pass3",
+      "changes": "Third-pass SST winner at 500 iterations",
+      "mae": 0.18013720549365075,
+      "cp_mae": 0.18060308955009807,
+      "cf_mae": 0.0009550564503281433,
+      "notes": "Reference case before pass four."
+    },
+    {
+      "tag": "pass4_uniform_sst_650",
+      "changes": "Continue the current best SST baseline from 500 to 650 iterations",
+      "mae": 0.1659136746930731,
+      "cp_mae": 0.17124643116795285,
+      "cf_mae": 0.0008483389370731978,
+      "notes": "Best overall result; improved MAE, Cp, and Cf together."
+    },
+    {
+      "tag": "pass4_tbl35_sst_500",
+      "changes": "Use a 35 mm analytic turbulent-boundary-layer inlet with SST",
+      "mae": 0.16744876580596776,
+      "cp_mae": 0.18121273392495904,
+      "cf_mae": 0.0009521054854593606,
+      "notes": "Improved over pass three but did not beat the deeper-converged uniform-inlet continuation."
+    }
+  ]
+}
