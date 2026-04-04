@@ -28,6 +28,7 @@ def write(path: Path, text: str) -> None:
 def main() -> None:
     model = os.environ.get("NASA_HUMP_MODEL", "kOmegaSST").strip()
     scheme_mode = os.environ.get("NASA_HUMP_SCHEME_MODE", "stable").strip().lower()
+    start_from = os.environ.get("NASA_HUMP_START_FROM", "startTime").strip()
     end_time = env_int("NASA_HUMP_END_TIME", 300)
     write_interval = env_int("NASA_HUMP_WRITE_INTERVAL", 50)
     grad_limit = env_float("NASA_HUMP_GRAD_LIMIT", 1.0)
@@ -94,7 +95,7 @@ FoamFile
 
 application     simpleFoam;
 
-startFrom       startTime;
+startFrom       {start_from};
 
 startTime       0;
 
@@ -235,7 +236,7 @@ solvers
         mergeLevels     1;
     }}
 
-    "(U|k|omega)"
+    "(U|k|omega|nuTilda)"
     {{
         solver          smoothSolver;
         smoother        symGaussSeidel;
@@ -258,6 +259,7 @@ SIMPLE
         U           1e-6;
         k           1e-6;
         omega       1e-6;
+        nuTilda     1e-6;
     }}
 }}
 
@@ -272,6 +274,7 @@ relaxationFactors
         U           {relax_ukw:g};
         k           {relax_ukw:g};
         omega       {relax_ukw:g};
+        nuTilda     {relax_ukw:g};
     }}
 }}
 

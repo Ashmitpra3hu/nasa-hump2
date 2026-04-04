@@ -167,6 +167,9 @@ def parse_case_def(path: Path) -> dict[str, object]:
             data["chord"] = float(stripped.split()[-1])
         elif stripped.startswith("zTop"):
             data["zTop"] = float(stripped.split()[-1])
+        elif stripped.startswith("xSplits"):
+            tokens = stripped[stripped.index("(") + 1:stripped.index(")")].split()
+            data["xSplits"] = [float(token) for token in tokens]
         elif stripped.startswith("xCells"):
             tokens = stripped[stripped.index("(") + 1:stripped.index(")")].split()
             data["xCells"] = [int(token) for token in tokens]
@@ -246,15 +249,18 @@ def build_wall_series(fields: dict[str, np.ndarray | str]) -> dict[str, np.ndarr
     p = fields["p"]
     tau = fields["tau_wall"][:, 0]
     case_def = parse_case_def(CASE_DIR / "caseDef")
-    x_splits = np.array(
-        [
-            float(case_def["xMin"]),
-            0.0,
-            float(case_def["chord"]),
-            float(case_def["xMax"]),
-        ],
-        dtype=float,
-    )
+    if "xSplits" in case_def:
+        x_splits = np.asarray(case_def["xSplits"], dtype=float)
+    else:
+        x_splits = np.array(
+            [
+                float(case_def["xMin"]),
+                0.0,
+                float(case_def["chord"]),
+                float(case_def["xMax"]),
+            ],
+            dtype=float,
+        )
     x_cells = list(case_def["xCells"])
     x_segments = []
     for i, n_cells in enumerate(x_cells):

@@ -1,0 +1,88 @@
+{
+  "rows": [
+    {
+      "tag": "baseline_pass4",
+      "time": "650",
+      "mae": 0.16591367469306545,
+      "cp_mae": 0.17118003257967793,
+      "cf_mae": 0.0008476129295398964,
+      "cp_rmse": 0.22419971394556779,
+      "cf_rmse": 0.001115227135433491,
+      "changes": "Promoted pass-four SST baseline at 650 iterations",
+      "convergence_notes": "Reference checkpoint before pass-five continuation and geometry tests.",
+      "diagnosis": "Front-half suction still weak and Cf recovery still slightly low against the official experiment."
+    },
+    {
+      "tag": "pass5_continue_sst_1200",
+      "time": "650",
+      "mae": 0.16591367469306545,
+      "cp_mae": 0.17118003257967793,
+      "cf_mae": 0.0008476129295398964,
+      "cp_rmse": 0.22419971394556779,
+      "cf_rmse": 0.001115227135433491,
+      "changes": "Continue the pass-four SST winner from 650 to 1200 iterations without changing physics.",
+      "convergence_notes": "Continuation case preserves the promoted mesh and fields and writes checkpoints every 50 iterations.",
+      "diagnosis": "Primary test of whether the current winner is still under-converged."
+    },
+    {
+      "tag": "pass5_continue_sst_1200",
+      "time": "800",
+      "mae": 0.1547381027802645,
+      "cp_mae": 0.16417879658978082,
+      "cf_mae": 0.0007681825222876493,
+      "cp_rmse": 0.21573358901271641,
+      "cf_rmse": 0.0010713830040348787,
+      "changes": "Continue the pass-four SST winner from 650 to 1200 iterations without changing physics.",
+      "convergence_notes": "Continuation case preserves the promoted mesh and fields and writes checkpoints every 50 iterations.",
+      "diagnosis": "Primary test of whether the current winner is still under-converged."
+    },
+    {
+      "tag": "pass5_continue_sst_1200",
+      "time": "1000",
+      "mae": 0.14333776439191936,
+      "cp_mae": 0.15788246140943185,
+      "cf_mae": 0.0006999053205148228,
+      "cp_rmse": 0.20916845442545196,
+      "cf_rmse": 0.0010489650669845906,
+      "changes": "Continue the pass-four SST winner from 650 to 1200 iterations without changing physics.",
+      "convergence_notes": "Continuation case preserves the promoted mesh and fields and writes checkpoints every 50 iterations.",
+      "diagnosis": "Primary test of whether the current winner is still under-converged."
+    },
+    {
+      "tag": "pass5_continue_sst_1200",
+      "time": "1200",
+      "mae": 0.13589016762007924,
+      "cp_mae": 0.15375479457711452,
+      "cf_mae": 0.0006734136383729949,
+      "cp_rmse": 0.20584876163252463,
+      "cf_rmse": 0.001049968423933928,
+      "changes": "Continue the pass-four SST winner from 650 to 1200 iterations without changing physics.",
+      "convergence_notes": "Continuation case preserves the promoted mesh and fields and writes checkpoints every 50 iterations.",
+      "diagnosis": "Primary test of whether the current winner is still under-converged."
+    },
+    {
+      "tag": "pass5_gridfit_sst_800",
+      "time": "800",
+      "mae": 0.18663495016470358,
+      "cp_mae": 0.17309248661800894,
+      "cf_mae": 0.0008231240099310477,
+      "cp_rmse": 0.22324170107172156,
+      "cf_rmse": 0.0010189771324752848,
+      "changes": "Broaden the top-wall blockage contour and redistribute streamwise blocks to better reflect the official no-plenum structured-grid emphasis.",
+      "convergence_notes": "Fresh run from startTime to 800 iterations on an official-grid-inspired targeted mesh.",
+      "diagnosis": "Geometry-fidelity test aimed at the front-half suction and separation/recovery placement. The case improved Cf slightly versus pass four but degraded the main benchmark MAE."
+    },
+    {
+      "tag": "pass5_gridfit_sa_800",
+      "time": "failed",
+      "mae": null,
+      "cp_mae": null,
+      "cf_mae": null,
+      "cp_rmse": null,
+      "cf_rmse": null,
+      "changes": "Use the same official-grid-inspired mesh and blockage contour as the SST geometry test, but switch to SpalartAllmaras.",
+      "convergence_notes": "Fresh run from startTime on the improved geometry. SA-RC was not available in the local OpenFOAM installation.",
+      "diagnosis": "The SA run initialized and advanced one iteration, but it did not produce a usable converged field in this setup."
+    }
+  ]
+}

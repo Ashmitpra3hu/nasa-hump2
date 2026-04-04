@@ -1,0 +1,7 @@
+{
+  "case_dir": "data/NASA_2DWMH",
+  "time_directory": "650",
+  "num_points": 1000,
+  "score": 0.16591367469306545,
+  "prediction_file": "documentation_src/data_pass5/baseline_pass4_650_predictions.csv"
+}

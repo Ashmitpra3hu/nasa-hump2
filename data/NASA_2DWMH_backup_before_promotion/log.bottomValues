@@ -7,13 +7,13 @@
 \*---------------------------------------------------------------------------*/
 Build  : _87ed40d2-20251219 OPENFOAM=2512 version=2512
 Arch   : "LSB;label=32;scalar=64"
-Exec   : postProcess -case /home/openfoam/data/NASA_2DWMH_sweep/exp_uniform_sst_500 -latestTime -dict system/bottomValues
-Date   : Mar 31 2026
-Time   : 23:07:20
+Exec   : postProcess -case /home/openfoam/data/NASA_2DWMH -latestTime -dict system/bottomValues
+Date   : Apr 03 2026
+Time   : 20:14:22
 Host   : 810a1b85f13f
-PID    : 6950
+PID    : 9374
 I/O    : uncollated
-Case   : /home/openfoam/data/NASA_2DWMH_sweep/exp_uniform_sst_500
+Case   : /home/openfoam/data/NASA_2DWMH
 nProcs : 1
 trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
 memory pool : not available
@@ -27,9 +27,9 @@ Create time
     From static Foam::IOstreamOption::compressionType Foam::IOstreamOption::compressionEnum(const Foam::word&, compressionType)
     in file db/options/IOstreamOption.C at line 185
     Unknown compression specifier 'uncompressed' using compression off
-Create mesh for time = 500
+Create mesh for time = 650
 
-Time = 500
+Time = 650
 
 Reading fields:
 

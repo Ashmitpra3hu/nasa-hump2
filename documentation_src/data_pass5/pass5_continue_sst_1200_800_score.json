@@ -1,0 +1,7 @@
+{
+  "case_dir": "data/NASA_2DWMH_sweep_pass5/pass5_continue_sst_1200",
+  "time_directory": "800",
+  "num_points": 1000,
+  "score": 0.1547381027802645,
+  "prediction_file": "documentation_src/data_pass5/pass5_continue_sst_1200_800_predictions.csv"
+}

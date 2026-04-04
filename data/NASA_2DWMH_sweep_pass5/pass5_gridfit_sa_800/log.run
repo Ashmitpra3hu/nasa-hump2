@@ -1,0 +1,106 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2512                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _87ed40d2-20251219 OPENFOAM=2512 version=2512
+Arch   : "LSB;label=32;scalar=64"
+Exec   : simpleFoam -case /home/openfoam/data/NASA_2DWMH_sweep_pass5/pass5_gridfit_sa_800
+Date   : Apr 04 2026
+Time   : 07:42:41
+Host   : 810a1b85f13f
+PID    : 20730
+I/O    : uncollated
+Case   : /home/openfoam/data/NASA_2DWMH_sweep_pass5/pass5_gridfit_sa_800
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+--> FOAM Warning : 
+    From static Foam::IOstreamOption::compressionType Foam::IOstreamOption::compressionEnum(const Foam::word&, compressionType)
+    in file db/options/IOstreamOption.C at line 185
+    Unknown compression specifier 'uncompressed' using compression off
+Create mesh for time = 0
+
+
+SIMPLE: convergence criteria
+    field p	 tolerance 1e-05
+    field U	 tolerance 1e-06
+    field k	 tolerance 1e-06
+    field omega	 tolerance 1e-06
+    field nuTilda	 tolerance 1e-06
+
+Reading field p
+
+Reading field U
+
+Reading/calculating face flux field phi
+
+Selecting incompressible transport model Newtonian
+Selecting turbulence model type RAS
+Selecting RAS turbulence model SpalartAllmaras
+Selecting patchDistMethod meshWave
+ft2 term: inactive
+RAS
+{
+    RASModel        SpalartAllmaras;
+    turbulence      on;
+    printCoeffs     on;
+    sigmaNut        0.66666;
+    kappa           0.41;
+    Cb1             0.1355;
+    Cb2             0.622;
+    Cw2             0.3;
+    Cw3             2;
+    Cv1             7.1;
+    Cs              0.3;
+    ck              0.07;
+    ft2             false;
+    Ct3             1.2;
+    Ct4             0.5;
+}
+
+No MRF models present
+
+No finite volume options present
+
+Starting time loop
+
+Sampled set:
+    line -> raw
+
+Sampled set:
+    line -> raw
+
+Sampled set:
+    line -> raw
+
+Sampled set:
+    line -> raw
+
+Sampled set:
+    line -> raw
+
+Sampled set:
+    line -> raw
+
+Sampled set:
+    line -> raw
+
+Sampled set:
+    line -> raw
+
+Time = 1
+
+smoothSolver:  Solving for Ux, Initial residual = 0.999999921848, Final residual = 0.0115263665209, No Iterations 1
+smoothSolver:  Solving for Uy, Initial residual = 1, Final residual = 0.0341826115096, No Iterations 1
+GAMG:  Solving for p, Initial residual = 1, Final residual = 0.0055511017038, No Iterations 10
+GAMG:  Solving for p, Initial residual = 0.00137758025207, Final residual = 6.2113775889e-06, No Iterations 8
+time step continuity errors : sum local = 0.020289486824, global = -1.8413584992e-05, cumulative = -1.8413584992e-05

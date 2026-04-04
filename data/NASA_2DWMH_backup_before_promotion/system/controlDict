@@ -17,13 +17,13 @@ FoamFile
 
 application     simpleFoam;
 
-startFrom       startTime;
+startFrom       latestTime;
 
 startTime       0;
 
 stopAt          endTime;
 
-endTime         500;
+endTime         650;
 
 deltaT          1;
 

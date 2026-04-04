@@ -1,0 +1,15 @@
+{
+  "latest_time_directory": "1200",
+  "official_experiment_files": {
+    "cp": "data/experimental/NASA_hump/noflow_cp.csv",
+    "cf": "data/experimental/NASA_hump/noflow_cf.csv"
+  },
+  "comparison_metrics": {
+    "cp_rmse": 0.20584876163252463,
+    "cp_mae": 0.15375479457711452,
+    "cf_rmse": 0.001049968423933928,
+    "cf_mae": 0.0006734136383729949
+  },
+  "figure_file": "documentation_src/figures_pass5/cp_cf_vs_nasa_pass5.png",
+  "experiment_summary_file": "documentation_src/data_pass5/pass5_experiment_summary.json"
+}

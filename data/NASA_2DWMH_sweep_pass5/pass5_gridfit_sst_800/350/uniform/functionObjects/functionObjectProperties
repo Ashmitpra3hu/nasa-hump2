@@ -1,0 +1,632 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2512                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       dictionary;
+    location    "350/uniform/functionObjects";
+    object      functionObjectProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+cdf7e925f5746741c316f5fbcf39ad0dfca90775
+{
+    singleGraph_xm214
+    {
+        scalar
+        {
+            average(line,k) 0.2133292339460525;
+            min(line,k)     0.129215130594641;
+            max(line,k)     5.832528828518616;
+            average(k)      0.2133292339460525;
+            min(k)          0.129215130594641;
+            max(k)          5.832528828518616;
+            average(line,nut) 0.0005490665600023254;
+            min(line,nut)   3.52412637687761e-05;
+            max(line,nut)   0.0008412148393461751;
+            average(nut)    0.0005490665600023254;
+            min(nut)        3.52412637687761e-05;
+            max(nut)        0.0008412148393461751;
+            average(line,omega) 859.4937271566757;
+            min(line,omega) 234.3640352987246;
+            max(line,omega) 126314.2221024445;
+            average(omega)  859.4937271566757;
+            min(omega)      234.3640352987246;
+            max(omega)      126314.2221024445;
+            average(line,p) 15.65563733756502;
+            min(line,p)     14.8766561968915;
+            max(line,p)     16.35734877575364;
+            average(p)      15.65563733756502;
+            min(p)          14.8766561968915;
+            max(p)          16.35734877575364;
+        }
+        label
+        {
+            size(line,k)    240;
+            size(k)         240;
+            size(line,nut)  240;
+            size(nut)       240;
+            size(line,omega) 240;
+            size(omega)     240;
+            size(line,p)    240;
+            size(p)         240;
+            size(line,U)    240;
+            size(U)         240;
+        }
+        vector
+        {
+            average(line,U) ( 34.5525560809 0.0242396455746 0 );
+            min(line,U)     ( 14.739538912 8.050788264190001e-05 0 );
+            max(line,U)     ( 34.9574091131 0.07170486633040001 0 );
+            average(U)      ( 34.5525560809 0.0242396455746 0 );
+            min(U)          ( 14.739538912 8.050788264190001e-05 0 );
+            max(U)          ( 34.9574091131 0.07170486633040001 0 );
+        }
+    }
+    singleGraph_x065
+    {
+        scalar
+        {
+            average(line,k) 0.3066380780063621;
+            min(line,k)     0.08099231016252972;
+            max(line,k)     14.13111129191095;
+            average(k)      0.3066380780063621;
+            min(k)          0.08099231016252972;
+            max(k)          14.13111129191095;
+            average(line,nut) 0.0005530846282280572;
+            min(line,nut)   0.0001587975431274568;
+            max(line,nut)   0.000808283877603656;
+            average(nut)    0.0005530846282280572;
+            min(nut)        0.0001587975431274568;
+            max(nut)        0.000808283877603656;
+            average(line,omega) 686.4803684732398;
+            min(line,omega) 151.0179028191749;
+            max(line,omega) 58208.49386406842;
+            average(omega)  686.4803684732398;
+            min(omega)      151.0179028191749;
+            max(omega)      58208.49386406842;
+            average(line,p) -331.4004756174731;
+            min(line,p)     -506.859296705434;
+            max(line,p)     -265.5389433506112;
+            average(p)      -331.4004756174731;
+            min(p)          -506.859296705434;
+            max(p)          -265.5389433506112;
+        }
+        label
+        {
+            size(line,k)    192;
+            size(k)         192;
+            size(line,nut)  192;
+            size(nut)       192;
+            size(line,omega) 192;
+            size(omega)     192;
+            size(line,p)    192;
+            size(p)         192;
+            size(line,U)    192;
+            size(U)         192;
+        }
+        vector
+        {
+            average(line,U) ( 43.026564071 -2.05969523463 -2.95603357599e-19 );
+            min(line,U)     ( 20.3185838604 -11.4324210043 -1.32913701444e-17 );
+            max(line,U)     ( 46.1230687557 1.75260287859 1.02219443707e-17 );
+            average(U)      ( 43.026564071 -2.05969523463 -2.95603357599e-19 );
+            min(U)          ( 20.3185838604 -11.4324210043 -1.32913701444e-17 );
+            max(U)          ( 46.1230687557 1.75260287859 1.02219443707e-17 );
+        }
+    }
+    singleGraph_x080
+    {
+        scalar
+        {
+            average(line,k) 0.8753435789783404;
+            min(line,k)     0.079685580191035;
+            max(line,k)     30.42779283996297;
+            average(k)      0.8753435789783404;
+            min(k)          0.079685580191035;
+            max(k)          30.42779283996297;
+            average(line,nut) 0.0006388140289058911;
+            min(line,nut)   0.0003401270534872608;
+            max(line,nut)   0.002286551675240347;
+            average(nut)    0.0006388140289058911;
+            min(nut)        0.0003401270534872608;
+            max(nut)        0.002286551675240347;
+            average(line,omega) 651.8912311180543;
+            min(line,omega) 149.3478316168433;
+            max(line,omega) 13159.1608632595;
+            average(omega)  651.8912311180543;
+            min(omega)      149.3478316168433;
+            max(omega)      13159.1608632595;
+            average(line,p) -205.3790026206257;
+            min(line,p)     -222.7717077836371;
+            max(line,p)     -145.0163915933353;
+            average(p)      -205.3790026206257;
+            min(p)          -222.7717077836371;
+            max(p)          -145.0163915933353;
+        }
+        label
+        {
+            size(line,k)    210;
+            size(k)         210;
+            size(line,nut)  210;
+            size(nut)       210;
+            size(line,omega) 210;
+            size(omega)     210;
+            size(line,p)    210;
+            size(p)         210;
+            size(line,U)    210;
+            size(U)         210;
+        }
+        vector
+        {
+            average(line,U) ( 39.2868022167 -2.29635158104 8.472581267160001e-20 );
+            min(line,U)     ( -2.76388069765 -8.885392349709999 -5.4963875159e-18 );
+            max(line,U)     ( 40.7403208875 2.15137461046 8.45189751222e-18 );
+            average(U)      ( 39.2868022167 -2.29635158104 8.472581267160001e-20 );
+            min(U)          ( -2.76388069765 -8.885392349709999 -5.4963875159e-18 );
+            max(U)          ( 40.7403208875 2.15137461046 8.45189751222e-18 );
+        }
+    }
+    singleGraph_x090
+    {
+        scalar
+        {
+            average(line,k) 1.441883224533937;
+            min(line,k)     0.0788587248517177;
+            max(line,k)     38.69208358398638;
+            average(k)      1.441883224533937;
+            min(k)          0.0788587248517177;
+            max(k)          38.69208358398638;
+            average(line,nut) 0.0007333775315657658;
+            min(line,nut)   0.000351712998604628;
+            max(line,nut)   0.004304173288221239;
+            average(nut)    0.0007333775315657658;
+            min(nut)        0.000351712998604628;
+            max(nut)        0.004304173288221239;
+            average(line,omega) 628.8659803895747;
+            min(line,omega) 148.4559522443236;
+            max(line,omega) 12790.54248594296;
+            average(omega)  628.8659803895747;
+            min(omega)      148.4559522443236;
+            max(omega)      12790.54248594296;
+            average(line,p) -138.1570872568198;
+            min(line,p)     -180.8934175383295;
+            max(line,p)     -28.03194851341326;
+            average(p)      -138.1570872568198;
+            min(p)          -180.8934175383295;
+            max(p)          -28.03194851341326;
+        }
+        label
+        {
+            size(line,k)    221;
+            size(k)         221;
+            size(line,nut)  221;
+            size(nut)       221;
+            size(line,omega) 221;
+            size(omega)     221;
+            size(line,p)    221;
+            size(p)         221;
+            size(line,U)    221;
+            size(U)         221;
+        }
+        vector
+        {
+            average(line,U) ( 37.397838355 -1.98697400348 -1.41527956683e-20 );
+            min(line,U)     ( -4.66890950979 -7.99992966817 -1.70757108324e-18 );
+            max(line,U)     ( 39.7291439551 2.3156183151 1.17094289568e-18 );
+            average(U)      ( 37.397838355 -1.98697400348 -1.41527956683e-20 );
+            min(U)          ( -4.66890950979 -7.99992966817 -1.70757108324e-18 );
+            max(U)          ( 39.7291439551 2.3156183151 1.17094289568e-18 );
+        }
+    }
+    singleGraph_x100
+    {
+        scalar
+        {
+            average(line,k) 0.7535501879928166;
+            min(line,k)     0.07797961368181199;
+            max(line,k)     21.62758444826288;
+            average(k)      0.7535501879928166;
+            min(k)          0.07797961368181199;
+            max(k)          21.62758444826288;
+            average(line,nut) 0.0006917296732281735;
+            min(line,nut)   1.861733329607069e-05;
+            max(line,nut)   0.003578866675596287;
+            average(nut)    0.0006917296732281735;
+            min(nut)        1.861733329607069e-05;
+            max(nut)        0.003578866675596287;
+            average(line,omega) 978.3875980310154;
+            min(line,omega) 147.5073840114114;
+            max(line,omega) 122091.1042187327;
+            average(omega)  978.3875980310154;
+            min(omega)      147.5073840114114;
+            max(omega)      122091.1042187327;
+            average(line,p) -79.76596422526552;
+            min(line,p)     -142.0055192813959;
+            max(line,p)     131.4612258606797;
+            average(p)      -79.76596422526552;
+            min(p)          -142.0055192813959;
+            max(p)          131.4612258606797;
+        }
+        label
+        {
+            size(line,k)    227;
+            size(k)         227;
+            size(line,nut)  227;
+            size(nut)       227;
+            size(line,omega) 227;
+            size(omega)     227;
+            size(line,p)    227;
+            size(p)         227;
+            size(line,U)    227;
+            size(U)         227;
+        }
+        vector
+        {
+            average(line,U) ( 36.4365964353 -1.24818382922 -6.73166081553e-22 );
+            min(line,U)     ( 4.70488983125 -5.05299611305 -4.92486211687e-19 );
+            max(line,U)     ( 38.7754389224 2.39605849467 3.408332005e-19 );
+            average(U)      ( 36.4365964353 -1.24818382922 -6.73166081553e-22 );
+            min(U)          ( 4.70488983125 -5.05299611305 -4.92486211687e-19 );
+            max(U)          ( 38.7754389224 2.39605849467 3.408332005e-19 );
+        }
+    }
+    singleGraph_x110
+    {
+        scalar
+        {
+            average(line,k) 0.4272115725853883;
+            min(line,k)     0.07733010910452284;
+            max(line,k)     12.10538608100862;
+            average(k)      0.4272115725853883;
+            min(k)          0.07733010910452284;
+            max(k)          12.10538608100862;
+            average(line,nut) 0.0006713903553058886;
+            min(line,nut)   3.137269527339093e-05;
+            max(line,nut)   0.0026738806728522;
+            average(nut)    0.0006713903553058886;
+            min(nut)        3.137269527339093e-05;
+            max(nut)        0.0026738806728522;
+            average(line,omega) 928.5228946181753;
+            min(line,omega) 146.4060238550486;
+            max(line,omega) 132594.2069177589;
+            average(omega)  928.5228946181753;
+            min(omega)      146.4060238550486;
+            max(omega)      132594.2069177589;
+            average(line,p) -55.31666996745106;
+            min(line,p)     -104.4368974696004;
+            max(line,p)     75.48947546144942;
+            average(p)      -55.31666996745106;
+            min(p)          -104.4368974696004;
+            max(p)          75.48947546144942;
+        }
+        label
+        {
+            size(line,k)    229;
+            size(k)         229;
+            size(line,nut)  229;
+            size(nut)       229;
+            size(line,omega) 229;
+            size(omega)     229;
+            size(line,p)    229;
+            size(p)         229;
+            size(line,U)    229;
+            size(U)         229;
+        }
+        vector
+        {
+            average(line,U) ( 36.1462033381 -0.341781475251 4.29988320424e-23 );
+            min(line,U)     ( 13.2941923667 -2.05986257518 -3.53506661524e-19 );
+            max(line,U)     ( 37.8357803086 2.41292242787 3.35158659735e-19 );
+            average(U)      ( 36.1462033381 -0.341781475251 4.29988320424e-23 );
+            min(U)          ( 13.2941923667 -2.05986257518 -3.53506661524e-19 );
+            max(U)          ( 37.8357803086 2.41292242787 3.35158659735e-19 );
+        }
+    }
+    singleGraph_x120
+    {
+        scalar
+        {
+            average(line,k) 0.3456517298422626;
+            min(line,k)     0.07685464877318761;
+            max(line,k)     8.339321540131554;
+            average(k)      0.3456517298422626;
+            min(k)          0.07685464877318761;
+            max(k)          8.339321540131554;
+            average(line,nut) 0.0006681015148120862;
+            min(line,nut)   3.413918217343272e-05;
+            max(line,nut)   0.002229365988156399;
+            average(nut)    0.0006681015148120862;
+            min(nut)        3.413918217343272e-05;
+            max(nut)        0.002229365988156399;
+            average(line,omega) 900.4404979679168;
+            min(line,omega) 145.1178990009493;
+            max(line,omega) 133158.929190118;
+            average(omega)  900.4404979679168;
+            min(omega)      145.1178990009493;
+            max(omega)      133158.929190118;
+            average(line,p) -41.94528256193234;
+            min(line,p)     -74.62275758293303;
+            max(line,p)     28.22011535906008;
+            average(p)      -41.94528256193234;
+            min(p)          -74.62275758293303;
+            max(p)          28.22011535906008;
+        }
+        label
+        {
+            size(line,k)    231;
+            size(k)         231;
+            size(line,nut)  231;
+            size(nut)       231;
+            size(line,omega) 231;
+            size(omega)     231;
+            size(line,p)    231;
+            size(p)         231;
+            size(line,U)    231;
+            size(U)         231;
+        }
+        vector
+        {
+            average(line,U) ( 35.844533359 0.173497181661 6.94150413284e-23 );
+            min(line,U)     ( 14.4953282743 -0.957871883397 -2.1130909208e-19 );
+            max(line,U)     ( 37.0587798618 2.35464524518 1.98678855623e-19 );
+            average(U)      ( 35.844533359 0.173497181661 6.94150413284e-23 );
+            min(U)          ( 14.4953282743 -0.957871883397 -2.1130909208e-19 );
+            max(U)          ( 37.0587798618 2.35464524518 1.98678855623e-19 );
+        }
+    }
+    singleGraph_x130
+    {
+        scalar
+        {
+            average(line,k) 0.3039785215773203;
+            min(line,k)     0.07629112059093475;
+            max(line,k)     6.392139324056355;
+            average(k)      0.3039785215773203;
+            min(k)          0.07629112059093475;
+            max(k)          6.392139324056355;
+            average(line,nut) 0.0006667508412469798;
+            min(line,nut)   3.285483370943664e-05;
+            max(line,nut)   0.001961278985103094;
+            average(nut)    0.0006667508412469798;
+            min(nut)        3.285483370943664e-05;
+            max(nut)        0.001961278985103094;
+            average(line,omega) 874.2999735940707;
+            min(line,omega) 143.7357667596121;
+            max(line,omega) 130985.0107458304;
+            average(omega)  874.2999735940707;
+            min(omega)      143.7357667596121;
+            max(omega)      130985.0107458304;
+            average(line,p) -31.09278492727461;
+            min(line,p)     -51.0043807027241;
+            max(line,p)     7.601199466083167;
+            average(p)      -31.09278492727461;
+            min(p)          -51.0043807027241;
+            max(p)          7.601199466083167;
+        }
+        label
+        {
+            size(line,k)    233;
+            size(k)         233;
+            size(line,nut)  233;
+            size(nut)       233;
+            size(line,omega) 233;
+            size(omega)     233;
+            size(line,p)    233;
+            size(p)         233;
+            size(line,U)    233;
+            size(U)         233;
+        }
+        vector
+        {
+            average(line,U) ( 35.5567011756 0.452462115209 -2.59788225662e-21 );
+            min(line,U)     ( 14.2553226344 -0.362063855302 -1.52064811521e-19 );
+            max(line,U)     ( 36.4293556751 2.22382237405 1.3224379051e-19 );
+            average(U)      ( 35.5567011756 0.452462115209 -2.59788225662e-21 );
+            min(U)          ( 14.2553226344 -0.362063855302 -1.52064811521e-19 );
+            max(U)          ( 36.4293556751 2.22382237405 1.3224379051e-19 );
+        }
+    }
+}
+
+singleGraph_xm214
+{
+    k
+    {
+        file            "<case>/postProcessing/singleGraph_xm214/350/line_k_nut_omega_p_U.xy";
+    }
+    nut
+    {
+        file            "<case>/postProcessing/singleGraph_xm214/350/line_k_nut_omega_p_U.xy";
+    }
+    omega
+    {
+        file            "<case>/postProcessing/singleGraph_xm214/350/line_k_nut_omega_p_U.xy";
+    }
+    p
+    {
+        file            "<case>/postProcessing/singleGraph_xm214/350/line_k_nut_omega_p_U.xy";
+    }
+    U
+    {
+        file            "<case>/postProcessing/singleGraph_xm214/350/line_k_nut_omega_p_U.xy";
+    }
+}
+
+singleGraph_x065
+{
+    k
+    {
+        file            "<case>/postProcessing/singleGraph_x065/350/line_k_nut_omega_p_U.xy";
+    }
+    nut
+    {
+        file            "<case>/postProcessing/singleGraph_x065/350/line_k_nut_omega_p_U.xy";
+    }
+    omega
+    {
+        file            "<case>/postProcessing/singleGraph_x065/350/line_k_nut_omega_p_U.xy";
+    }
+    p
+    {
+        file            "<case>/postProcessing/singleGraph_x065/350/line_k_nut_omega_p_U.xy";
+    }
+    U
+    {
+        file            "<case>/postProcessing/singleGraph_x065/350/line_k_nut_omega_p_U.xy";
+    }
+}
+
+singleGraph_x080
+{
+    k
+    {
+        file            "<case>/postProcessing/singleGraph_x080/350/line_k_nut_omega_p_U.xy";
+    }
+    nut
+    {
+        file            "<case>/postProcessing/singleGraph_x080/350/line_k_nut_omega_p_U.xy";
+    }
+    omega
+    {
+        file            "<case>/postProcessing/singleGraph_x080/350/line_k_nut_omega_p_U.xy";
+    }
+    p
+    {
+        file            "<case>/postProcessing/singleGraph_x080/350/line_k_nut_omega_p_U.xy";
+    }
+    U
+    {
+        file            "<case>/postProcessing/singleGraph_x080/350/line_k_nut_omega_p_U.xy";
+    }
+}
+
+singleGraph_x090
+{
+    k
+    {
+        file            "<case>/postProcessing/singleGraph_x090/350/line_k_nut_omega_p_U.xy";
+    }
+    nut
+    {
+        file            "<case>/postProcessing/singleGraph_x090/350/line_k_nut_omega_p_U.xy";
+    }
+    omega
+    {
+        file            "<case>/postProcessing/singleGraph_x090/350/line_k_nut_omega_p_U.xy";
+    }
+    p
+    {
+        file            "<case>/postProcessing/singleGraph_x090/350/line_k_nut_omega_p_U.xy";
+    }
+    U
+    {
+        file            "<case>/postProcessing/singleGraph_x090/350/line_k_nut_omega_p_U.xy";
+    }
+}
+
+singleGraph_x100
+{
+    k
+    {
+        file            "<case>/postProcessing/singleGraph_x100/350/line_k_nut_omega_p_U.xy";
+    }
+    nut
+    {
+        file            "<case>/postProcessing/singleGraph_x100/350/line_k_nut_omega_p_U.xy";
+    }
+    omega
+    {
+        file            "<case>/postProcessing/singleGraph_x100/350/line_k_nut_omega_p_U.xy";
+    }
+    p
+    {
+        file            "<case>/postProcessing/singleGraph_x100/350/line_k_nut_omega_p_U.xy";
+    }
+    U
+    {
+        file            "<case>/postProcessing/singleGraph_x100/350/line_k_nut_omega_p_U.xy";
+    }
+}
+
+singleGraph_x110
+{
+    k
+    {
+        file            "<case>/postProcessing/singleGraph_x110/350/line_k_nut_omega_p_U.xy";
+    }
+    nut
+    {
+        file            "<case>/postProcessing/singleGraph_x110/350/line_k_nut_omega_p_U.xy";
+    }
+    omega
+    {
+        file            "<case>/postProcessing/singleGraph_x110/350/line_k_nut_omega_p_U.xy";
+    }
+    p
+    {
+        file            "<case>/postProcessing/singleGraph_x110/350/line_k_nut_omega_p_U.xy";
+    }
+    U
+    {
+        file            "<case>/postProcessing/singleGraph_x110/350/line_k_nut_omega_p_U.xy";
+    }
+}
+
+singleGraph_x120
+{
+    k
+    {
+        file            "<case>/postProcessing/singleGraph_x120/350/line_k_nut_omega_p_U.xy";
+    }
+    nut
+    {
+        file            "<case>/postProcessing/singleGraph_x120/350/line_k_nut_omega_p_U.xy";
+    }
+    omega
+    {
+        file            "<case>/postProcessing/singleGraph_x120/350/line_k_nut_omega_p_U.xy";
+    }
+    p
+    {
+        file            "<case>/postProcessing/singleGraph_x120/350/line_k_nut_omega_p_U.xy";
+    }
+    U
+    {
+        file            "<case>/postProcessing/singleGraph_x120/350/line_k_nut_omega_p_U.xy";
+    }
+}
+
+singleGraph_x130
+{
+    k
+    {
+        file            "<case>/postProcessing/singleGraph_x130/350/line_k_nut_omega_p_U.xy";
+    }
+    nut
+    {
+        file            "<case>/postProcessing/singleGraph_x130/350/line_k_nut_omega_p_U.xy";
+    }
+    omega
+    {
+        file            "<case>/postProcessing/singleGraph_x130/350/line_k_nut_omega_p_U.xy";
+    }
+    p
+    {
+        file            "<case>/postProcessing/singleGraph_x130/350/line_k_nut_omega_p_U.xy";
+    }
+    U
+    {
+        file            "<case>/postProcessing/singleGraph_x130/350/line_k_nut_omega_p_U.xy";
+    }
+}
+
+
+// ************************************************************************* //

@@ -58,8 +58,17 @@ def latest_numeric_dir(base: Path) -> Path:
     return max(numeric_dirs, key=lambda item: item[0])[1]
 
 
-def evaluate(case_dir: Path) -> dict[str, object]:
-    latest = latest_numeric_dir(case_dir)
+def select_time_dir(base: Path, time_name: str | None) -> Path:
+    if time_name is None:
+        return latest_numeric_dir(base)
+    candidate = base / time_name
+    if not candidate.is_dir():
+        raise FileNotFoundError(f"Requested time directory {candidate} does not exist")
+    return candidate
+
+
+def evaluate(case_dir: Path, time_name: str | None = None) -> dict[str, object]:
+    latest = select_time_dir(case_dir, time_name)
     coords = parse_internal_field(case_dir / "0" / "C")
     U = parse_internal_field(latest / "U")
     eval_points = np.loadtxt(EVAL_POINTS, delimiter=",")
@@ -94,11 +103,12 @@ def evaluate(case_dir: Path) -> dict[str, object]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("case_dir", type=Path)
+    parser.add_argument("--time", type=str)
     parser.add_argument("--prediction-csv", type=Path)
     parser.add_argument("--summary-json", type=Path)
     args = parser.parse_args()
 
-    result = evaluate(args.case_dir.resolve())
+    result = evaluate(args.case_dir.resolve(), args.time)
     predictions = result.pop("predictions")
     if args.prediction_csv:
         args.prediction_csv.parent.mkdir(parents=True, exist_ok=True)

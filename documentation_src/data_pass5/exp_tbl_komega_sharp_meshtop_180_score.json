@@ -1,0 +1,7 @@
+{
+  "case_dir": "data/NASA_2DWMH_sweep/exp_tbl_komega_sharp_meshtop_180",
+  "time_directory": "150",
+  "num_points": 1000,
+  "score": 0.2501395025585329,
+  "prediction_file": "documentation_src/data_second_pass/exp_tbl_komega_sharp_meshtop_180_predictions.csv"
+}

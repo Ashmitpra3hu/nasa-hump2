@@ -55,6 +55,7 @@ def local_generate(case_dir: Path, env_overrides: dict[str, str]) -> None:
     run(["python3", "scripts/generate_nasa_hump_blockmesh.py"], env=env)
     run(["python3", "scripts/configure_nasa_hump_case.py"], env=env)
     run(["python3", "scripts/write_nasa_hump_inlet_profile.py"], env=env)
+    run(["python3", "scripts/prepare_nasa_hump_model_fields.py"], env=env)
 
 
 def container_case_path(case_dir: Path) -> str:

@@ -53,13 +53,17 @@ TOP_CONTOUR_DIP = env_float("NASA_HUMP_TOP_CONTOUR_DIP", 0.02)
 X_SPLITS = env_float_list("NASA_HUMP_X_SPLITS", [X_MIN, HUMP_START, HUMP_END, X_MAX])
 Y_CELLS = env_int("NASA_HUMP_Y_CELLS", 220)
 X_CELLS = env_int_list("NASA_HUMP_X_CELLS", [280, 320, 220])
+X_GRADING = env_float_list("NASA_HUMP_X_GRADING", [1.0] * (len(X_SPLITS) - 1))
 Y_GRADING = env_float("NASA_HUMP_Y_GRADING", 18.0)
 
-if len(X_SPLITS) != 4:
-    raise ValueError(f"Expected 4 NASA_HUMP_X_SPLITS entries, found {len(X_SPLITS)}")
-
-if len(X_CELLS) != 3:
-    raise ValueError(f"Expected 3 NASA_HUMP_X_CELLS entries, found {len(X_CELLS)}")
+if len(X_SPLITS) < 2:
+    raise ValueError(f"Expected at least 2 NASA_HUMP_X_SPLITS entries, found {len(X_SPLITS)}")
+if any(x1 <= x0 for x0, x1 in zip(X_SPLITS[:-1], X_SPLITS[1:])):
+    raise ValueError("NASA_HUMP_X_SPLITS must be strictly increasing")
+if len(X_CELLS) != len(X_SPLITS) - 1:
+    raise ValueError(f"Expected {len(X_SPLITS) - 1} NASA_HUMP_X_CELLS entries, found {len(X_CELLS)}")
+if len(X_GRADING) != len(X_SPLITS) - 1:
+    raise ValueError(f"Expected {len(X_SPLITS) - 1} NASA_HUMP_X_GRADING entries, found {len(X_GRADING)}")
 
 
 def hump_height(x: float) -> float:
@@ -96,6 +100,66 @@ def format_top_points(x0: float, x1: float, z_sign: float) -> str:
     return "\n".join(lines)
 
 
+num_x = len(X_SPLITS)
+lower_bottom = list(range(0, num_x))
+lower_top = list(range(num_x, 2 * num_x))
+upper_bottom = list(range(2 * num_x, 3 * num_x))
+upper_top = list(range(3 * num_x, 4 * num_x))
+
+
+def vertex_lines() -> list[str]:
+    lines: list[str] = []
+    for z_sign in (-1.0, 1.0):
+        z_val = z_sign * THICKNESS / 2.0
+        for x in X_SPLITS:
+            lines.append(f"    ({x:.9f} {hump_height(x):.9f} {z_val:.9f})")
+        for x in X_SPLITS:
+            lines.append(f"    ({x:.9f} {top_height(x):.9f} {z_val:.9f})")
+    return lines
+
+
+def block_lines() -> list[str]:
+    lines: list[str] = []
+    for i, (n_cells, x_grad) in enumerate(zip(X_CELLS, X_GRADING)):
+        lines.append(
+            "    "
+            f"hex ({lower_bottom[i]} {lower_bottom[i + 1]} {lower_top[i + 1]} {lower_top[i]} "
+            f"{upper_bottom[i]} {upper_bottom[i + 1]} {upper_top[i + 1]} {upper_top[i]}) "
+            f"({n_cells} {Y_CELLS} 1) simpleGrading ({x_grad:g} {Y_GRADING:g} 1)"
+        )
+    return lines
+
+
+def edge_lines() -> list[str]:
+    lines: list[str] = []
+    for i in range(len(X_SPLITS) - 1):
+        lines.extend(
+            [
+                f"    spline {lower_bottom[i]} {lower_bottom[i + 1]}",
+                "    (",
+                format_bottom_points(X_SPLITS[i], X_SPLITS[i + 1], -1.0),
+                "    )",
+                f"    spline {upper_bottom[i]} {upper_bottom[i + 1]}",
+                "    (",
+                format_bottom_points(X_SPLITS[i], X_SPLITS[i + 1], 1.0),
+                "    )",
+                f"    spline {lower_top[i]} {lower_top[i + 1]}",
+                "    (",
+                format_top_points(X_SPLITS[i], X_SPLITS[i + 1], -1.0),
+                "    )",
+                f"    spline {upper_top[i]} {upper_top[i + 1]}",
+                "    (",
+                format_top_points(X_SPLITS[i], X_SPLITS[i + 1], 1.0),
+                "    )",
+            ]
+        )
+    return lines
+
+
+def boundary_face_lines(face_builder) -> list[str]:
+    return [f"            {face_builder(i)}" for i in range(len(X_SPLITS) - 1)]
+
+
 content = f"""/*--------------------------------*- C++ -*----------------------------------*\\
 | =========                 |                                                 |
 | \\\\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -117,65 +181,17 @@ convertToMeters 1;
 
 vertices
 (
-    ({X_SPLITS[0]:.9f} {hump_height(X_SPLITS[0]):.9f} {-THICKNESS / 2:.9f})
-    ({X_SPLITS[1]:.9f} {hump_height(X_SPLITS[1]):.9f} {-THICKNESS / 2:.9f})
-    ({X_SPLITS[2]:.9f} {hump_height(X_SPLITS[2]):.9f} {-THICKNESS / 2:.9f})
-    ({X_SPLITS[3]:.9f} {hump_height(X_SPLITS[3]):.9f} {-THICKNESS / 2:.9f})
-    ({X_SPLITS[0]:.9f} {top_height(X_SPLITS[0]):.9f} {-THICKNESS / 2:.9f})
-    ({X_SPLITS[1]:.9f} {top_height(X_SPLITS[1]):.9f} {-THICKNESS / 2:.9f})
-    ({X_SPLITS[2]:.9f} {top_height(X_SPLITS[2]):.9f} {-THICKNESS / 2:.9f})
-    ({X_SPLITS[3]:.9f} {top_height(X_SPLITS[3]):.9f} {-THICKNESS / 2:.9f})
-    ({X_SPLITS[0]:.9f} {hump_height(X_SPLITS[0]):.9f} {THICKNESS / 2:.9f})
-    ({X_SPLITS[1]:.9f} {hump_height(X_SPLITS[1]):.9f} {THICKNESS / 2:.9f})
-    ({X_SPLITS[2]:.9f} {hump_height(X_SPLITS[2]):.9f} {THICKNESS / 2:.9f})
-    ({X_SPLITS[3]:.9f} {hump_height(X_SPLITS[3]):.9f} {THICKNESS / 2:.9f})
-    ({X_SPLITS[0]:.9f} {top_height(X_SPLITS[0]):.9f} {THICKNESS / 2:.9f})
-    ({X_SPLITS[1]:.9f} {top_height(X_SPLITS[1]):.9f} {THICKNESS / 2:.9f})
-    ({X_SPLITS[2]:.9f} {top_height(X_SPLITS[2]):.9f} {THICKNESS / 2:.9f})
-    ({X_SPLITS[3]:.9f} {top_height(X_SPLITS[3]):.9f} {THICKNESS / 2:.9f})
+{chr(10).join(vertex_lines())}
 );
 
 blocks
 (
-    hex (0 1 5 4 8 9 13 12) ({X_CELLS[0]} {Y_CELLS} 1) simpleGrading (1 {Y_GRADING:g} 1)
-    hex (1 2 6 5 9 10 14 13) ({X_CELLS[1]} {Y_CELLS} 1) simpleGrading (1 {Y_GRADING:g} 1)
-    hex (2 3 7 6 10 11 15 14) ({X_CELLS[2]} {Y_CELLS} 1) simpleGrading (1 {Y_GRADING:g} 1)
+{chr(10).join(block_lines())}
 );
 
 edges
 (
-    spline 1 2
-    (
-{format_bottom_points(X_SPLITS[1], X_SPLITS[2], -1.0)}
-    )
-    spline 9 10
-    (
-{format_bottom_points(X_SPLITS[1], X_SPLITS[2], 1.0)}
-    )
-    spline 4 5
-    (
-{format_top_points(X_SPLITS[0], X_SPLITS[1], -1.0)}
-    )
-    spline 5 6
-    (
-{format_top_points(X_SPLITS[1], X_SPLITS[2], -1.0)}
-    )
-    spline 6 7
-    (
-{format_top_points(X_SPLITS[2], X_SPLITS[3], -1.0)}
-    )
-    spline 12 13
-    (
-{format_top_points(X_SPLITS[0], X_SPLITS[1], 1.0)}
-    )
-    spline 13 14
-    (
-{format_top_points(X_SPLITS[1], X_SPLITS[2], 1.0)}
-    )
-    spline 14 15
-    (
-{format_top_points(X_SPLITS[2], X_SPLITS[3], 1.0)}
-    )
+{chr(10).join(edge_lines())}
 );
 
 boundary
@@ -185,7 +201,7 @@ boundary
         type patch;
         faces
         (
-            (0 8 12 4)
+            ({lower_bottom[0]} {upper_bottom[0]} {upper_top[0]} {lower_top[0]})
         );
     }}
     outlet
@@ -193,7 +209,7 @@ boundary
         type patch;
         faces
         (
-            (3 7 15 11)
+            ({lower_bottom[-1]} {lower_top[-1]} {upper_top[-1]} {upper_bottom[-1]})
         );
     }}
     bottomWall
@@ -201,9 +217,7 @@ boundary
         type wall;
         faces
         (
-            (0 1 9 8)
-            (1 2 10 9)
-            (2 3 11 10)
+{chr(10).join(boundary_face_lines(lambda i: f'({lower_bottom[i]} {lower_bottom[i + 1]} {upper_bottom[i + 1]} {upper_bottom[i]})'))}
         );
     }}
     topWall
@@ -211,9 +225,7 @@ boundary
         type wall;
         faces
         (
-            (4 12 13 5)
-            (5 13 14 6)
-            (6 14 15 7)
+{chr(10).join(boundary_face_lines(lambda i: f'({lower_top[i]} {upper_top[i]} {upper_top[i + 1]} {lower_top[i + 1]})'))}
         );
     }}
     frontAndBack
@@ -221,12 +233,8 @@ boundary
         type empty;
         faces
         (
-            (0 4 5 1)
-            (1 5 6 2)
-            (2 6 7 3)
-            (8 9 13 12)
-            (9 10 14 13)
-            (10 11 15 14)
+{chr(10).join(boundary_face_lines(lambda i: f'({lower_bottom[i]} {lower_top[i]} {lower_top[i + 1]} {lower_bottom[i + 1]})'))}
+{chr(10).join(boundary_face_lines(lambda i: f'({upper_bottom[i]} {upper_bottom[i + 1]} {upper_top[i + 1]} {upper_top[i]})'))}
         );
     }}
 );
@@ -256,7 +264,9 @@ topContourStart {TOP_CONTOUR_START};
 topContourEnd   {TOP_CONTOUR_END};
 topContourDip   {TOP_CONTOUR_DIP};
 yCells      {Y_CELLS};
-xCells      ({X_CELLS[0]} {X_CELLS[1]} {X_CELLS[2]});
+xSplits     ({' '.join(f'{x:.9f}' for x in X_SPLITS)});
+xCells      ({' '.join(str(x) for x in X_CELLS)});
+xGrading    ({' '.join(f'{x:g}' for x in X_GRADING)});
 yGrading    {Y_GRADING};
 """
 

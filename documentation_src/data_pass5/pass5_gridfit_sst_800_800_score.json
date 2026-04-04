@@ -1,0 +1,7 @@
+{
+  "case_dir": "data/NASA_2DWMH_sweep_pass5/pass5_gridfit_sst_800",
+  "time_directory": "800",
+  "num_points": 1000,
+  "score": 0.18663495016470358,
+  "prediction_file": "documentation_src/data_pass5/pass5_gridfit_sst_800_800_predictions.csv"
+}

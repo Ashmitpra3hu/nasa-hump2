@@ -88,6 +88,15 @@ def latest_numeric_dir(base: Path) -> Path:
     return max(numeric_dirs, key=lambda item: item[0])[1]
 
 
+def select_time_dir(base: Path, time_name: str | None) -> Path:
+    if time_name is None:
+        return latest_numeric_dir(base)
+    candidate = base / time_name
+    if not candidate.is_dir():
+        raise FileNotFoundError(f"Requested time directory {candidate} does not exist")
+    return candidate
+
+
 def parse_case_def(path: Path) -> dict[str, object]:
     data: dict[str, object] = {}
     for line in path.read_text().splitlines():
@@ -100,6 +109,9 @@ def parse_case_def(path: Path) -> dict[str, object]:
             data["xMax"] = float(stripped.split()[-1])
         elif stripped.startswith("chord"):
             data["chord"] = float(stripped.split()[-1])
+        elif stripped.startswith("xSplits"):
+            values = stripped[stripped.index("(") + 1:stripped.index(")")].split()
+            data["xSplits"] = [float(v) for v in values]
         elif stripped.startswith("xCells"):
             values = stripped[stripped.index("(") + 1:stripped.index(")")].split()
             data["xCells"] = [int(v) for v in values]
@@ -116,14 +128,22 @@ def load_csv(path: Path, cols: int) -> np.ndarray:
     return np.asarray(rows, dtype=float)
 
 
-def wall_series(case_dir: Path) -> dict[str, np.ndarray]:
-    latest = latest_numeric_dir(case_dir)
+def nearest_sample(x_query: np.ndarray, x_data: np.ndarray, values: np.ndarray) -> np.ndarray:
+    indices = np.abs(x_data[:, None] - x_query[None, :]).argmin(axis=0)
+    return values[indices]
+
+
+def wall_series(case_dir: Path, time_name: str | None = None) -> dict[str, np.ndarray]:
+    latest = select_time_dir(case_dir, time_name)
     coords = parse_internal_field(case_dir / "0" / "C")
     p = parse_internal_field(latest / "p").ravel()
     tau = parse_bottom_wall_shear(latest / "wallShearStress")[:, 0]
     case_def = parse_case_def(case_dir / "caseDef")
 
-    x_splits = np.array([float(case_def["xMin"]), 0.0, float(case_def["chord"]), float(case_def["xMax"])], dtype=float)
+    if "xSplits" in case_def:
+        x_splits = np.asarray(case_def["xSplits"], dtype=float)
+    else:
+        x_splits = np.array([float(case_def["xMin"]), 0.0, float(case_def["chord"]), float(case_def["xMax"])], dtype=float)
     x_cells = list(case_def["xCells"])
     x_centers = []
     for i, n_cells in enumerate(x_cells):
@@ -160,13 +180,13 @@ def wall_series(case_dir: Path) -> dict[str, np.ndarray]:
     }
 
 
-def evaluate(case_dir: Path) -> dict[str, object]:
-    wall = wall_series(case_dir)
+def evaluate(case_dir: Path, time_name: str | None = None) -> dict[str, object]:
+    wall = wall_series(case_dir, time_name)
     cp_exp = load_csv(EXP_DIR / "noflow_cp.csv", 2)
     cf_exp = load_csv(EXP_DIR / "noflow_cf.csv", 3)
 
-    cp_pred = np.interp(cp_exp[:, 0], wall["x_over_c"], wall["Cp"])
-    cf_pred = np.interp(cf_exp[:, 0], wall["x_over_c"], wall["Cf"])
+    cp_pred = nearest_sample(cp_exp[:, 0], wall["x_over_c"], wall["Cp"])
+    cf_pred = nearest_sample(cf_exp[:, 0], wall["x_over_c"], wall["Cf"])
 
     cp_err = cp_pred - cp_exp[:, 1]
     cf_err = cf_pred - cf_exp[:, 1]
@@ -182,10 +202,11 @@ def evaluate(case_dir: Path) -> dict[str, object]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("case_dir", type=Path)
+    parser.add_argument("--time", type=str)
     parser.add_argument("--summary-json", type=Path)
     args = parser.parse_args()
 
-    result = evaluate(args.case_dir.resolve())
+    result = evaluate(args.case_dir.resolve(), args.time)
     if args.summary_json:
         args.summary_json.parent.mkdir(parents=True, exist_ok=True)
         args.summary_json.write_text(json.dumps(result, indent=2))
