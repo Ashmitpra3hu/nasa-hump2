@@ -8,6 +8,10 @@ data/**/VTK/
 data/**/*.vtm
 data/**/*.vtu
 data/**/*.vtp
+data/NASA_2DWMH_mlpass*/
+OpenFOAM/user-v2512/
+ml_models/**/Make/linuxARM64GccDPInt32Opt/
+ml_models/**/lnInclude/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

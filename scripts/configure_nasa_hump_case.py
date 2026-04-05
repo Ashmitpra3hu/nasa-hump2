@@ -37,6 +37,14 @@ def main() -> None:
     p_rel_tol = env_float("NASA_HUMP_P_RELTOL", 0.01)
     ukw_rel_tol = env_float("NASA_HUMP_UKW_RELTOL", 0.05)
     non_orth = env_int("NASA_HUMP_NON_ORTH", 1)
+    ml_correction = os.environ.get("NASA_HUMP_ML_CORRECTION", "true").strip().lower() in {"1", "true", "yes", "on"}
+    ml_amplitude = env_float("NASA_HUMP_ML_AMPLITUDE", 0.0)
+    ml_factor_min = env_float("NASA_HUMP_ML_FACTOR_MIN", 0.85)
+    ml_factor_max = env_float("NASA_HUMP_ML_FACTOR_MAX", 1.60)
+    ml_chi0 = env_float("NASA_HUMP_ML_CHI0", 3.0)
+    ml_chi_width = env_float("NASA_HUMP_ML_CHI_WIDTH", 1.0)
+    ml_y_peak = env_float("NASA_HUMP_ML_Y_PEAK", 0.015)
+    ml_y_width = env_float("NASA_HUMP_ML_Y_WIDTH", 0.010)
 
     if scheme_mode == "stable":
         k_div = "bounded Gauss upwind"
@@ -46,6 +54,22 @@ def main() -> None:
         omega_div = "bounded Gauss linearUpwind grad(omega)"
     else:
         raise ValueError(f"Unsupported NASA_HUMP_SCHEME_MODE '{scheme_mode}'")
+
+    coeff_block = ""
+    if model == "kOmegaSSTML":
+        coeff_block = f"""
+kOmegaSSTMLCoeffs
+{{
+    mlCorrection    {'on' if ml_correction else 'off'};
+    amplitude       {ml_amplitude:.10g};
+    factorMin       {ml_factor_min:.10g};
+    factorMax       {ml_factor_max:.10g};
+    chi0            {ml_chi0:.10g};
+    chiWidth        {ml_chi_width:.10g};
+    yPeak           {ml_y_peak:.10g};
+    yWidth          {ml_y_width:.10g};
+}}
+"""
 
     turbulence_text = f"""/*--------------------------------*- C++ -*----------------------------------*\\
 | =========                 |                                                 |
@@ -71,9 +95,18 @@ RAS
     RASModel        {model};
     turbulence      on;
     printCoeffs     on;
-}}
+}}{coeff_block}
 
 // ************************************************************************* //
+"""
+
+    libs_block = ""
+    if model == "kOmegaSSTML":
+        libs_block = """
+libs
+(
+    "libmlHumpTurbulenceModels.so"
+);
 """
 
     control_text = f"""/*--------------------------------*- C++ -*----------------------------------*\\
@@ -122,6 +155,8 @@ timeFormat      general;
 timePrecision   6;
 
 runTimeModifiable yes;
+
+{libs_block}
 
 functions
 {{

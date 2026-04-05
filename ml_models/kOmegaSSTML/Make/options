@@ -1,0 +1,18 @@
+EXE_INC = \
+    -I$(LIB_SRC)/TurbulenceModels/incompressible/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/incompressible/IncompressibleTurbulenceModel \
+    -I$(LIB_SRC)/TurbulenceModels/incompressible/turbulentTransportModels \
+    -I$(LIB_SRC)/TurbulenceModels/incompressible/turbulentTransportModels/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
+    -I$(LIB_SRC)/transportModels \
+    -I$(LIB_SRC)/transportModels/incompressible/lnInclude \
+    -I$(LIB_SRC)/transportModels/incompressible/singlePhaseTransportModel \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude
+
+LIB_LIBS = \
+    -lincompressibleTransportModels \
+    -lincompressibleTurbulenceModels \
+    -lturbulenceModels \
+    -lfiniteVolume \
+    -lmeshTools
