@@ -8,5 +8,7 @@
 
 #include "turbulentTransportModels.H"
 #include "kOmegaSSTML.H"
+#include "kOmegaSSTML2.H"
 
 makeRASModel(kOmegaSSTML);
+makeRASModel(kOmegaSSTML2);

@@ -45,6 +45,15 @@ def main() -> None:
     ml_chi_width = env_float("NASA_HUMP_ML_CHI_WIDTH", 1.0)
     ml_y_peak = env_float("NASA_HUMP_ML_Y_PEAK", 0.015)
     ml_y_width = env_float("NASA_HUMP_ML_Y_WIDTH", 0.010)
+    ml2_amplitude = env_float("NASA_HUMP_ML2_AMPLITUDE", 0.0)
+    ml2_factor_min = env_float("NASA_HUMP_ML2_FACTOR_MIN", 1.0)
+    ml2_factor_max = env_float("NASA_HUMP_ML2_FACTOR_MAX", 1.8)
+    ml2_apg0 = env_float("NASA_HUMP_ML2_APG0", 0.03)
+    ml2_apg_width = env_float("NASA_HUMP_ML2_APG_WIDTH", 0.02)
+    ml2_shear0 = env_float("NASA_HUMP_ML2_SHEAR0", 0.9)
+    ml2_shear_width = env_float("NASA_HUMP_ML2_SHEAR_WIDTH", 0.2)
+    ml2_y_peak = env_float("NASA_HUMP_ML2_Y_PEAK", 0.018)
+    ml2_y_width = env_float("NASA_HUMP_ML2_Y_WIDTH", 0.012)
 
     if scheme_mode == "stable":
         k_div = "bounded Gauss upwind"
@@ -68,6 +77,22 @@ kOmegaSSTMLCoeffs
     chiWidth        {ml_chi_width:.10g};
     yPeak           {ml_y_peak:.10g};
     yWidth          {ml_y_width:.10g};
+}}
+"""
+    elif model == "kOmegaSSTML2":
+        coeff_block = f"""
+kOmegaSSTML2Coeffs
+{{
+    mlCorrection    on;
+    amplitude       {ml2_amplitude:.10g};
+    factorMin       {ml2_factor_min:.10g};
+    factorMax       {ml2_factor_max:.10g};
+    apg0            {ml2_apg0:.10g};
+    apgWidth        {ml2_apg_width:.10g};
+    shear0          {ml2_shear0:.10g};
+    shearWidth      {ml2_shear_width:.10g};
+    yPeak           {ml2_y_peak:.10g};
+    yWidth          {ml2_y_width:.10g};
 }}
 """
 
@@ -101,7 +126,7 @@ RAS
 """
 
     libs_block = ""
-    if model == "kOmegaSSTML":
+    if model in {"kOmegaSSTML", "kOmegaSSTML2"}:
         libs_block = """
 libs
 (
