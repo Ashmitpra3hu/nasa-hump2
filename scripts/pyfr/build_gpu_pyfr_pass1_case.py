@@ -204,6 +204,21 @@ riemann-solver = rusanov
 ldg-beta = 0.5
 ldg-tau = 0.1
 
+[solver-interfaces-line]
+flux-pts = gauss-legendre
+quad-deg = {2*order + 4}
+quad-pts = gauss-legendre
+
+[solver-elements-quad]
+soln-pts = gauss-legendre
+quad-deg = {2*order + 4}
+quad-pts = gauss-legendre
+
+[solver-elements-tri]
+soln-pts = williams-shunn
+quad-deg = {2*order + 4}
+quad-pts = williams-shunn
+
 [soln-ics]
 p = 0.0
 u = {U_INF:.6f}
@@ -218,24 +233,24 @@ v = 0.0
 type = ac-out-fp
 p = 0.0
 
-[soln-bcs-bottomWall]
+[soln-bcs-bottomwall]
 type = no-slp-wall
 u = 0.0
 v = 0.0
 
-[soln-bcs-topWall]
+[soln-bcs-topwall]
 type = slp-wall
 
 [soln-plugin-writer]
 basedir = {run_dir}/solutions
 basename = {run_name}
-dt-out = {max(dt, tend / 4.0):.6f}
+dt-out = {dt:.6f}
 
 [soln-plugin-pseudostats]
 file = {run_dir}/pseudo_stats
 flushsteps = 20
 
-[soln-plugin-fluidforce-bottomWall]
+[soln-plugin-fluidforce-bottomwall]
 nsteps = 5
 file = {run_dir}/fluidforce_bottomWall
 """

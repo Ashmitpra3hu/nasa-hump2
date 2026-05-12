@@ -47,3 +47,6 @@ fi
 if [[ -f "${SOURCE_DIR}/nasa_hump_mlpass2_report.tex" ]]; then
   compile_tex "${SOURCE_DIR}/nasa_hump_mlpass2_report.tex" "mlpass2.pdf"
 fi
+if [[ -f "${SOURCE_DIR}/gpu_pyfr_pass1/main.tex" ]]; then
+  compile_tex "${SOURCE_DIR}/gpu_pyfr_pass1/main.tex" "gpu_pyfr_pass1.pdf"
+fi

@@ -18,20 +18,24 @@ python scripts/pyfr/build_gpu_pyfr_pass1_case.py --variant medium
 pyfr import data/NASA_2DWMH_PyFR/meshes/nasa_hump_medium.msh data/NASA_2DWMH_PyFR/meshes/nasa_hump_medium.pyfrm
 
 mkdir -p runs/gpu_pyfr_pass1/medium
+mkdir -p runs/gpu_pyfr_pass1/medium/solutions
 
 sbatch <<'EOF'
 #!/bin/bash
 #SBATCH -A rmaulik
+#SBATCH -p a100-40gb
 #SBATCH -J pyfr-hump-med
 #SBATCH -N 1
 #SBATCH --ntasks=1
 #SBATCH --gpus-per-node=1
+#SBATCH --mem=240G
 #SBATCH -t 00:30:00
 #SBATCH -o runs/gpu_pyfr_pass1/medium/slurm-%j.out
 #SBATCH -e runs/gpu_pyfr_pass1/medium/slurm-%j.err
 
 set -euo pipefail
 cd "$SLURM_SUBMIT_DIR"
+mkdir -p runs/gpu_pyfr_pass1/medium/solutions
 module load gcc/11.5.0 openmpi/4.1.6 cuda/12.6.0
 source "$(cd "$SLURM_SUBMIT_DIR/.." && pwd)/pyfr-venv/bin/activate"
 hostname

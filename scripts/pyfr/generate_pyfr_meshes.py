@@ -38,12 +38,13 @@ def top_height(x: float) -> float:
     return TOP_Z - TOP_CONTOUR_DIP * math.sin(math.pi * xi) ** 2
 
 
-def add_spline(x0: float, x1: float, fn, nctrl: int) -> tuple[int, int, int]:
-    tags = []
-    for i in range(nctrl):
+def add_segment_spline(p0: int, p1: int, x0: float, x1: float, fn, nctrl: int) -> int:
+    tags = [p0]
+    for i in range(1, nctrl - 1):
         x = x0 + (x1 - x0) * i / (nctrl - 1)
         tags.append(gmsh.model.geo.addPoint(x, fn(x), 0.0))
-    return tags[0], gmsh.model.geo.addSpline(tags), tags[-1]
+    tags.append(p1)
+    return gmsh.model.geo.addSpline(tags)
 
 
 def set_curve(curve: int, npts: int, progression: float = 1.0) -> None:
@@ -98,56 +99,45 @@ def build_hump(path: Path, xcells: list[int], ycells: int, order: int) -> None:
     gmsh.option.setNumber("Mesh.MshFileVersion", 2.2)
     gmsh.model.add(f"nasa-hump-p{order}")
 
-    bottom_curves = []
-    top_curves = []
-    lower_pts = []
-    upper_pts = []
-
-    for i, (x0, x1) in enumerate(zip(X_SPLITS[:-1], X_SPLITS[1:])):
-        p0, cb, p1 = add_spline(x0, x1, hump_height, 41)
-        q0, ct, q1 = add_spline(x0, x1, top_height, 41)
-        if i == 0:
-            lower_pts.append(p0)
-            upper_pts.append(q0)
-        lower_pts.append(p1)
-        upper_pts.append(q1)
-        bottom_curves.append(cb)
-        top_curves.append(ct)
-
-    verticals = [gmsh.model.geo.addLine(pb, pt) for pb, pt in zip(lower_pts, upper_pts)]
-
-    surfaces = []
-    for i in range(3):
-        loop = gmsh.model.geo.addCurveLoop(
-            [
-                bottom_curves[i],
-                verticals[i + 1],
-                -top_curves[i],
-                -verticals[i],
-            ]
+    npts = sum(xcells) // 2 + 40
+    xs = [X_MIN + (X_MAX - X_MIN) * i / (npts - 1) for i in range(npts)]
+    lower_pts = [
+        gmsh.model.geo.addPoint(
+            x,
+            hump_height(x),
+            0.0,
+            0.006 if 0.0 <= x <= 0.55 else 0.012,
         )
-        surf = gmsh.model.geo.addPlaneSurface([loop])
-        surfaces.append(surf)
+        for x in xs
+    ]
+    upper_pts = [
+        gmsh.model.geo.addPoint(
+            x,
+            top_height(x),
+            0.0,
+            0.010 if -0.25 <= x <= 0.65 else 0.015,
+        )
+        for x in xs
+    ]
+
+    bottom_curves = [gmsh.model.geo.addLine(lower_pts[i], lower_pts[i + 1]) for i in range(npts - 1)]
+    top_curves = [gmsh.model.geo.addLine(upper_pts[i], upper_pts[i + 1]) for i in range(npts - 1)]
+    left = gmsh.model.geo.addLine(lower_pts[0], upper_pts[0])
+    right = gmsh.model.geo.addLine(lower_pts[-1], upper_pts[-1])
+
+    loop = gmsh.model.geo.addCurveLoop(bottom_curves + [right] + [-c for c in reversed(top_curves)] + [-left])
+    surface = gmsh.model.geo.addPlaneSurface([loop])
 
     gmsh.model.geo.synchronize()
 
-    x_progress = [1.15, 1.0, 0.9]
-    for i in range(3):
-        set_curve(bottom_curves[i], xcells[i] + 1, x_progress[i])
-        set_curve(top_curves[i], xcells[i] + 1, x_progress[i])
-    for idx, curve in enumerate(verticals):
-        progression = 1.0 if idx in {0, len(verticals) - 1} else 1.06
-        set_curve(curve, ycells + 1, progression)
-
-    for surf, p1, p2, p3, p4 in zip(surfaces, lower_pts[:-1], lower_pts[1:], upper_pts[1:], upper_pts[:-1]):
-        gmsh.model.mesh.setTransfiniteSurface(surf, "Left", [p1, p2, p3, p4])
-        gmsh.model.mesh.setRecombine(2, surf)
-
-    gmsh.model.addPhysicalGroup(1, [verticals[0]], name="inlet")
-    gmsh.model.addPhysicalGroup(1, [verticals[-1]], name="outlet")
+    gmsh.model.addPhysicalGroup(1, [left], name="inlet")
+    gmsh.model.addPhysicalGroup(1, [right], name="outlet")
     gmsh.model.addPhysicalGroup(1, bottom_curves, name="bottomWall")
     gmsh.model.addPhysicalGroup(1, top_curves, name="topWall")
-    gmsh.model.addPhysicalGroup(2, surfaces, name="fluid")
+    gmsh.model.addPhysicalGroup(2, [surface], name="fluid")
+
+    gmsh.option.setNumber("Mesh.Algorithm", 6)
+    gmsh.option.setNumber("Mesh.Smoothing", 10)
 
     gmsh.model.mesh.generate(2)
     path.parent.mkdir(parents=True, exist_ok=True)

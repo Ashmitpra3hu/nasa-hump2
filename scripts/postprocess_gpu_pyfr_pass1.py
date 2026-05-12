@@ -231,6 +231,23 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(summary_rows)
 
+    lines = [
+        "\\begin{tabular}{lrrrr}",
+        "\\toprule",
+        "Case & Benchmark MAE & Cp MAE & Cf MAE & Samples\\\\",
+        "\\midrule",
+    ]
+    for row in summary_rows:
+        lines.append(
+            f"{row.get('case','-')} & "
+            f"{row.get('benchmark_mae', float('nan')):.6f} & "
+            f"{row.get('cp_mae', float('nan')):.6f} & "
+            f"{row.get('cf_mae', float('nan')):.6f} & "
+            f"{row.get('n_eval', 0)}\\\\"
+        )
+    lines.extend(["\\bottomrule", "\\end{tabular}"])
+    (OUT_DATA / "summary_table.tex").write_text("\n".join(lines))
+
     print(json.dumps({"rows": summary_rows}, indent=2))
 
 
