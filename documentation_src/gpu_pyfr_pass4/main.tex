@@ -1,0 +1,186 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{siunitx}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\title{GPU PyFR PASS 4 -- Wall-Data Extraction and Optimization for NASA Hump on Gilbreth}
+\author{OpenAI Codex workflow inside \texttt{nasa-hump2}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Objective}
+GPU PyFR PASS 4 extends the first working PASS 3 hump run into the first useful PyFR validation package. The focus is deliberately narrow: keep the no-sampler GPU execution path stable, run it longer, extract wall pressure externally from the exported VTU, and compare the resulting \textit{Cp} curve against the official NASA experimental data without using traced curves, hidden data, or post-hoc fitting.
+
+\section{What PASS 3 Achieved}
+PASS 3 established the first completed PyFR NASA hump execution on Gilbreth. It used:
+\begin{itemize}
+  \item PyFR \texttt{1.15.0},
+  \item \texttt{ac-navier-stokes},
+  \item order 1,
+  \item the medium piecewise-linear triangular hump mesh,
+  \item one \texttt{A100-40gb},
+  \item no sampler plugins.
+\end{itemize}
+That pass produced a valid \texttt{.pyfrs} file, a VTU export, and a short pseudo-stat history.
+
+\section{What PASS 3 Lacked}
+PASS 3 still lacked the items needed for validation:
+\begin{itemize}
+  \item no external wall-pressure extraction,
+  \item no \textit{Cp} comparison,
+  \item no defensible \textit{Cf},
+  \item no honest benchmark MAE.
+\end{itemize}
+PASS 4 therefore does not change the whole modeling path. It only stretches the stable run and adds the first VTU-based wall-data workflow.
+
+\section{PASS 4 Strategy}
+The PASS 4 sequence is:
+\begin{enumerate}
+  \item rerun the hump case longer with the same no-sampler path,
+  \item export the final VTU field,
+  \item extract lower-wall pressure externally from the VTU,
+  \item convert that pressure to \textit{Cp} using the same freestream reference values already used elsewhere in the repository,
+  \item compare against the official machine-readable NASA \textit{Cp} file using nearest-CFD-sample matching only.
+\end{enumerate}
+
+\section{Gilbreth GPU Environment}
+PASS 4 reuses the same stable environment as PASS 3:
+\begin{itemize}
+  \item \texttt{gcc/11.5.0},
+  \item \texttt{openmpi/4.1.6},
+  \item \texttt{cuda/12.6.0},
+  \item one \texttt{A100-40gb},
+  \item Slurm partition \texttt{a100-40gb}.
+\end{itemize}
+
+\section{PyFR Configuration}
+PASS 4 preserves the PASS 3 physics and mesh family:
+\begin{itemize}
+  \item system: \texttt{ac-navier-stokes},
+  \item order: 1,
+  \item same medium triangular hump mesh,
+  \item no sampler plugins,
+  \item longer final time and more writer output.
+\end{itemize}
+
+\section{Longer-Run Setup}
+The PASS 4 long case writes:
+\begin{itemize}
+  \item solution snapshots under \texttt{runs/gpu\_pyfr\_pass4/long/solutions},
+  \item pseudo-stat history under \texttt{runs/gpu\_pyfr\_pass4/long/pseudo\_stats.csv},
+  \item a final VTU export for external postprocessing.
+\end{itemize}
+
+\section{External Postprocessing Method}
+PASS 4 uses two external stages:
+\begin{itemize}
+  \item a Python postprocessor for status/pseudo-stat summaries,
+  \item a VTK-based wall extractor executed through \texttt{pvpython} for lower-wall pressure recovery from the VTU.
+\end{itemize}
+This keeps the wall-data pipeline outside the solver and avoids reintroducing the PASS 1 sampler failure path.
+
+\section{Wall-Pressure Extraction Method}
+The wall-pressure extractor groups VTU points by streamwise location, finds the lowest-\(y\) points at each location, averages the pressure on that lower envelope, and converts it to \textit{Cp} using:
+\[
+C_p = \frac{p - p_{\mathrm{ref}}}{\tfrac{1}{2}\rho U_\infty^2}
+\]
+with \(U_\infty = \SI{34.6}{m/s}\), \(\rho = \SI{1.225}{kg/m^3}\), and an upstream pressure reference chosen from the exported field itself. The comparison to NASA data uses nearest-CFD-sample matching only; no target interpolation is performed.
+
+\section{Results Table}
+\begin{center}
+\small
+\input{../gpu_pyfr_pass4/data/summary_table.tex}
+\end{center}
+
+\section{Required Graphs}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../gpu_pyfr_pass4/figures/pyfr_pass4_pseudo_stats.png}
+  \caption{Pseudo-stat history from the longer PASS 4 run.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../gpu_pyfr_pass4/figures/pyfr_cp_comparison.png}
+  \caption{PASS 4 PyFR \textit{Cp} comparison against the official NASA experimental data.}
+\end{figure}
+
+\section{ParaView Simulation Images}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../gpu_pyfr_pass4/paraview/pass4_mesh.png}
+  \caption{PASS 4 mesh render from the exported VTU.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../gpu_pyfr_pass4/paraview/pass4_velocity.png}
+  \caption{PASS 4 velocity-magnitude render.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../gpu_pyfr_pass4/paraview/pass4_pressure.png}
+  \caption{PASS 4 pressure render.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../gpu_pyfr_pass4/paraview/pass4_streamlines.png}
+  \caption{PASS 4 streamline-style render from the exported VTU field.}
+\end{figure}
+
+\section{Cf and Benchmark MAE}
+\textit{Cf} is reported as unavailable in this pass unless an external wall-shear extraction path from the VTU can be defended physically. PASS 4 does not invent or back-fit \textit{Cf}. For the same reason, benchmark MAE is only reported if the PyFR field can be mapped honestly into the existing benchmark-evaluation workflow. If that mapping is unavailable, the report states that explicitly instead of pretending a cross-method score exists.
+
+\section{Comparison Against the OpenFOAM Baseline}
+The OpenFOAM SST cases remain the validated accuracy reference in the repository. PASS 4 should be read as a cross-method PyFR reconstruction package, not as an SST-equivalent replacement. The useful comparison here is methodological:
+\begin{itemize}
+  \item OpenFOAM SST still owns the strongest benchmark/validation scores,
+  \item PyFR PASS 4 demonstrates a GPU-native hump workflow with external wall-pressure extraction,
+  \item any agreement or disagreement with NASA \textit{Cp} must be interpreted through that different modeling context.
+\end{itemize}
+
+\section{Limitations}
+\begin{itemize}
+  \item PASS 4 still uses \texttt{ac-navier-stokes}, not SST RANS.
+  \item The wall-pressure extraction is based on the lower-envelope point set of the exported VTU, not an exact boundary quadrature reconstruction.
+  \item \textit{Cf} may remain unavailable.
+  \item Benchmark MAE may remain unavailable if no honest mapping exists.
+\end{itemize}
+
+\section{Reproducibility Commands}
+See \texttt{documentation\_src/gpu\_pyfr\_pass4/REPRODUCIBILITY.md}. The essential workflow is:
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+ssh gilbreth
+cd /scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/repo_git
+bash scripts/submit_pyfr_pass4_long_gilbreth.sh
+
+cd /Users/ashmitprabhu/github/nasa-hump2
+bash scripts/fetch_gpu_pyfr_pass4_results.sh
+MPLCONFIGDIR=docs/.mplconfig python3 scripts/postprocess_gpu_pyfr_pass4.py
+'/Users/ashmitprabhu/Desktop/ParaView-6.1.0-RC1.app/Contents/bin/pvpython' \
+  scripts/render_gpu_pyfr_pass4_paraview.py velocity
+bash scripts/build_report.sh
+\end{lstlisting}
+
+\section{Conclusion}
+GPU PyFR PASS 4 turns the PASS 3 execution milestone into the first external wall-data validation workflow. Its main value is not claiming SST-level benchmark parity; it is establishing a reproducible GPU PyFR hump path that can now produce an honest \textit{Cp} comparison and a much clearer next-step roadmap for wall-shear and benchmark mapping.
+
+\bibliographystyle{plain}
+\bibliography{../gpu_pyfr_pass1/references}
+
+\end{document}

@@ -1,0 +1,16 @@
+{
+  "summary": {
+    "case": "pass4_long",
+    "status": "missing_outputs",
+    "job_id": "unknown",
+    "partition": "a100-40gb",
+    "notes": "Longer no-sampler PASS 4 PyFR run used for external wall-pressure extraction.",
+    "pseudo_rows": 0,
+    "pseudo_final_time": null,
+    "finite_rows": 0
+  },
+  "cp_summary": {
+    "cp_available": false,
+    "notes": "VTU export missing, so external wall-pressure extraction could not run."
+  }
+}

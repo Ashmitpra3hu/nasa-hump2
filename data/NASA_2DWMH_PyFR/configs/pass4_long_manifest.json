@@ -1,0 +1,15 @@
+{
+  "mesh": "nasa_hump_medium.pyfrm",
+  "run_name": "pass4_long",
+  "variant": "long",
+  "order": 1,
+  "tend": 0.1,
+  "dt": 0.01,
+  "pseudo_dt": 0.0005,
+  "pseudo_niters_max": 8,
+  "plugins": [
+    "writer",
+    "pseudostats"
+  ],
+  "notes": "Longer PASS 4 no-sampler GPU hump configuration intended for external wall-pressure extraction."
+}

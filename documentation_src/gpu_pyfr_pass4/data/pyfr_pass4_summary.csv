@@ -1,0 +1,11 @@
+metric,value
+summary.case,pass4_long
+summary.status,missing_outputs
+summary.job_id,unknown
+summary.partition,a100-40gb
+summary.notes,Longer no-sampler PASS 4 PyFR run used for external wall-pressure extraction.
+summary.pseudo_rows,0
+summary.pseudo_final_time,
+summary.finite_rows,0
+cp_summary.cp_available,False
+cp_summary.notes,"VTU export missing, so external wall-pressure extraction could not run."
