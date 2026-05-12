@@ -1,0 +1,8 @@
+{
+  "p_ref": NaN,
+  "num_wall_rows": 99705,
+  "num_comparison_rows": 126,
+  "cp_mae": NaN,
+  "finite_cp_matches": 0,
+  "notes": "Nearest-CFD-sample comparison against official NASA Cp data. No target interpolation or wall-sampler plugin was used."
+}

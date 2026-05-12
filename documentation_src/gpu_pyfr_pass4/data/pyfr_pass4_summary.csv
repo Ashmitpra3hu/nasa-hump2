@@ -1,11 +1,23 @@
 metric,value
 summary.case,pass4_long
-summary.status,missing_outputs
-summary.job_id,unknown
+summary.status,completed
+summary.job_id,10702493
 summary.partition,a100-40gb
 summary.notes,Longer no-sampler PASS 4 PyFR run used for external wall-pressure extraction.
-summary.pseudo_rows,0
-summary.pseudo_final_time,
+summary.hostname,gilbreth-n002.rcac.purdue.edu
+summary.start_line,Tue May 12 12:29:47 EDT 2026
+summary.gpu_line,|   0  NVIDIA A100-SXM4-40GB          On  |   00000000:81:00.0 Off |                    0 |
+summary.python_version,Python 3.9.25
+summary.pyfr_version,pyfr 1.15.0
+summary.pseudo_rows,88
+summary.pseudo_final_time,0.09999999999999999
 summary.finite_rows,0
+cp_summary.p_ref,nan
+cp_summary.num_wall_rows,99705
+cp_summary.num_comparison_rows,126
+cp_summary.cp_mae,nan
+cp_summary.finite_cp_matches,0
+cp_summary.notes,"PASS 4 wall-pressure extraction ran, but the exported field did not contain enough finite wall pressure values for a defensible Cp comparison."
 cp_summary.cp_available,False
-cp_summary.notes,"VTU export missing, so external wall-pressure extraction could not run."
+cp_summary.cp_dx_abs_max,0.12500006244296102
+cp_summary.cp_dx_abs_mean,0.0023984352451628514

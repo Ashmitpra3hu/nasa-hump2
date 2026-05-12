@@ -136,8 +136,16 @@ def run_wall_extraction() -> dict[str, object]:
     vtu_path = RUN_DIR / "pass4_long_latest.vtu"
     raw_csv = OUT_DATA / "pyfr_wall_pressure_raw.csv"
     cmp_csv = OUT_DATA / "pyfr_cp_comparison.csv"
+    cmp_json = cmp_csv.with_suffix(".json")
     if not vtu_path.exists():
         return {"cp_available": False, "notes": "VTU export missing, so external wall-pressure extraction could not run."}
+
+    if raw_csv.exists() and cmp_csv.exists() and cmp_json.exists():
+        summary = json.loads(cmp_json.read_text())
+        summary["cp_available"] = bool(summary.get("finite_cp_matches", 0)) and np.isfinite(summary.get("cp_mae", np.nan))
+        if not summary["cp_available"]:
+            summary["notes"] = "PASS 4 wall-pressure extraction ran, but the exported field did not contain enough finite wall pressure values for a defensible Cp comparison."
+        return summary
 
     if not PV_PYTHON.exists():
         return {"cp_available": False, "notes": "pvpython was not found locally, so VTK-based wall-pressure extraction could not run."}
@@ -153,7 +161,7 @@ def run_wall_extraction() -> dict[str, object]:
         ],
         check=True,
     )
-    summary = json.loads(cmp_csv.with_suffix(".json").read_text())
+    summary = json.loads(cmp_json.read_text())
     summary["cp_available"] = bool(summary.get("finite_cp_matches", 0)) and np.isfinite(summary.get("cp_mae", np.nan))
     if not summary["cp_available"]:
         summary["notes"] = "PASS 4 wall-pressure extraction ran, but the exported field did not contain enough finite wall pressure values for a defensible Cp comparison."
