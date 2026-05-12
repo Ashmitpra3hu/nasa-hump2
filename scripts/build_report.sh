@@ -53,3 +53,6 @@ fi
 if [[ -f "${SOURCE_DIR}/gpu_pyfr_pass2/main.tex" ]]; then
   compile_tex "${SOURCE_DIR}/gpu_pyfr_pass2/main.tex" "gpu_pyfr_pass2.pdf"
 fi
+if [[ -f "${SOURCE_DIR}/gpu_pyfr_pass3/main.tex" ]]; then
+  compile_tex "${SOURCE_DIR}/gpu_pyfr_pass3/main.tex" "gpu_pyfr_pass3.pdf"
+fi

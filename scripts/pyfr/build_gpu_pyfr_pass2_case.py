@@ -162,15 +162,17 @@ dt-out = {dt:.6f}
 [soln-plugin-pseudostats]
 file = {run_dir}/pseudo_stats
 flushsteps = 20
-
-[soln-plugin-fluidforce-bottomwall]
-nsteps = 5
-file = {run_dir}/fluidforce_bottomWall
 """
 
     sets = sample_sets()
     if sampler_mode == "minimal":
         return text
+    text += f"""
+
+[soln-plugin-fluidforce-bottomwall]
+nsteps = 5
+file = {run_dir}/fluidforce_bottomWall
+"""
     if sampler_mode == "field_only":
         return text + f"""
 

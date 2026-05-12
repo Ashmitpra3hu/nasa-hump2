@@ -1,0 +1,15 @@
+{
+  "mesh": "nasa_hump_medium.pyfrm",
+  "run_name": "pass3_minimal",
+  "variant": "minimal",
+  "order": 1,
+  "tend": 0.02,
+  "dt": 0.01,
+  "pseudo_dt": 0.0005,
+  "pseudo_niters_max": 6,
+  "plugins": [
+    "writer",
+    "pseudostats"
+  ],
+  "notes": "Shortest successful no-sampler PASS 3 GPU hump configuration on Gilbreth A100-40gb."
+}

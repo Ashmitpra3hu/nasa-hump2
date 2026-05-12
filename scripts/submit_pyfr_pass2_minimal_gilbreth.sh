@@ -15,9 +15,11 @@ case "${MODE}" in
     ;;
 esac
 
-PYFR_PARTITION="${PYFR_PARTITION:-a30}"
-PYFR_MEM="${PYFR_MEM:-64G}"
-PYFR_WALLTIME="${PYFR_WALLTIME:-00:20:00}"
+# The rmaulik account on Gilbreth is currently provisioned for hp_a100-40gb.
+# Keep these defaults conservative so the first hump run is easy to schedule.
+PYFR_PARTITION="${PYFR_PARTITION:-a100-40gb}"
+PYFR_MEM="${PYFR_MEM:-32G}"
+PYFR_WALLTIME="${PYFR_WALLTIME:-00:15:00}"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORK_DIR="$(cd "${ROOT_DIR}/.." && pwd)"

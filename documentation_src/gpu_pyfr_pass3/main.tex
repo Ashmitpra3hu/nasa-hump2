@@ -1,0 +1,136 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{siunitx}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\title{GPU PyFR PASS 3 -- First Working NASA Hump GPU Case on Purdue Gilbreth}
+\author{OpenAI Codex workflow inside \texttt{nasa-hump2}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Objective}
+GPU PyFR PASS 3 builds directly on PASS 2, but shifts the target from ``queued and structurally valid'' to ``actually completed on a real GPU.'' The goal of this pass is modest and deliberate: produce the first successful PyFR NASA hump solution on Gilbreth, save the raw field output, and keep the workflow honest about what PyFR can and cannot yet reproduce compared with the OpenFOAM SST baseline.
+
+\section{What PASS 2 Left Unfinished}
+PASS 2 already fixed the sampler-first workflow problem, but it did not finish with a completed hump run. The main issue turned out to be scheduling rather than case syntax: the early submissions were aimed at GPU partitions that the \texttt{rmaulik} association did not own. PASS 3 therefore keeps the same minimal no-sampler hump philosophy and changes the execution path first:
+\begin{itemize}
+  \item submit only to \texttt{a100-40gb},
+  \item keep the run to a short five-minute backfill-sized job,
+  \item remove the wall-force helper from the minimal case so the first milestone is pure solution output,
+  \item continue to do all field extraction externally from the exported VTU snapshot.
+\end{itemize}
+
+\section{PASS 3 Configuration}
+The successful PASS 3 run used:
+\begin{itemize}
+  \item PyFR \texttt{1.15.0},
+  \item \texttt{ac-navier-stokes},
+  \item order 1,
+  \item the medium piecewise-linear triangular hump mesh,
+  \item \texttt{a100-40gb},
+  \item one GPU,
+  \item \SI{16}{GB} memory request,
+  \item \SI{5}{min} walltime,
+  \item no sampler plugins.
+\end{itemize}
+
+\section{Successful GPU Execution}
+The successful job was Slurm job \texttt{10702409}. It ran on \texttt{gilbreth-n017.rcac.purdue.edu} and completed in \SI{20}{s}. The resulting artifacts were:
+\begin{itemize}
+  \item \texttt{runs/gpu\_pyfr\_pass3/minimal/solutions/pass3\_minimal.pyfrs},
+  \item \texttt{runs/gpu\_pyfr\_pass3/minimal/pass3\_minimal\_latest.vtu},
+  \item \texttt{runs/gpu\_pyfr\_pass3/minimal/pseudo\_stats.csv}.
+\end{itemize}
+
+\begin{center}
+\small
+\input{../data_gpu_pyfr_pass3/summary_table.tex}
+\end{center}
+
+\section{Generated Figures}
+PASS 3 uses external postprocessing and ParaView rendering instead of PyFR samplers.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass3/pass3_mesh.png}
+  \caption{PASS 3 mesh render from the exported VTU, focused on the hump region.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass3/pass3_velocity.png}
+  \caption{Velocity-magnitude render from the first successful PASS 3 PyFR hump solution.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass3/pass3_pressure.png}
+  \caption{Pressure render from the exported PASS 3 VTU snapshot.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass3/pass3_pseudo_stats.png}
+  \caption{Pseudo-stat history captured from the short PASS 3 run. Only the shortest stable run was targeted here, so this figure is a robustness trace rather than a convergence claim.}
+\end{figure}
+
+\section{Comparison Against the OpenFOAM Baseline}
+PASS 3 is an execution milestone, not an accuracy victory. The OpenFOAM SST workflow still remains the only path in the repository with validated wall metrics, official NASA \textit{Cp/Cf} comparisons, and benchmark MAE values near \num{0.15}. PASS 3 does \emph{not} claim equivalence with that baseline because:
+\begin{itemize}
+  \item PyFR here is solving \texttt{ac-navier-stokes}, not SST RANS,
+  \item the run is intentionally short and low-order,
+  \item no defensible wall \textit{Cp/Cf} extraction is included yet.
+\end{itemize}
+
+\section{Why PASS 3 Still Matters}
+Even with those limitations, PASS 3 is a meaningful step because it establishes four things cleanly:
+\begin{enumerate}
+  \item the hump mesh can be imported and advanced on a Gilbreth GPU,
+  \item the no-sampler minimal case can finish,
+  \item PyFR can export a real VTU field for this case family,
+  \item future passes can focus on external wall extraction and careful probe reintroduction instead of basic runtime survival.
+\end{enumerate}
+
+\section{Limitations}
+\begin{itemize}
+  \item No honest benchmark MAE is reported for PASS 3.
+  \item No direct NASA \textit{Cp/Cf} comparison is reported yet.
+  \item The pseudo-stat file has only a very short physical window and no useful finite pressure/velocity residual history beyond proving the run completed.
+  \item PASS 3 should be treated as the first working PyFR hump baseline, not a promoted accuracy case.
+\end{itemize}
+
+\section{Reproducibility}
+The exact commands are recorded in \texttt{documentation\_src/gpu\_pyfr\_pass3/REPRODUCIBILITY.md}. The minimal workflow is:
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+ssh gilbreth
+cd /scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/repo_git
+bash scripts/submit_pyfr_pass3_minimal_gilbreth.sh
+
+cd /Users/ashmitprabhu/github/nasa-hump2
+bash scripts/fetch_gpu_pyfr_pass3_results.sh
+MPLCONFIGDIR=docs/.mplconfig python3 scripts/postprocess_gpu_pyfr_pass3.py
+'/Users/ashmitprabhu/Desktop/ParaView-6.1.0-RC1.app/Contents/bin/pvpython' \
+  scripts/render_gpu_pyfr_pass3_paraview.py velocity
+bash scripts/build_report.sh
+\end{lstlisting}
+
+\section{Conclusion}
+GPU PyFR PASS 3 succeeds at the specific goal that PASS 1 and PASS 2 had not yet achieved: a real NASA hump PyFR job completed on a Gilbreth GPU and wrote reusable solution output. The next best improvement path is to keep this exact execution path stable, then add external wall-pressure extraction and only then attempt sparse, carefully staged probe recovery for NASA-style comparisons.
+
+\bibliographystyle{plain}
+\bibliography{../gpu_pyfr_pass1/references}
+
+\end{document}

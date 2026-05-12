@@ -1,0 +1,2 @@
+case,status,job_id,partition,walltime,notes,hostname,start_line,gpu_line,python_version,pyfr_version,pseudo_rows,pseudo_final_time,finite_rows
+pass3_minimal,completed,10702409,a100-40gb,00:05:00,First successful no-sampler PyFR NASA hump GPU execution on Gilbreth.,gilbreth-n017.rcac.purdue.edu,Tue May 12 10:52:01 EDT 2026,|   0  NVIDIA A100-SXM4-40GB          On  |   00000000:C1:00.0 Off |                    0 |,Python 3.9.25,pyfr 1.15.0,12,0.01,0
