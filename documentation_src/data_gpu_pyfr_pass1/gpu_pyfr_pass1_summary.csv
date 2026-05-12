@@ -1,0 +1,8 @@
+case,display_case,method,job_id,status,mesh_variant,gpu_model,benchmark_mae,cp_mae,cf_mae,notes
+openfoam_pass4_best,OF PASS4,OpenFOAM SST,-,completed,PASS 4 promoted,-,0.16591367469306545,0.17118003257967793,0.0008476129295398964,Best PASS 4 continuation to 650 iterations.
+openfoam_sst_800,OF SST800,OpenFOAM SST,-,completed,PASS 5 continuation,-,0.1547381027802645,0.16417879658978082,0.0007681825222876493,Strongest existing plain-SST baseline entering PyFR PASS 1.
+openfoam_pass5_1200,OF PASS5,OpenFOAM SST,-,completed,PASS 5 promoted,-,0.13589016762007924,0.15375479457711452,0.0006734136383729949,Best local OpenFOAM benchmark after later continuation to 1200 iterations.
+pyfr_smoke_10696809,PyFR smoke,PyFR ac-navier-stokes,10696809,completed,rectangular smoke mesh,A100-40GB,,,,CUDA backend smoke test completed through Slurm; no NASA hump metrics expected.
+pyfr_medium_quad_10696811,PyFR curved,PyFR ac-navier-stokes,10696811,failed,curved structured hump mesh,A100-40GB,,,,Failed during interface face-point sorting inside PyFR element/intersection setup.
+pyfr_medium_tri_10696812,PyFR tri,PyFR ac-navier-stokes,10696812,failed,structured triangular hump mesh,A100-40GB,,,,Structured triangle variant still failed in interface ordering before marching.
+pyfr_medium_lineartri_10696817,PyFR linear tri,PyFR ac-navier-stokes,10696817,failed,piecewise-linear triangular hump mesh,A100-40GB,,,,"Solver advanced beyond import/setup, but sampler plugin failed before evaluation and wall CSV export."

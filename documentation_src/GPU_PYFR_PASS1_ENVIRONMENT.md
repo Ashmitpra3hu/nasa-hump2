@@ -55,6 +55,17 @@ The setup session queried `nvidia-smi` and observed:
 
 This observation came from the accessible environment during setup. Production runs are still required to go through Slurm on a compute allocation rather than relying on the login node.
 
+## GPU Observation on the Slurm Compute Node
+
+The successful smoke test and the later hump attempts ran on the `a100-40gb` partition. The captured Slurm job logs show:
+
+- compute node example: `gilbreth-g001.rcac.purdue.edu`
+- GPU model on compute allocation: `NVIDIA A100-PCIE-40GB`
+- driver version seen in Slurm jobs: `590.48.01`
+- CUDA version reported by `nvidia-smi`: `13.1`
+
+This distinction matters because the login-node observation showed an A30-class device while the actual scheduled jobs used the requested A100 partition.
+
 ## Slurm / Account Notes
 
 The available account listing during setup showed:

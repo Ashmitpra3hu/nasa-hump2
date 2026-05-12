@@ -25,95 +25,130 @@
 \maketitle
 
 \section{Objective}
-This report documents the first GPU-based PyFR reconstruction attempt for the NASA two-dimensional wall-mounted hump case on Purdue RCAC Gilbreth. The purpose of PASS 1 is not to claim OpenFOAM SST equivalence where none exists. Instead, it establishes a reproducible PyFR CUDA workflow on Gilbreth, attempts a physically defensible hump case, and compares the resulting wall metrics against both the official NASA experimental data and the repository's existing OpenFOAM baseline.
+GPU PyFR PASS 1 establishes a reproducible CUDA-backed PyFR workflow for the NASA two-dimensional wall-mounted hump case on Purdue RCAC Gilbreth. The goal of this pass is infrastructure and diagnostic honesty first: prove that PyFR can be installed in user space, submitted through Slurm on a GPU node, and advanced toward a hump reconstruction without borrowing any hidden benchmark solution data.
 
 \section{Prior OpenFOAM Baseline Summary}
-The existing repository already contains multiple OpenFOAM passes for the NASA hump case. The best OpenFOAM-style baseline entering this GPU pass was the deeper-converged SST continuation, with benchmark MAE values in the mid-\num{1.5e-1} range and an established machine-readable comparison pipeline for wall pressure and skin-friction trends.
+The repository already contains multiple OpenFOAM hump passes with official NASA Cp and Cf comparison. Two OpenFOAM checkpoints are the most relevant baselines for this GPU pass:
+\begin{itemize}
+  \item PASS 4 promoted SST continuation to 650 iterations: benchmark MAE \num{0.1659136747}.
+  \item Later plain-SST continuation to 800 iterations: benchmark MAE \num{0.1547381028}.
+\end{itemize}
+These baselines already include the official machine-readable NASA Cp/Cf comparison pipeline and give the PyFR workflow a physically grounded reference point.
+
+\section{PyFR Modeling Scope}
+PyFR PASS 1 uses \texttt{ac-navier-stokes} on the CUDA backend. This is not the same governing-equation and closure package as the existing OpenFOAM steady RANS SST baseline. The comparison is therefore intentionally framed as a cross-method reconstruction attempt rather than a claim of SST equivalence. Any mismatch or failure is documented as a modeling or implementation limitation, not hidden.
 
 \section{Gilbreth GPU Environment}
-The setup was performed on Gilbreth through \texttt{ssh gilbreth}. The exact verified software stack is recorded in \texttt{documentation\_src/GPU\_PYFR\_PASS1\_ENVIRONMENT.md}. The key pieces are:
+The exact environment is recorded in \texttt{documentation\_src/GPU\_PYFR\_PASS1\_ENVIRONMENT.md}. The verified stack used during PASS 1 was:
 \begin{itemize}
-  \item user-space Python virtual environment under Gilbreth scratch,
-  \item \texttt{pyfr 1.15.0},
-  \item \texttt{gcc/11.5.0},
-  \item \texttt{openmpi/4.1.6},
-  \item \texttt{cuda/12.6.0},
-  \item Slurm GPU submission through a single-GPU job script.
+  \item access path: \texttt{ssh gilbreth},
+  \item scratch workspace: \texttt{/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1},
+  \item compiler and MPI modules: \texttt{gcc/11.5.0}, \texttt{openmpi/4.1.6},
+  \item CUDA module: \texttt{cuda/12.6.0},
+  \item Python: \texttt{3.9.25},
+  \item PyFR: \texttt{1.15.0},
+  \item compute-node GPU seen in Slurm jobs: \texttt{NVIDIA A100-PCIE-40GB}.
 \end{itemize}
 
-\section{PyFR Workflow Design}
-The PASS 1 workflow adds the following reproducible pieces:
+\section{Workflow and Reusable Files}
+PASS 1 added a full remote-execution pipeline around PyFR:
 \begin{itemize}
-  \item scripted Gmsh-based smoke and hump mesh generation,
-  \item scripted PyFR \texttt{.ini} generation,
-  \item Slurm submission wrappers for smoke, medium, and promoted runs,
-  \item local postprocessing for benchmark MAE, Cp, Cf, and contour figures,
-  \item report generation integrated into the existing repo pipeline.
+  \item \texttt{scripts/setup\_gilbreth\_pyfr\_env.sh} creates the Gilbreth virtual environment and records environment details.
+  \item \texttt{scripts/pyfr/generate\_pyfr\_meshes.py} builds the smoke mesh and the hump meshes with the same reconstructed lower wall and contoured upper wall used by the OpenFOAM passes.
+  \item \texttt{scripts/pyfr/build\_gpu\_pyfr\_pass1\_case.py} generates PyFR configuration files and sampling manifests.
+  \item \texttt{scripts/submit\_pyfr\_smoke\_gilbreth.sh}, \texttt{scripts/submit\_pyfr\_medium\_gilbreth.sh}, and \texttt{scripts/submit\_pyfr\_promoted\_gilbreth.sh} provide Slurm submission wrappers.
+  \item \texttt{scripts/fetch\_gpu\_pyfr\_pass1\_results.sh} and \texttt{scripts/postprocess\_gpu\_pyfr\_pass1.py} pull lightweight results back into the repo and generate the PASS 1 figures and tables.
 \end{itemize}
-
-\section{Modeling Scope and Limitation}
-PyFR PASS 1 uses \texttt{ac-navier-stokes} on the CUDA backend, not OpenFOAM's steady RANS SST equations. This is a deliberate, honest modeling difference. The comparison to OpenFOAM and NASA therefore evaluates what this PyFR setup can reproduce, but it does not present the run as an SST-equivalent closure.
 
 \section{Mesh and Case Reconstruction}
-The hump geometry is derived from the repository's existing reconstructed NASA hump shape: a smooth cosine-squared lower wall over a \SI{0.42}{m} chord, with the mild contoured upper wall retained to reflect the allowed NASA blockage guidance. The PyFR mesh is built as a quad-dominant two-dimensional transfinite Gmsh mesh with the same three streamwise blocks used by the improved OpenFOAM reconstruction logic.
+The PyFR hump geometry reuses the existing repository reconstruction choices:
+\begin{itemize}
+  \item chord length \SI{0.42}{m},
+  \item lower hump wall represented by the repo's smooth cosine-squared hump,
+  \item mild contoured upper wall retained to approximate blockage guidance from the allowed NASA sources,
+  \item inlet located well upstream of the hump rather than directly at the first validation station.
+\end{itemize}
+The PASS 1 mesh path was deliberately incremental:
+\begin{enumerate}
+  \item a rectangular smoke mesh to validate the CUDA backend and Slurm path,
+  \item a curved structured hump mesh,
+  \item a structured triangular hump mesh,
+  \item a piecewise-linear triangular hump mesh as a more robust fallback.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass1/pyfr_geometry_sampling.png}
+  \caption{Geometry and sampling layout used to build the PyFR hump attempt. The lower wall and upper contour come from the repository's existing reconstruction logic, while the sample points are generated automatically from the local NASA comparison pipeline.}
+\end{figure}
 
 \section{PyFR Numerical Setup}
-The generated PyFR configuration uses:
+The generated PyFR configurations use:
 \begin{itemize}
   \item \texttt{ac-navier-stokes},
   \item double precision,
   \item CUDA backend with \texttt{device-id = local-rank},
   \item \texttt{mpi-type = standard},
-  \item dual-time stepping,
-  \item line-interface and quad-element Gauss--Legendre point sets,
-  \item no-slip lower wall and slip upper wall.
+  \item dual-time integration,
+  \item conservative first-pass polynomial orders and time-step settings,
+  \item no-slip lower wall and slip upper wall,
+  \item sampler plugins for wall, field, profile, and benchmark points on the hump runs.
 \end{itemize}
+Those settings were chosen to start from a numerically conservative baseline instead of attempting an overly aggressive production-quality run on the first GPU pass.
 
-\section{Slurm Workflow}
-The jobs are submitted through:
-\begin{itemize}
-  \item \texttt{scripts/submit\_pyfr\_smoke\_gilbreth.sh}
-  \item \texttt{scripts/submit\_pyfr\_medium\_gilbreth.sh}
-  \item \texttt{scripts/submit\_pyfr\_promoted\_gilbreth.sh}
-\end{itemize}
-Each script requests one GPU, explicitly sets the partition, requests memory, prints environment diagnostics, and writes Slurm logs under \texttt{runs/gpu\_pyfr\_pass1/}.
+\section{Slurm Job Workflow}
+All meaningful work was submitted through Slurm on the \texttt{a100-40gb} partition. The smoke test was required to succeed before escalating to the hump case. The promoted hump job was intentionally not submitted after the medium hump attempts exposed unresolved PyFR mesh/sampler issues.
 
-\section{Results}
-This section is populated from the generated PASS 1 JSON and CSV summaries.
+\section{Run Results}
 
-\subsection{Summary Table}
+\subsection{Outcome Table}
+\begin{center}
+\scriptsize
 \input{../data_gpu_pyfr_pass1/summary_table.tex}
+\end{center}
 
-\subsection{Cp and Cf Comparison}
+\subsection{Attempt Status}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass1/pyfr_attempt_status.png}
+  \caption{PASS 1 PyFR run outcomes. The smoke case completed on the GPU. The hump attempts progressively moved from mesh/interface failures to a later sampler-plugin failure after solver setup.}
+\end{figure}
+
+\subsection{Smoke-Test Diagnostics}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass1/smoke_force_history.png}
+  \caption{Smoke-test force output. The result is useful primarily as a plugin-execution sanity check rather than a physically meaningful aerodynamic signal.}
+\end{figure}
+
+\section{Cp and Cf Comparison Against NASA Data}
+PASS 1 preserved the official machine-readable NASA Cp and Cf import path, but the hump run did not reach a state where valid PyFR wall-distribution CSV files were written. Specifically, job \texttt{10696817} advanced beyond PyFR import and solver setup on the piecewise-linear triangular hump mesh, but then failed inside the sampler plugin when refining the requested sample-point set. Because of that, PASS 1 does \emph{not} claim a valid PyFR hump Cp or Cf curve.
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass1/cp_cf_vs_nasa_gpu_pyfr_pass1.png}
-  \caption{PyFR wall-coefficient comparison against the official NASA machine-readable data.}
+  \caption{Official NASA wall-coefficient data together with the best existing OpenFOAM baseline already present in the repository. PASS 1 did not produce a valid PyFR wall series, so the figure keeps the comparison honest instead of fabricating a PyFR overlay.}
 \end{figure}
 
-\subsection{Field Visualization}
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass1/promoted_field.png}
-  \caption{Promoted PyFR field reconstruction from the sampled GPU run.}
-\end{figure}
-
-\subsection{Pseudo-Residual History}
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass1/promoted_pseudo_stats.png}
-  \caption{Pseudo-residual history from the promoted PyFR run, when available.}
-\end{figure}
-
-\section{Comparison Against OpenFOAM Baseline}
-The benchmark MAE, Cp MAE, and Cf MAE from the PyFR runs are compared against the repository's existing OpenFOAM baseline in the generated summary tables. This comparison is intentionally framed as cross-method benchmarking rather than like-for-like SST closure parity.
+\section{Comparison Against the OpenFOAM Baseline}
+The strongest OpenFOAM continuation already in the repository remains the reference standard for this problem. Relative to that baseline, GPU PyFR PASS 1 achieved the following:
+\begin{itemize}
+  \item successful user-space installation of PyFR on Gilbreth,
+  \item successful Slurm GPU smoke test on an A100 node,
+  \item successful reconstruction and import attempts for multiple hump mesh variants,
+  \item one hump attempt that advanced into solver execution before failing in the sampler stage,
+  \item no valid hump benchmark MAE, Cp MAE, or Cf MAE yet.
+\end{itemize}
+So PASS 1 is scientifically useful as a GPU-workflow baseline, but it is not yet competitive with the OpenFOAM hump benchmark.
 
 \section{Failure Modes and Limitations}
+The dominant PASS 1 limitations are:
 \begin{itemize}
-  \item PyFR PASS 1 is not an SST RANS reproduction.
-  \item Any wall-friction estimate obtained from near-wall sampled velocity gradients is approximate and is reported as such.
-  \item If the promoted hump run fails or remains incomplete, the negative result is still valuable because it validates the environment and narrows the next debugging path.
-  \item The cluster-side raw solution files remain on Gilbreth scratch; the repo keeps the lightweight reproducible scripts, logs, CSV summaries, figures, and report.
+  \item PyFR PASS 1 does not reproduce OpenFOAM SST physics; it uses \texttt{ac-navier-stokes}.
+  \item The curved and structured hump meshes failed in PyFR face-point sorting during interface setup.
+  \item The linearized triangular hump mesh progressed further, but the sampler plugin failed before benchmark and wall-comparison CSV export.
+  \item Without valid hump wall/evaluation output, PASS 1 cannot honestly quote a PyFR benchmark MAE against the NASA hump.
+  \item The smoke-test plugin outputs contained only startup-level force information, which is enough for plumbing validation but not for aerodynamic interpretation.
 \end{itemize}
 
 \section{Reproducibility Commands}
@@ -124,11 +159,16 @@ cd /scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/repo_git
 bash scripts/setup_gilbreth_pyfr_env.sh
 bash scripts/submit_pyfr_smoke_gilbreth.sh
 bash scripts/submit_pyfr_medium_gilbreth.sh
-bash scripts/submit_pyfr_promoted_gilbreth.sh
+
+# Back on the local machine
+cd /Users/ashmitprabhu/github/nasa-hump2
+bash scripts/fetch_gpu_pyfr_pass1_results.sh
+python3 scripts/postprocess_gpu_pyfr_pass1.py
+tectonic -X compile documentation_src/gpu_pyfr_pass1/main.tex --outdir documentation
 \end{lstlisting}
 
-\section{Conclusion and Next Steps}
-GPU PyFR PASS 1 is intended to establish a reproducible GPU CFD baseline on Gilbreth, not to overclaim physical equivalence to the OpenFOAM SST workflow. Its success should be judged first on environment stability and honest comparison quality, then on whether later PyFR passes can improve fidelity with a better mesh, more suitable governing-equation choice, or stronger postprocessing support.
+\section{Conclusion and Next-Step Recommendation}
+GPU PyFR PASS 1 succeeded as an infrastructure pass and failed as a full hump benchmark pass, which is still a valuable result. The most promising next step is not arbitrary tuning; it is to remove or simplify the sampler dependency so that a hump solution can complete and be exported first, then reintroduce benchmark and wall probes in a more PyFR-compatible way. A second practical path would be to revisit the hump mesh construction with an even more PyFR-friendly element/topology strategy before spending more cluster time on higher-fidelity comparisons.
 
 \bibliographystyle{plain}
 \bibliography{references}

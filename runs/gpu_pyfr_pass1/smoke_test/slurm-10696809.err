@@ -1,0 +1,5 @@
+/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/quadrules/__init__.py:3: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_listdir, resource_string
+/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/quadrules/__init__.py:3: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_listdir, resource_string
+[gilbreth-g001.rcac.purdue.edu:3708093] mca_base_component_repository_open: unable to open mca_coll_hcoll: libhcoll.so.1: cannot open shared object file: No such file or directory (ignored)

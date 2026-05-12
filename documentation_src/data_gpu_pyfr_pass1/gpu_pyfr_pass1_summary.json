@@ -1,0 +1,95 @@
+{
+  "rows": [
+    {
+      "case": "openfoam_pass4_best",
+      "display_case": "OF PASS4",
+      "method": "OpenFOAM SST",
+      "job_id": "-",
+      "status": "completed",
+      "mesh_variant": "PASS 4 promoted",
+      "gpu_model": "-",
+      "benchmark_mae": 0.16591367469306545,
+      "cp_mae": 0.17118003257967793,
+      "cf_mae": 0.0008476129295398964,
+      "notes": "Best PASS 4 continuation to 650 iterations."
+    },
+    {
+      "case": "openfoam_sst_800",
+      "display_case": "OF SST800",
+      "method": "OpenFOAM SST",
+      "job_id": "-",
+      "status": "completed",
+      "mesh_variant": "PASS 5 continuation",
+      "gpu_model": "-",
+      "benchmark_mae": 0.1547381027802645,
+      "cp_mae": 0.16417879658978082,
+      "cf_mae": 0.0007681825222876493,
+      "notes": "Strongest existing plain-SST baseline entering PyFR PASS 1."
+    },
+    {
+      "case": "openfoam_pass5_1200",
+      "display_case": "OF PASS5",
+      "method": "OpenFOAM SST",
+      "job_id": "-",
+      "status": "completed",
+      "mesh_variant": "PASS 5 promoted",
+      "gpu_model": "-",
+      "benchmark_mae": 0.13589016762007924,
+      "cp_mae": 0.15375479457711452,
+      "cf_mae": 0.0006734136383729949,
+      "notes": "Best local OpenFOAM benchmark after later continuation to 1200 iterations."
+    },
+    {
+      "case": "pyfr_smoke_10696809",
+      "display_case": "PyFR smoke",
+      "method": "PyFR ac-navier-stokes",
+      "job_id": "10696809",
+      "status": "completed",
+      "mesh_variant": "rectangular smoke mesh",
+      "gpu_model": "A100-40GB",
+      "benchmark_mae": null,
+      "cp_mae": null,
+      "cf_mae": null,
+      "notes": "CUDA backend smoke test completed through Slurm; no NASA hump metrics expected."
+    },
+    {
+      "case": "pyfr_medium_quad_10696811",
+      "display_case": "PyFR curved",
+      "method": "PyFR ac-navier-stokes",
+      "job_id": "10696811",
+      "status": "failed",
+      "mesh_variant": "curved structured hump mesh",
+      "gpu_model": "A100-40GB",
+      "benchmark_mae": null,
+      "cp_mae": null,
+      "cf_mae": null,
+      "notes": "Failed during interface face-point sorting inside PyFR element/intersection setup."
+    },
+    {
+      "case": "pyfr_medium_tri_10696812",
+      "display_case": "PyFR tri",
+      "method": "PyFR ac-navier-stokes",
+      "job_id": "10696812",
+      "status": "failed",
+      "mesh_variant": "structured triangular hump mesh",
+      "gpu_model": "A100-40GB",
+      "benchmark_mae": null,
+      "cp_mae": null,
+      "cf_mae": null,
+      "notes": "Structured triangle variant still failed in interface ordering before marching."
+    },
+    {
+      "case": "pyfr_medium_lineartri_10696817",
+      "display_case": "PyFR linear tri",
+      "method": "PyFR ac-navier-stokes",
+      "job_id": "10696817",
+      "status": "failed",
+      "mesh_variant": "piecewise-linear triangular hump mesh",
+      "gpu_model": "A100-40GB",
+      "benchmark_mae": null,
+      "cp_mae": null,
+      "cf_mae": null,
+      "notes": "Solver advanced beyond import/setup, but sampler plugin failed before evaluation and wall CSV export."
+    }
+  ]
+}

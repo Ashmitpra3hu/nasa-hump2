@@ -1,0 +1,34 @@
+/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/quadrules/__init__.py:3: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_listdir, resource_string
+/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/quadrules/__init__.py:3: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_listdir, resource_string
+[gilbreth-g001.rcac.purdue.edu:3707803] mca_base_component_repository_open: unable to open mca_coll_hcoll: libhcoll.so.1: cannot open shared object file: No such file or directory (ignored)
+Traceback (most recent call last):
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/bin/pyfr", line 6, in <module>
+    sys.exit(main())
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/__main__.py", line 118, in main
+    args.process(args)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/__main__.py", line 251, in process_run
+    _process_common(
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/__main__.py", line 236, in _process_common
+    solver = get_solver(backend, rallocs, mesh, soln, cfg)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/solvers/__init__.py", line 16, in get_solver
+    return get_integrator(backend, systemcls, rallocs, mesh, initsoln, cfg)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/__init__.py", line 36, in get_integrator
+    return integrator(backend, systemcls, rallocs, mesh, initsoln, cfg)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/phys/controllers.py", line 16, in __init__
+    csh(self)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/plugins/writer.py", line 78, in __call__
+    solnfname = self._writer.write(data, intg.tcurr, metadata)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/writers/native.py", line 57, in write
+    self._write(path, data, metadata)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/writers/native.py", line 159, in _write_serial
+    with h5py.File(path, 'w') as f:
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/h5py/_hl/files.py", line 564, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/h5py/_hl/files.py", line 244, in make_fid
+    fid = h5f.create(name, h5f.ACC_TRUNC, fapl=fapl, fcpl=fcpl)
+  File "h5py/_objects.pyx", line 56, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 57, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 122, in h5py.h5f.create
+FileNotFoundError: [Errno 2] Unable to synchronously create file (unable to open file: name = '/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/repo_git/runs/gpu_pyfr_pass1/smoke_test/solutions/smoke_test.pyfrs', errno = 2, error message = 'No such file or directory', flags = 13, o_flags = 242)

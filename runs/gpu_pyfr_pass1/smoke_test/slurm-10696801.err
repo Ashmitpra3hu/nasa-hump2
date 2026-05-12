@@ -1,0 +1,45 @@
+/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/quadrules/__init__.py:3: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_listdir, resource_string
+/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/quadrules/__init__.py:3: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_listdir, resource_string
+[gilbreth-g002.rcac.purdue.edu:3690009] mca_base_component_repository_open: unable to open mca_coll_hcoll: libhcoll.so.1: cannot open shared object file: No such file or directory (ignored)
+Traceback (most recent call last):
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/bin/pyfr", line 6, in <module>
+    sys.exit(main())
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/__main__.py", line 118, in main
+    args.process(args)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/__main__.py", line 251, in process_run
+    _process_common(
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/__main__.py", line 236, in _process_common
+    solver = get_solver(backend, rallocs, mesh, soln, cfg)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/solvers/__init__.py", line 16, in get_solver
+    return get_integrator(backend, systemcls, rallocs, mesh, initsoln, cfg)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/__init__.py", line 36, in get_integrator
+    return integrator(backend, systemcls, rallocs, mesh, initsoln, cfg)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/phys/controllers.py", line 8, in __init__
+    super().__init__(*args, **kwargs)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/phys/steppers.py", line 16, in __init__
+    super().__init__(*args, **kwargs)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/phys/base.py", line 16, in __init__
+    self.pseudointegrator = get_pseudo_integrator(
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/pseudo/__init__.py", line 76, in get_pseudo_integrator
+    return pseudointegrator(backend, systemcls, rallocs, mesh,
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/pseudo/pseudocontrollers.py", line 83, in __init__
+    super().__init__(*args, **kwargs)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/pseudo/pseudocontrollers.py", line 11, in __init__
+    super().__init__(*args, **kwargs)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/pseudo/pseudosteppers.py", line 191, in __init__
+    super().__init__(*args, **kwargs)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/integrators/dual/pseudo/base.py", line 51, in __init__
+    self.system = systemcls(backend, rallocs, mesh, initsoln,
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/solvers/base/system.py", line 60, in __init__
+    bc_inters = self._load_bc_inters(rallocs, mesh, elemap)
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/solvers/base/system.py", line 164, in _load_bc_inters
+    bcclass = bcmap[self.cfg.get(cfgsect, 'type')]
+  File "/scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/pyfr-venv/lib64/python3.9/site-packages/pyfr/inifile.py", line 49, in get
+    val = self._cp.get(section, option, vars=vars)
+  File "/usr/lib64/python3.9/configparser.py", line 781, in get
+    d = self._unify_values(section, vars)
+  File "/usr/lib64/python3.9/configparser.py", line 1152, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'soln-bcs-topwall'

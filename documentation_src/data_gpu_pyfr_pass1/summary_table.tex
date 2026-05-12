@@ -1,0 +1,13 @@
+\begin{tabular}{p{1.8cm} p{1.25cm} p{1.45cm} p{1.35cm} p{1.35cm} p{6.0cm}}
+\toprule
+Case & Status & Benchmark MAE & Cp MAE & Cf MAE & Notes\\
+\midrule
+OF PASS4 & completed & 0.165914 & 0.171180 & 0.000848 & Best PASS 4 continuation to 650 iterations.\\
+OF SST800 & completed & 0.154738 & 0.164179 & 0.000768 & Strongest existing plain-SST baseline entering PyFR PASS 1.\\
+OF PASS5 & completed & 0.135890 & 0.153755 & 0.000673 & Best local OpenFOAM benchmark after later continuation to 1200 iterations.\\
+PyFR smoke & completed & -- & -- & -- & CUDA backend smoke test completed through Slurm; no NASA hump metrics expected.\\
+PyFR curved & failed & -- & -- & -- & Failed during interface face-point sorting inside PyFR element/intersection setup.\\
+PyFR tri & failed & -- & -- & -- & Structured triangle variant still failed in interface ordering before marching.\\
+PyFR linear tri & failed & -- & -- & -- & Solver advanced beyond import/setup, but sampler plugin failed before evaluation and wall CSV export.\\
+\bottomrule
+\end{tabular}
