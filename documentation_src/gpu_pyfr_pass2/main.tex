@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\title{GPU PyFR PASS 2 -- Robust NASA Hump Execution on Purdue Gilbreth}
+\author{OpenAI Codex workflow inside \texttt{nasa-hump2}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Objective}
+GPU PyFR PASS 2 builds directly on PASS 1 and targets one concrete milestone: produce the first valid completed PyFR hump solution on Gilbreth without depending on the PASS 1 sampler stack. The pass is deliberately conservative. The goal is robust completion first, then external postprocessing, and only then carefully staged probe reintroduction.
+
+\section{PASS 1 Failure Diagnosis}
+PASS 1 proved that the environment and Slurm/CUDA path were sound, but it also identified two separate hump-case blockers:
+\begin{itemize}
+  \item the earlier curved and structured hump meshes failed during PyFR face-point/interface sorting,
+  \item the only hump mesh that advanced into the solver then failed inside the sampler plugin before exporting valid wall or benchmark CSVs.
+\end{itemize}
+The detailed diagnosis is recorded in \texttt{documentation\_src/gpu\_pyfr\_pass2/PASS1\_FAILURE\_DIAGNOSIS.md}.
+
+\section{Why Sampler Removal Was the First Fix}
+Because the linearized triangular hump mesh already advanced past import and solver setup in PASS 1, PASS 2 does not start by adding more probes. Instead, it removes all sampler plugins and keeps only:
+\begin{itemize}
+  \item standard solution writing,
+  \item pseudo-stat output,
+  \item integrated wall-force output.
+\end{itemize}
+This isolates the remaining failure mechanism and gives PyFR the best chance to complete a hump solution before any point-localization logic is asked to run.
+
+\section{Gilbreth Environment Summary}
+PASS 2 reuses the verified PASS 1 user-space environment on Gilbreth:
+\begin{itemize}
+  \item access via \texttt{ssh gilbreth},
+  \item workspace rooted in scratch under \texttt{repo\_git},
+  \item \texttt{gcc/11.5.0}, \texttt{openmpi/4.1.6}, \texttt{cuda/12.6.0},
+  \item \texttt{pyfr 1.15.0},
+  \item Slurm GPU execution on the \texttt{a100-40gb} partition.
+\end{itemize}
+
+\section{Mesh and Topology Fixes}
+PASS 2 preserves the most promising PASS 1 hump mesh family: the piecewise-linear triangular mesh. The changes are procedural rather than geometric:
+\begin{itemize}
+  \item keep the lower hump wall and upper contour from the existing reconstruction,
+  \item avoid curved high-order geometry in the first robust hump run,
+  \item audit the generated mesh before submission with \texttt{scripts/pyfr/check\_pyfr\_hump\_mesh.py},
+  \item use order-1 PyFR settings for the first no-sampler execution.
+\end{itemize}
+
+\section{Minimal No-Sampler Run}
+The first PASS 2 submission mode is \texttt{minimal}. It uses:
+\begin{itemize}
+  \item the medium piecewise-linear triangular hump mesh,
+  \item order 1,
+  \item short final time,
+  \item conservative dual-time settings,
+  \item no sampler plugins.
+\end{itemize}
+
+\section{Incremental Sampler Reintroduction}
+Only after the minimal run completes does PASS 2 climb the sampling ladder:
+\begin{enumerate}
+  \item \texttt{minimal}: no samplers,
+  \item \texttt{field\_only}: a handful of safe interior points,
+  \item \texttt{sparse\_wall}: a very small wall-probe set,
+  \item \texttt{full\_wall}: broader wall and evaluation points.
+\end{enumerate}
+Each rung gets its own Slurm log and result directory.
+
+\section{PyFR Output and External Postprocessing}
+PASS 2 moves extraction out of PyFR whenever possible. The postprocessor:
+\begin{itemize}
+  \item reads Slurm logs,
+  \item reads pseudo-stat CSV files,
+  \item checks for exported VTU snapshots,
+  \item builds contours externally if the VTU exists,
+  \item reports Cp/Cf only if they become defensible from the actual outputs.
+\end{itemize}
+
+\section{Run Status}
+\begin{center}
+\small
+\input{../data_gpu_pyfr_pass2/summary_table.tex}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass2/gpu_pyfr_pass2_status.png}
+  \caption{PASS 2 run-status summary from the staged no-sampler-to-full-wall ladder.}
+\end{figure}
+
+\section{Simulation Images and Graphs}
+When a VTU export is available, PASS 2 includes external field plots from that snapshot.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass2/minimal_field.png}
+  \caption{Minimal no-sampler field visualization, if VTU export succeeds.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures_gpu_pyfr_pass2/minimal_pseudo_stats.png}
+  \caption{Pseudo-stat history for the minimal PASS 2 hump run, when the corresponding CSV is available.}
+\end{figure}
+
+\section{Comparison Against OpenFOAM Baseline}
+The OpenFOAM baseline remains stronger scientifically until PyFR produces a valid hump solution with extractable wall metrics. PASS 2 therefore compares itself honestly against the existing OpenFOAM baseline by asking:
+\begin{itemize}
+  \item did the PyFR hump run complete,
+  \item did it export a usable field snapshot,
+  \item did it do so without the PASS 1 sampler failure.
+\end{itemize}
+Only if those conditions are met does it make sense to quote Cp or benchmark-style comparisons.
+
+\section{Limitations}
+\begin{itemize}
+  \item PASS 2 still uses \texttt{ac-navier-stokes}, not OpenFOAM SST.
+  \item Any Cp or Cf comparison is conditional on actual solution export and defensible extraction.
+  \item A completed no-sampler run is a robustness milestone, not an accuracy claim.
+\end{itemize}
+
+\section{Reproducibility Commands}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+cd /Users/ashmitprabhu/github/nasa-hump2
+ssh gilbreth
+cd /scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/repo_git
+bash scripts/setup_gilbreth_pyfr_env.sh
+python3 scripts/pyfr/check_pyfr_hump_mesh.py --variant minimal
+bash scripts/submit_pyfr_pass2_minimal_gilbreth.sh minimal
+
+# Back locally
+cd /Users/ashmitprabhu/github/nasa-hump2
+bash scripts/fetch_gpu_pyfr_pass2_results.sh
+python3 scripts/postprocess_gpu_pyfr_pass2.py
+bash scripts/build_report.sh
+\end{lstlisting}
+
+\section{Conclusion and Next Step}
+PASS 2 is successful if it breaks the PASS 1 dependency on PyFR sampler plugins and produces the first completed hump solution snapshot. If it still fails, the next step remains mesh/import robustness, not physics tuning.
+
+\bibliographystyle{plain}
+\bibliography{../gpu_pyfr_pass1/references}
+
+\end{document}

@@ -1,0 +1,5 @@
+{
+  "case": "full_wall",
+  "status": "not_submitted",
+  "notes": "Held back intentionally because PASS 1 showed that broad wall and evaluation sampling is the fragile failure path. PASS 2 only promotes this rung after minimal and sparse tests succeed."
+}

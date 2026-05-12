@@ -1,0 +1,10 @@
+{
+  "mesh": "nasa_hump_medium.pyfrm",
+  "run_name": "pass2_minimal",
+  "variant": "minimal",
+  "tend": 0.12,
+  "dt": 0.02,
+  "pseudo_dt": 0.0005,
+  "pseudo_niters": 12,
+  "order": 1
+}

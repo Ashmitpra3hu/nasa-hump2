@@ -1,0 +1,10 @@
+\begin{tabular}{p{2.2cm} p{1.3cm} p{1.9cm} p{6.5cm}}
+\toprule
+Case & Status & Final pseudo time & Notes\\
+\midrule
+minimal & pending & -- & Valid no-sampler Slurm submission created on Gilbreth, but still pending behind AssocGrpGRES scheduler limits at the time of local PASS 2 packaging.\\
+field\_only & not\_submitted & -- & Held back intentionally until the no-sampler minimal hump run completes and writes solution output.\\
+sparse\_wall & not\_submitted & -- & Held back intentionally until the no-sampler minimal hump run completes and external postprocessing confirms a usable solution snapshot.\\
+full\_wall & not\_submitted & -- & Held back intentionally because PASS 1 showed that broad wall and evaluation sampling is the fragile failure path. PASS 2 only promotes this rung after minimal and sparse tests succeed.\\
+\bottomrule
+\end{tabular}

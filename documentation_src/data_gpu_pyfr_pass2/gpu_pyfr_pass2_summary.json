@@ -1,0 +1,34 @@
+{
+  "rows": [
+    {
+      "case": "minimal",
+      "status": "pending",
+      "notes": "Valid no-sampler Slurm submission created on Gilbreth, but still pending behind AssocGrpGRES scheduler limits at the time of local PASS 2 packaging.",
+      "job_id": "10702256",
+      "partition": "a100-80gb",
+      "pseudo_rows": 0,
+      "pseudo_final_time": null
+    },
+    {
+      "case": "field_only",
+      "status": "not_submitted",
+      "notes": "Held back intentionally until the no-sampler minimal hump run completes and writes solution output.",
+      "pseudo_rows": 0,
+      "pseudo_final_time": null
+    },
+    {
+      "case": "sparse_wall",
+      "status": "not_submitted",
+      "notes": "Held back intentionally until the no-sampler minimal hump run completes and external postprocessing confirms a usable solution snapshot.",
+      "pseudo_rows": 0,
+      "pseudo_final_time": null
+    },
+    {
+      "case": "full_wall",
+      "status": "not_submitted",
+      "notes": "Held back intentionally because PASS 1 showed that broad wall and evaluation sampling is the fragile failure path. PASS 2 only promotes this rung after minimal and sparse tests succeed.",
+      "pseudo_rows": 0,
+      "pseudo_final_time": null
+    }
+  ]
+}

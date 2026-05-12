@@ -1,0 +1,10 @@
+{
+  "mesh": "nasa_hump_medium.pyfrm",
+  "run_name": "pass2_full_wall",
+  "variant": "full_wall",
+  "tend": 0.08,
+  "dt": 0.02,
+  "pseudo_dt": 0.0003,
+  "pseudo_niters": 10,
+  "order": 1
+}

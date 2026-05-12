@@ -1,0 +1,10 @@
+{
+  "mesh": "nasa_hump_medium.pyfrm",
+  "run_name": "pass2_sparse_wall",
+  "variant": "sparse_wall",
+  "tend": 0.1,
+  "dt": 0.02,
+  "pseudo_dt": 0.0004,
+  "pseudo_niters": 12,
+  "order": 1
+}

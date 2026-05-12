@@ -1,0 +1,7 @@
+{
+  "case": "minimal",
+  "status": "pending",
+  "job_id": "10702256",
+  "partition": "a100-80gb",
+  "notes": "Valid no-sampler Slurm submission created on Gilbreth, but still pending behind AssocGrpGRES scheduler limits at the time of local PASS 2 packaging."
+}

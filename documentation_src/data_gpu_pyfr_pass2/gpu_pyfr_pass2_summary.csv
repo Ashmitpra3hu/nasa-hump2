@@ -1,0 +1,5 @@
+case,job_id,notes,partition,pseudo_final_time,pseudo_rows,status
+minimal,10702256,"Valid no-sampler Slurm submission created on Gilbreth, but still pending behind AssocGrpGRES scheduler limits at the time of local PASS 2 packaging.",a100-80gb,,0,pending
+field_only,,Held back intentionally until the no-sampler minimal hump run completes and writes solution output.,,,0,not_submitted
+sparse_wall,,Held back intentionally until the no-sampler minimal hump run completes and external postprocessing confirms a usable solution snapshot.,,,0,not_submitted
+full_wall,,Held back intentionally because PASS 1 showed that broad wall and evaluation sampling is the fragile failure path. PASS 2 only promotes this rung after minimal and sparse tests succeed.,,,0,not_submitted

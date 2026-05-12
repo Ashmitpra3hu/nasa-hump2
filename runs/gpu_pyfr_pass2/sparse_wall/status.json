@@ -1,0 +1,5 @@
+{
+  "case": "sparse_wall",
+  "status": "not_submitted",
+  "notes": "Held back intentionally until the no-sampler minimal hump run completes and external postprocessing confirms a usable solution snapshot."
+}
