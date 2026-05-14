@@ -1,0 +1,16 @@
+{
+  "name": "pass6_hump_ns_char_dt1e4",
+  "mesh": "nasa_hump_medium.pyfrm",
+  "variant": "medium",
+  "system": "navier-stokes",
+  "dt": 0.0001,
+  "tend": 0.0005,
+  "pseudo_dt": 1e-07,
+  "pseudo_min": 4,
+  "pseudo_max": 20,
+  "dt_out": 0.0005,
+  "inlet_type": "char-riem-inv",
+  "outlet_type": "char-riem-inv",
+  "use_pressure_at_inlet": true,
+  "notes": "Switches to characteristic inviscid boundaries to test whether the subsonic boundary treatment is the primary instability trigger."
+}

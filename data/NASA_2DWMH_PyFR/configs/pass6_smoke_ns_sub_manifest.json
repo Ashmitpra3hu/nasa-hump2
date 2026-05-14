@@ -1,0 +1,16 @@
+{
+  "name": "pass6_smoke_ns_sub",
+  "mesh": "smoke_rect.pyfrm",
+  "variant": "smoke",
+  "system": "navier-stokes",
+  "dt": 0.0002,
+  "tend": 0.001,
+  "pseudo_dt": 1e-07,
+  "pseudo_min": 4,
+  "pseudo_max": 20,
+  "dt_out": 0.001,
+  "inlet_type": "sub-in-frv",
+  "outlet_type": "sub-out-fp",
+  "use_pressure_at_inlet": false,
+  "notes": "Rectangular smoke test to check whether dimensional navier-stokes can stay finite away from the hump geometry."
+}

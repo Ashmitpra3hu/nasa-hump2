@@ -1,0 +1,10 @@
+{
+  "p_ref": 101398.75858083677,
+  "num_candidate_points": 11385,
+  "num_wall_rows": 5507,
+  "num_comparison_rows": 126,
+  "finite_cp_matches": 126,
+  "cp_mae": 1.5251664939519705,
+  "cp_rmse": 2.5550115561098687,
+  "notes": "Geometry-aware near-wall extraction using the first finite layer above the hump wall. NASA targets were compared by nearest-CFD-sample matching only."
+}

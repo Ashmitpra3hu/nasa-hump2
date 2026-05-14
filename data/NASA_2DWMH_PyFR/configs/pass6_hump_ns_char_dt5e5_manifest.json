@@ -1,0 +1,16 @@
+{
+  "name": "pass6_hump_ns_char_dt5e5",
+  "mesh": "nasa_hump_medium.pyfrm",
+  "variant": "medium",
+  "system": "navier-stokes",
+  "dt": 5e-05,
+  "tend": 0.00025,
+  "pseudo_dt": 5e-08,
+  "pseudo_min": 4,
+  "pseudo_max": 24,
+  "dt_out": 0.00025,
+  "inlet_type": "char-riem-inv",
+  "outlet_type": "char-riem-inv",
+  "use_pressure_at_inlet": true,
+  "notes": "Most conservative hump case in the sweep: tiny physical step plus characteristic boundaries."
+}

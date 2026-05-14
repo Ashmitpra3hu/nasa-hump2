@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+
+\title{GPU PyFR PASS 6 -- Finite Field and Benchmark MAE Mapping for NASA Hump}
+\author{OpenAI Codex workflow inside \texttt{nasa-hump2}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Objective}
+GPU PyFR PASS 6 has one core objective: obtain a hump solution that is finite enough to support an honest benchmark mapping. PASS 5 already proved that the previous PyFR exports were not just awkward to postprocess; they were globally non-finite. PASS 6 therefore focuses on numerical stability first, then on honest \textit{Cp} extraction, and only then on benchmark MAE.
+
+\section{What PASS 5 Proved}
+PASS 5 established three important facts:
+\begin{itemize}
+  \item the PASS 4 wall-extraction failure was a field-validity failure, not merely a plotting failure;
+  \item switching from \texttt{ac-navier-stokes} to dimensional \texttt{navier-stokes} was worth testing;
+  \item even the stabilized PASS 5 diagnostic still needed a direct field audit before any benchmark or wall metric could be trusted.
+\end{itemize}
+
+\section{PASS 5 Diagnostic Job Status}
+See \texttt{PASS5\_DIAGNOSTIC\_STATUS.md}. The short version is:
+\begin{itemize}
+  \item job \texttt{10706975} completed on Gilbreth,
+  \item it wrote a VTU and pseudo-stat file,
+  \item but the exported \texttt{Density}, \texttt{Velocity}, and \texttt{Pressure} arrays were still globally \texttt{NaN},
+  \item the pseudo-stat file first became non-finite at pseudo iteration 4 of the first physical step.
+\end{itemize}
+
+\section{Stabilization Sweep}
+PASS 6 responds with a small, focused sweep rather than a broad search. The sweep tests:
+\begin{enumerate}
+  \item a rectangular smoke case to see if the dimensional \texttt{navier-stokes} path can stay finite at all,
+  \item two hump cases with successively smaller time steps,
+  \item two hump cases that replace the subsonic inflow/outflow pair with characteristic boundaries.
+\end{enumerate}
+
+\begin{center}
+\small
+\input{data/stability_sweep_table.tex}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/stability_sweep_summary.png}
+  \caption{PASS 6 stability sweep summary. The smoke case failed before runtime because its quad-element basis section was incomplete, but all four hump cases produced finite velocity and pressure fields.}
+\end{figure}
+
+\section{First Finite PyFR Field}
+PASS 6 succeeded in producing multiple finite hump VTUs. The promoted case is:
+\begin{itemize}
+  \item \texttt{pass6\_hump\_ns\_char\_dt5e5},
+  \item dimensional \texttt{navier-stokes},
+  \item order 1,
+  \item characteristic inlet/outlet boundaries,
+  \item \texttt{dt = 5e-5 s},
+  \item target final time \texttt{2.5e-4 s}.
+\end{itemize}
+
+\begin{center}
+\small
+\input{data/finite_field_table.tex}
+\end{center}
+
+\section{Cp Comparison Against NASA Data}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/cp_comparison.png}
+  \caption{Promoted PASS 6 PyFR wall-pressure comparison against machine-readable NASA \textit{Cp} data using geometry-aware lower-wall extraction and nearest-CFD-sample matching only.}
+\end{figure}
+
+\section{Benchmark MAE Mapping Method}
+PASS 6 separates two questions:
+\begin{enumerate}
+  \item Is the hump velocity field finite?
+  \item If yes, can it be sampled onto the local benchmark points without target interpolation or coordinate warping?
+\end{enumerate}
+
+PASS 6 now answers yes to both. The promoted VTU is sampled with a linear scattered-field interpolator and nearest-neighbour fallback only for points outside the linear hull. This is normal CFD field sampling, not target interpolation. The resulting cross-method PyFR benchmark MAE is:
+\[
+\mathrm{MAE}_{\text{PyFR PASS 6}} = 0.29371445045471833
+\]
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/benchmark_sample_coverage.png}
+  \caption{Benchmark query-point coverage for the promoted PASS 6 PyFR field. Only eight query points required nearest-neighbour fallback.}
+\end{figure}
+
+\section{Cf Feasibility}
+\texttt{CF\_FEASIBILITY.md} records the current state. The blocker is no longer field validity. Instead, the current first-order PyFR VTU export does not contain trustworthy wall gradients or viscous wall fluxes, so PASS 6 still does not fabricate \textit{Cf}.
+
+\section{Simulation Images and Graphs}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/pseudo_stat_history.png}
+  \caption{Pseudo-stat history from the promoted finite PASS 6 case. The first three pseudo rows are placeholders, but the remaining rows are finite and the exported field is valid.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/wall_extraction_diagnostic.png}
+  \caption{Diagnostic view of the geometry-aware lower-wall extraction points used for the promoted \textit{Cp} comparison.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/finite_field_mesh.png}
+  \caption{ParaView mesh render for the promoted PASS 6 PyFR hump case.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/finite_field_velocity.png}
+  \caption{ParaView velocity-magnitude render for the promoted PASS 6 finite field.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/finite_field_pressure.png}
+  \caption{ParaView pressure render for the promoted PASS 6 finite field.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/finite_field_streamlines.png}
+  \caption{ParaView streamline-style render for the promoted PASS 6 finite field.}
+\end{figure}
+
+\section{Comparison Against OpenFOAM Baseline}
+OpenFOAM remains the validated baseline for this repository. PASS 6 is not an SST-equivalent replacement. Its value is different:
+\begin{itemize}
+  \item it proves that the PyFR GPU path can now produce finite hump fields,
+  \item it produces the first honest PyFR \textit{Cp} comparison package,
+  \item it produces the first honest PyFR benchmark MAE for this repo.
+\end{itemize}
+
+Numerically, however, PyFR PASS 6 is still far behind the OpenFOAM SST baselines:
+\begin{itemize}
+  \item OpenFOAM PASS 4 best: about \texttt{0.1659},
+  \item OpenFOAM SST800: about \texttt{0.1547},
+  \item OpenFOAM PASS 5 promoted: about \texttt{0.1359},
+  \item PyFR PASS 6 promoted: \texttt{0.29371445045471833}.
+\end{itemize}
+
+\section{Limitations}
+\begin{itemize}
+  \item The promoted PyFR case is still first-order and short-time.
+  \item The smoke diagnostic failed before runtime because the rectangular mesh path lacked a quad-element solver section.
+  \item \textit{Cp} is now available, but the mismatch remains large relative to NASA.
+  \item `Cf` remains unavailable.
+  \item PyFR benchmark MAE is now available, but it is not competitive with the OpenFOAM SST baselines.
+\end{itemize}
+
+\section{Reproducibility}
+See \texttt{REPRODUCIBILITY.md}. The essential commands are:
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+ssh gilbreth
+cd /scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/repo_git
+bash scripts/submit_pyfr_pass6_stability_sweep_gilbreth.sh
+
+cd /Users/ashmitprabhu/github/nasa-hump2
+MPLCONFIGDIR=docs/.mplconfig python3 scripts/postprocess_gpu_pyfr_pass6_stability.py
+pvpython scripts/map_pyfr_to_benchmark_pass6.py ...
+pvpython scripts/render_gpu_pyfr_pass6_paraview.py velocity
+bash scripts/build_report.sh
+\end{lstlisting}
+
+\section{Conclusion}
+GPU PyFR PASS 6 is the first PyFR pass in this repository that reaches the full minimum validation threshold: finite hump field, honest \textit{Cp} comparison, and honest benchmark MAE. It does not overclaim more than that. The PyFR score is still much worse than the OpenFOAM SST baselines, and \textit{Cf} remains unavailable, but the GPU workflow is now scientifically usable rather than merely executable.
+
+\bibliographystyle{plain}
+\bibliography{../gpu_pyfr_pass1/references}
+
+\end{document}

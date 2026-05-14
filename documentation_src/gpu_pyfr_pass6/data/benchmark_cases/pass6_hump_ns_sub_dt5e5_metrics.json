@@ -1,0 +1,14 @@
+{
+  "available": true,
+  "num_query_points": 1000,
+  "finite_velocity_points_used": 316770,
+  "linear_fallback_count": 8,
+  "max_nearest_distance_m": 0.01786729544123034,
+  "mean_nearest_distance_m": 0.0008698643200912001,
+  "vtu": "runs/gpu_pyfr_pass6/stability/pass6_hump_ns_sub_dt5e5/pass6_hump_ns_sub_dt5e5_latest.vtu",
+  "prediction_file": "documentation_src/gpu_pyfr_pass6/data/benchmark_cases/pass6_hump_ns_sub_dt5e5_predictions.csv",
+  "sample_file": "documentation_src/gpu_pyfr_pass6/data/benchmark_cases/pass6_hump_ns_sub_dt5e5_samples.csv",
+  "score_available": true,
+  "score_unavailable_reason": "closure_challenge is not available in this Python interpreter. The prediction CSV is still valid and can be scored by the repo's system Python.",
+  "score": 0.2937144506169717
+}
