@@ -1,0 +1,8 @@
+{
+  "run_name": "pass5_promoted",
+  "mesh": "nasa_hump_medium.pyfrm",
+  "system": "navier-stokes",
+  "order": 1,
+  "goal": "Promoted longer PASS 5 PyFR run using the same stabilized settings after the diagnostic case is finite.",
+  "notes": "Retains the PASS 5 diagnostic numerical settings but extends physical time to support wall-pressure extraction and visualization."
+}

@@ -1,0 +1,8 @@
+{
+  "run_name": "pass5_diagnostic",
+  "mesh": "nasa_hump_medium.pyfrm",
+  "system": "navier-stokes",
+  "order": 1,
+  "goal": "Establish the first finite-field PyFR hump solution with pressure suitable for external Cp extraction.",
+  "notes": "Switches from ac-navier-stokes to dimensional navier-stokes, keeps the stable no-sampler path, and lowers the physical and pseudo time step aggressively."
+}

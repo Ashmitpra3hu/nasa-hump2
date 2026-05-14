@@ -1,0 +1,167 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{siunitx}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\title{GPU PyFR PASS 5 -- Robust Wall-Data Extraction for NASA Hump on Gilbreth}
+\author{OpenAI Codex workflow inside \texttt{nasa-hump2}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Objective}
+GPU PyFR PASS 5 takes the PASS 4 workflow from ``exported a field but no usable validation metrics'' to a more honest diagnostic package. The priorities are:
+\begin{enumerate}
+  \item explain exactly why PASS 4 could not produce finite \textit{Cp},
+  \item repair the VTU field-audit and wall-extraction workflow,
+  \item decide whether the existing PASS 4 data can be salvaged,
+  \item if not, prepare a stabilized PyFR rerun path that can produce the first defensible PyFR wall-pressure comparison.
+\end{enumerate}
+
+\section{What PASS 4 Achieved}
+PASS 4 did improve the PyFR workflow operationally:
+\begin{itemize}
+  \item it completed a longer GPU job on Gilbreth,
+  \item it exported a VTU field,
+  \item it rendered ParaView figures,
+  \item it created the first external wall-pressure extraction scripts.
+\end{itemize}
+
+\section{Why PASS 4 Failed to Produce Cp/Cf}
+The key PASS 5 diagnosis is that PASS 4 did not merely have a weak wall extractor. The exported fluid field itself is non-finite.
+
+PASS 5 audited the VTU arrays directly. The exported point-data arrays are:
+\begin{itemize}
+  \item \texttt{Velocity}
+  \item \texttt{Pressure}
+\end{itemize}
+but every fluid value in those arrays is \texttt{NaN}. The pseudo-stat file also becomes \texttt{nan} almost immediately after the first few pseudo iterations. Therefore the PASS 4 failure is primarily a solver-state validity problem, not a plotting-only problem.
+
+\section{VTU Field Audit}
+\begin{center}
+\small
+\input{summary_table.tex}
+\end{center}
+
+\section{Repaired Wall-Pressure Extraction}
+PASS 5 adds two separate steps:
+\begin{enumerate}
+  \item a VTU field-audit script that reports point arrays, cell arrays, finite counts, and near-wall finite statistics;
+  \item a geometry-aware lower-wall extractor that selects the first finite layer above the hump wall rather than assuming exact wall nodes are usable.
+\end{enumerate}
+
+This repaired extractor is scientifically stricter than PASS 4. It still uses nearest-CFD-sample matching only against the machine-readable NASA \textit{Cp} data, and it still avoids any target interpolation or curve tracing.
+
+\section{Pseudo-Stat Diagnostics}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/pseudo_stat_history.png}
+  \caption{PASS 5 pseudo-stat summary. PASS 4 already shows the core problem: the pseudo-stat file becomes non-finite almost immediately.}
+\end{figure}
+
+\section{New or Reused PyFR Run Details}
+PASS 5 starts from the PASS 4 diagnosis. If the existing VTU is unusable, PASS 5 pivots to a stabilized diagnostic rerun path that:
+\begin{itemize}
+  \item keeps one \texttt{A100-40gb},
+  \item keeps the no-sampler path,
+  \item keeps order 1,
+  \item lowers the physical and pseudo time steps,
+  \item switches to a dimensional \texttt{navier-stokes} setup for a more meaningful pressure field.
+\end{itemize}
+
+This change is not presented as SST-equivalent physics. It is a practical PyFR stabilization step aimed at making \textit{Cp} extraction possible.
+
+\section{Cp Comparison Against NASA Data}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/cp_comparison.png}
+  \caption{PASS 5 \textit{Cp} comparison against the machine-readable NASA data. If the reused PASS 4 or new PASS 5 PyFR field remains non-finite, the plot states that explicitly instead of inventing values.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/wall_extraction_diagnostic.png}
+  \caption{Diagnostic plot of the lower-wall extraction points used for PASS 5.}
+\end{figure}
+
+\section{Cf Feasibility}
+PASS 5 does not fabricate \textit{Cf}. The current feasibility note is stored in \texttt{CF\_FEASIBILITY.md}. In short:
+\begin{itemize}
+  \item PASS 4 cannot support \textit{Cf} because the exported velocity field is non-finite,
+  \item even a finite PASS 5 field would still require a defensible near-wall gradient estimate before \textit{Cf} could be reported.
+\end{itemize}
+
+\section{Benchmark MAE Feasibility}
+PASS 5 also does not invent benchmark MAE. The current feasibility note is stored in \texttt{BENCHMARK\_MAPPING.md}. Until a finite PyFR field exists and can be sampled onto the benchmark coordinates honestly, benchmark MAE remains unavailable.
+
+\section{Simulation Images and Graphs}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{paraview/pass5_mesh.png}
+  \caption{PASS 5 mesh render from the available PyFR VTU.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{paraview/pass5_velocity.png}
+  \caption{PASS 5 velocity render.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{paraview/pass5_pressure.png}
+  \caption{PASS 5 pressure render.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{paraview/pass5_streamlines.png}
+  \caption{PASS 5 streamline-style render.}
+\end{figure}
+
+\section{Comparison Against OpenFOAM Baseline}
+OpenFOAM remains the accuracy baseline in this repository. The best OpenFOAM runs already support benchmark MAE, \textit{Cp}, and \textit{Cf}. PASS 5 should therefore be read as a PyFR workflow maturity step, not as a replacement for the OpenFOAM SST benchmark path.
+
+\section{Limitations}
+\begin{itemize}
+  \item PASS 4 data are globally non-finite.
+  \item PASS 5 only promotes \textit{Cp} if a finite field exists.
+  \item \textit{Cf} remains unavailable unless wall shear can be computed defensibly.
+  \item benchmark MAE remains unavailable unless the PyFR output can be mapped honestly into the existing benchmark workflow.
+\end{itemize}
+
+\section{Reproducibility Commands}
+See \texttt{REPRODUCIBILITY.md}. The main local steps are:
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+ssh gilbreth
+cd /scratch/gilbreth/prabhu56/nasa-hump2-gpu-pyfr-pass1/repo_git
+bash scripts/submit_pyfr_pass5_diagnostic_gilbreth.sh
+
+cd /Users/ashmitprabhu/github/nasa-hump2
+bash scripts/fetch_gpu_pyfr_pass5_results.sh
+MPLCONFIGDIR=docs/.mplconfig python3 scripts/postprocess_gpu_pyfr_pass5.py
+'/Users/ashmitprabhu/Desktop/ParaView-6.1.0-RC1.app/Contents/bin/pvpython' \
+  scripts/render_gpu_pyfr_pass5_paraview.py velocity
+bash scripts/build_report.sh
+\end{lstlisting}
+
+\section{Conclusion}
+GPU PyFR PASS 5 closes the main ambiguity left by PASS 4. The reason \textit{Cp} was unavailable is now explicit: the exported PASS 4 field itself is globally non-finite. PASS 5 therefore promotes a more robust workflow: audit first, extract only from finite fields, and rerun conservatively when the existing field is invalid. That is the right foundation for the first honest PyFR \textit{Cp} comparison on the NASA hump.
+
+\bibliographystyle{plain}
+\bibliography{../gpu_pyfr_pass1/references}
+
+\end{document}
