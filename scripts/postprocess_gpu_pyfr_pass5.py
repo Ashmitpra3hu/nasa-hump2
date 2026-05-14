@@ -20,6 +20,7 @@ OUT_ROOT = ROOT / "documentation_src" / "gpu_pyfr_pass5"
 OUT_DATA = OUT_ROOT / "data"
 OUT_FIG = OUT_ROOT / "figures"
 PASS4_DATA = ROOT / "documentation_src" / "gpu_pyfr_pass4" / "data"
+PASS4_RUN = ROOT / "runs" / "gpu_pyfr_pass4" / "long"
 
 
 def load_csv(path: Path) -> list[dict[str, str]]:
@@ -57,7 +58,9 @@ def choose_run_dir() -> tuple[str, Path]:
     diagnostic = ROOT / "runs" / "gpu_pyfr_pass5" / "diagnostic"
     if (promoted / "pseudo_stats.csv").exists():
         return "promoted", promoted
-    return "diagnostic", diagnostic
+    if (diagnostic / "pseudo_stats.csv").exists():
+        return "diagnostic", diagnostic
+    return "pass4_reused", PASS4_RUN
 
 
 def summarize_pseudo_stats(run_dir: Path) -> dict[str, object]:
@@ -140,7 +143,18 @@ def summarize_pseudo_stats(run_dir: Path) -> dict[str, object]:
 def plot_cp() -> dict[str, object]:
     cmp_json = OUT_DATA / "cp_metrics.json"
     cmp_csv = OUT_DATA / "cp_comparison.csv"
-    if not cmp_csv.exists():
+    source_json = cmp_json
+    source_csv = cmp_csv
+    if (OUT_DATA / "cp_comparison.json").exists():
+        source_json = OUT_DATA / "cp_comparison.json"
+    if not source_csv.exists():
+        pass4_csv = PASS4_DATA / "pyfr_cp_comparison.csv"
+        pass4_json = pass4_csv.with_suffix(".json")
+        if pass4_csv.exists():
+            source_csv = pass4_csv
+        if pass4_json.exists() and not (OUT_DATA / "cp_comparison.json").exists():
+            source_json = pass4_json
+    if not source_csv.exists():
         fig, ax = plt.subplots(figsize=(10, 4))
         ax.text(0.5, 0.5, "No finite PASS 5 Cp comparison is available.", ha="center", va="center", transform=ax.transAxes)
         ax.set_axis_off()
@@ -149,10 +163,11 @@ def plot_cp() -> dict[str, object]:
         plt.close(fig)
         return {"cp_available": False}
 
-    rows = load_csv(cmp_csv)
+    rows = load_csv(source_csv)
     x = np.array([float(r["x_over_c"]) for r in rows], dtype=float)
     cp_exp = np.array([float(r["Cp_exp"]) for r in rows], dtype=float)
     cp_pyfr = np.array([float(r["Cp_pyfr"]) for r in rows], dtype=float)
+    dx = np.array([float(r["dx_over_c"]) for r in rows], dtype=float)
     good = np.isfinite(cp_pyfr)
 
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -171,13 +186,23 @@ def plot_cp() -> dict[str, object]:
     fig.savefig(OUT_FIG / "cp_comparison.png", dpi=220)
     plt.close(fig)
 
-    if cmp_json.exists():
-        return json.loads(cmp_json.read_text())
+    if source_json.exists():
+        payload = json.loads(source_json.read_text())
+        payload["cp_available"] = bool(payload.get("finite_cp_matches", 0)) and math.isfinite(float(payload.get("cp_mae", math.nan)))
+        payload["max_nearest_distance_x_over_c"] = float(np.max(np.abs(dx))) if len(dx) else None
+        payload["mean_nearest_distance_x_over_c"] = float(np.mean(np.abs(dx))) if len(dx) else None
+        payload["finite_wall_point_count"] = int(np.count_nonzero(np.isfinite(cp_pyfr)))
+        cmp_json.write_text(json.dumps(payload, indent=2))
+        return payload
     return {"cp_available": bool(np.any(good))}
 
 
 def plot_wall_diagnostic() -> None:
     raw_csv = OUT_DATA / "pyfr_wall_cp.csv"
+    if not raw_csv.exists():
+        pass4_raw = PASS4_DATA / "pyfr_wall_pressure_raw.csv"
+        if pass4_raw.exists():
+            raw_csv = pass4_raw
     fig, ax = plt.subplots(figsize=(10, 4))
     if not raw_csv.exists():
         ax.text(0.5, 0.5, "No wall extraction CSV found.", ha="center", va="center", transform=ax.transAxes)
@@ -205,10 +230,16 @@ def plot_wall_diagnostic() -> None:
 def write_summary_table(run_name: str, run_dir: Path, pseudo: dict[str, object], cp_metrics: dict[str, object]) -> None:
     slurm_outs = sorted(run_dir.glob("slurm-*.out"))
     details = parse_slurm_out(slurm_outs[-1]) if slurm_outs else {}
+    if run_name == "promoted":
+        vtu_present = (run_dir / "pass5_promoted_latest.vtu").exists()
+    elif run_name == "diagnostic":
+        vtu_present = (run_dir / "pass5_diagnostic_latest.vtu").exists()
+    else:
+        vtu_present = (run_dir / "pass4_long_latest.vtu").exists()
     rows = [
         ("Run name", run_name),
         ("Run directory", str(run_dir.relative_to(ROOT))),
-        ("VTU export present", str((run_dir / f"pass5_{run_name}_latest.vtu").exists())),
+        ("VTU export present", str(vtu_present)),
         ("Pseudo rows", pseudo.get("pseudo_rows", 0)),
         ("Finite pseudo rows", pseudo.get("finite_rows", 0)),
         ("NaN pseudo rows", pseudo.get("nan_rows", 0)),

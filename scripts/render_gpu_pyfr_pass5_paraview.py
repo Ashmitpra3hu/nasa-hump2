@@ -18,7 +18,12 @@ FIG_DIR.mkdir(parents=True, exist_ok=True)
 def vtu_path() -> Path:
     promoted = RUN_ROOT / "promoted" / "pass5_promoted_latest.vtu"
     diagnostic = RUN_ROOT / "diagnostic" / "pass5_diagnostic_latest.vtu"
-    return promoted if promoted.exists() else diagnostic
+    pass4 = ROOT / "runs" / "gpu_pyfr_pass4" / "long" / "pass4_long_latest.vtu"
+    if promoted.exists():
+        return promoted
+    if diagnostic.exists():
+        return diagnostic
+    return pass4
 
 
 def make_view():
@@ -99,8 +104,12 @@ def render_mesh():
 def render_streamline():
     view = make_view()
     src = reader()
-    tracer = StreamTracer(Input=src, SeedType="Line")
-    tracer.Vectors = ["POINTS", "Velocity"]
+    calc = Calculator(Input=src)
+    calc.ResultArrayName = "Velocity3D"
+    calc.Function = "Velocity_X*iHat + Velocity_Y*jHat + 0*kHat"
+    UpdatePipeline(proxy=calc)
+    tracer = StreamTracer(Input=calc, SeedType="Line")
+    tracer.Vectors = ["POINTS", "Velocity3D"]
     tracer.MaximumStreamlineLength = 2.4
     tracer.SeedType.Point1 = [-1.10, 0.03, 0.0]
     tracer.SeedType.Point2 = [-1.10, 0.30, 0.0]

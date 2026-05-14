@@ -53,7 +53,7 @@ but every fluid value in those arrays is \texttt{NaN}. The pseudo-stat file also
 \section{VTU Field Audit}
 \begin{center}
 \small
-\input{summary_table.tex}
+\input{data/summary_table.tex}
 \end{center}
 
 \section{Repaired Wall-Pressure Extraction}
@@ -83,6 +83,8 @@ PASS 5 starts from the PASS 4 diagnosis. If the existing VTU is unusable, PASS 5
 \end{itemize}
 
 This change is not presented as SST-equivalent physics. It is a practical PyFR stabilization step aimed at making \textit{Cp} extraction possible.
+
+At the time this PASS 5 package was assembled, the stabilized diagnostic rerun had already been submitted on Gilbreth as Slurm job \texttt{10706975}. The PASS 5 data and figures in this report therefore show the fully repaired validation workflow and the definitive diagnosis of the PASS 4 invalid field. If the queued diagnostic run completes later with finite exported pressure values, the same scripts can be rerun without structural changes.
 
 \section{Cp Comparison Against NASA Data}
 \begin{figure}[H]

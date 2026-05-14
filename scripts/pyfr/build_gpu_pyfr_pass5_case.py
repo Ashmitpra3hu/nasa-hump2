@@ -110,7 +110,7 @@ def main() -> None:
 
     configs = {
         "pass5_diagnostic.ini": {
-            "text": render_config(tend=0.005, dt=0.001, pseudo_dt=1.0e-5, pseudo_min=4, pseudo_max=14, dt_out=0.0025),
+            "text": render_config(tend=0.005, dt=0.001, pseudo_dt=1.0e-5, pseudo_min=4, pseudo_max=14, dt_out=0.0020),
             "manifest": {
                 "run_name": "pass5_diagnostic",
                 "mesh": "nasa_hump_medium.pyfrm",
